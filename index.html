@@ -1,0 +1,1815 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style></head><body>
+<title>PathForward</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PathForward: free, reliable study-abroad guidance for students in China and Vietnam, run by students.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@1,9..144,400..600&family=Noto+Sans+SC:wght@400;500;700;800&display=swap">
+<style>
+:root{
+  /* Layout: night-to-dawn scroll. A dark globe hero rises over a glowing horizon into bright, airy bands; the roadmap is a path that draws itself. */
+  --night:#071331;
+  --night-2:#0E2152;
+  --on-night:#EEF2FF;
+  --on-night-muted:#AAB6D8;
+  --bg:#F5F7FC;
+  --surface:#FFFFFF;
+  --surface-2:#ECF0F9;
+  --line:#DAE1EF;
+  --fg:#0E1836;
+  --muted:#4D5A7C;
+  --blue:#2A57E6;
+  --blue-ink:#FFFFFF;
+  --focus:#2A57E6;
+  --amber:#FFB547;
+  --coral:#FF6F59;
+  --sky:#6EA8FF;
+  --em-a:#D2442C;
+  --em-b:#2A57E6;
+  --green:#0E7F57;
+  --gold:#9A5B00;
+  --danger:#C62F2F;
+  --sdg4:#C5192D;
+  --shadow:0 1px 2px rgba(14,24,54,.06),0 10px 30px -14px rgba(14,24,54,.22);
+  --font-sans:"Be Vietnam Pro","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --radius:18px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1022;--surface:#111A33;--surface-2:#16213F;--line:#26335C;--fg:#E9EEFB;--muted:#A5B0CE;
+    --blue:#88A6FF;--blue-ink:#0A1022;--focus:#88A6FF;--em-a:#FF8A73;--em-b:#93B2FF;--green:#4CD3A0;--gold:#FFC56B;--danger:#FF7B7B;
+    --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 36px -16px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1022;--surface:#111A33;--surface-2:#16213F;--line:#26335C;--fg:#E9EEFB;--muted:#A5B0CE;
+  --blue:#88A6FF;--blue-ink:#0A1022;--focus:#88A6FF;--em-a:#FF8A73;--em-b:#93B2FF;--green:#4CD3A0;--gold:#FFC56B;--danger:#FF7B7B;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 14px 36px -16px rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--night)}
+html:lang(zh) body{line-height:1.78;letter-spacing:.01em}
+html:lang(vi) body{line-height:1.72}
+img,svg{max-width:100%}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-80px;z-index:100;background:var(--surface);color:var(--fg);padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+main{transition:opacity .16s ease}
+body.switching main,body.switching .nav-links{opacity:.2}
+section[id]{scroll-margin-top:84px}
+
+/* ---------- Nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;color:var(--on-night);--focus:var(--sky);
+  background:color-mix(in srgb,var(--night) 84%,transparent);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid color-mix(in srgb,var(--on-night) 10%,transparent)}
+.nav-row{display:flex;align-items:center;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:9px;color:inherit;text-decoration:none;font-weight:700;font-size:1.12rem;letter-spacing:-.015em;flex-shrink:0;border-radius:8px}
+.brand .mark{width:30px;height:30px;flex-shrink:0}
+.brand b{font-weight:800;background:linear-gradient(100deg,var(--amber),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;gap:2px;margin-left:auto;transition:opacity .16s}
+.nav-links a{color:var(--on-night-muted);text-decoration:none;padding:9px 12px;border-radius:999px;font-size:.93rem;font-weight:500;white-space:nowrap;transition:color .2s,background-color .2s}
+.nav-links a:hover{color:var(--on-night);background:color-mix(in srgb,var(--on-night) 8%,transparent)}
+.nav-end{display:flex;align-items:center;gap:10px;margin-left:8px}
+.menu-btn{display:none;width:44px;height:44px;border-radius:12px;border:1px solid color-mix(in srgb,var(--on-night) 16%,transparent);background:none;color:var(--on-night);cursor:pointer;place-items:center;flex-shrink:0}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-x{display:none}
+.menu-btn[aria-expanded="true"] .i-x{display:block}
+.menu-btn[aria-expanded="true"] .i-menu{display:none}
+.menu-panel{position:absolute;top:100%;left:0;right:0;background:var(--night);border-bottom:1px solid color-mix(in srgb,var(--on-night) 12%,transparent);padding-block:8px 20px;box-shadow:0 24px 40px -20px rgba(0,0,0,.6)}
+.menu-panel .wrap{display:flex;flex-direction:column;gap:2px}
+.menu-panel a{color:var(--on-night);text-decoration:none;font-size:1.05rem;font-weight:500;padding:12px 4px;border-bottom:1px solid color-mix(in srgb,var(--on-night) 8%,transparent)}
+.menu-panel .btn{margin-top:14px;border-bottom:0}
+
+/* Language switcher */
+.lang{position:relative;display:inline-flex;padding:3px;border-radius:999px;flex-shrink:0;
+  background:color-mix(in srgb,var(--on-night) 8%,transparent);border:1px solid color-mix(in srgb,var(--on-night) 15%,transparent)}
+.lang button{position:relative;z-index:1;appearance:none;border:0;background:none;color:var(--on-night-muted);font:inherit;font-size:.86rem;font-weight:600;
+  padding:0 12px;min-height:38px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:color .25s}
+.lang button:hover{color:var(--on-night)}
+.lang button[aria-pressed="true"]{color:var(--night)}
+.lang .short{display:none}
+.lang-thumb{position:absolute;z-index:0;top:3px;bottom:3px;left:0;width:var(--w,0px);transform:translateX(var(--x,0px));border-radius:999px;
+  background:linear-gradient(100deg,var(--amber),var(--coral));box-shadow:0 4px 14px -4px color-mix(in srgb,var(--coral) 70%,transparent)}
+.lang.ready .lang-thumb{transition:transform .38s var(--ease),width .38s var(--ease)}
+.lang:not(.ready) button[aria-pressed="true"]{background:linear-gradient(100deg,var(--amber),var(--coral))}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font:inherit;font-weight:650;font-size:1rem;
+  text-decoration:none;cursor:pointer;border:1px solid transparent;white-space:nowrap;transition:transform .22s var(--ease),box-shadow .25s,background-color .2s,border-color .2s}
+.btn svg{width:18px;height:18px;flex-shrink:0;transition:transform .22s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-sun{background:linear-gradient(100deg,var(--amber),var(--coral));color:var(--night);box-shadow:0 10px 30px -12px color-mix(in srgb,var(--coral) 80%,transparent)}
+.btn-sun:hover{transform:translateY(-2px);box-shadow:0 16px 36px -12px color-mix(in srgb,var(--coral) 90%,transparent)}
+.btn-ghost{color:var(--on-night);border-color:color-mix(in srgb,var(--on-night) 30%,transparent);background:color-mix(in srgb,var(--on-night) 5%,transparent)}
+.btn-ghost:hover{background:color-mix(in srgb,var(--on-night) 12%,transparent)}
+.btn-primary{background:var(--blue);color:var(--blue-ink)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px -14px var(--blue)}
+.btn-sm{min-height:40px;padding:0 16px;font-size:.9rem}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;background:var(--night);color:var(--on-night);isolation:isolate;--focus:var(--sky)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(55% 50% at 82% 32%,color-mix(in srgb,var(--sky) 20%,transparent),transparent 70%),
+  radial-gradient(75% 42% at 50% 104%,color-mix(in srgb,var(--coral) 42%,transparent),transparent 72%),
+  radial-gradient(42% 26% at 50% 100%,color-mix(in srgb,var(--amber) 55%,transparent),transparent 72%),
+  linear-gradient(180deg,var(--night) 0%,var(--night-2) 100%)}
+.hero-dots{position:absolute;inset:0;z-index:-1;background-image:radial-gradient(color-mix(in srgb,var(--on-night) 16%,transparent) 1px,transparent 1.6px);background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(60% 60% at 25% 40%,#000,transparent 75%);mask-image:radial-gradient(60% 60% at 25% 40%,#000,transparent 75%)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:24px;padding-block:56px 150px}
+.eyebrow-pill{display:inline-flex;align-items:center;gap:10px;margin:0;padding:6px 14px 6px 12px;border-radius:999px;font-size:.85rem;font-weight:500;color:var(--on-night-muted);
+  background:color-mix(in srgb,var(--on-night) 7%,transparent);border:1px solid color-mix(in srgb,var(--on-night) 14%,transparent)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--amber) 70%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero h1{font-size:clamp(2.3rem,5vw,4.2rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;margin:22px 0 20px;text-wrap:balance}
+html:lang(vi) .hero h1{font-size:clamp(2.05rem,4.2vw,3.55rem);line-height:1.2;letter-spacing:-.025em}
+html:lang(zh) .hero h1{font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:1.22;letter-spacing:0}
+.em{position:relative;display:inline-block;font-family:var(--font-serif);font-style:italic;font-weight:500;letter-spacing:-.02em;padding:0 .1em 0 .02em;
+  background:linear-gradient(95deg,var(--amber) 0%,var(--coral) 62%,var(--sky) 135%);-webkit-background-clip:text;background-clip:text;color:transparent}
+html:lang(zh) .em{font-family:var(--font-sans);font-style:normal;font-weight:800;letter-spacing:0}
+.em::after{content:"";position:absolute;left:0;right:0;bottom:-.1em;height:.3em;animation:draw 1.1s .45s var(--ease) both;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23FFB547'/%3E%3Cstop offset='1' stop-color='%23FF6F59'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M4 17C55 7 130 4 196 11' fill='none' stroke='url(%23g)' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/100% 100%}
+@keyframes draw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.hero .sub{font-size:clamp(1.02rem,1.35vw,1.16rem);color:var(--on-night-muted);max-width:34em;margin:0 0 30px}
+html:lang(zh) .hero .sub{max-width:30em}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin:30px 0 0;padding:0;list-style:none;color:var(--on-night-muted);font-size:.9rem}
+.hero-facts li{display:flex;align-items:center;gap:8px}
+.hero-facts svg{width:16px;height:16px;color:var(--amber);flex-shrink:0}
+
+.globe-wrap{position:relative;width:calc(100% + 56px);margin-right:-56px;justify-self:end}
+.globe-stage{position:relative;aspect-ratio:1/1;width:100%;max-width:100%}
+.globe-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;opacity:0;transition:opacity 1.4s ease}
+.globe-stage.ready canvas{opacity:1}
+.globe-stage.dragging canvas{cursor:grabbing}
+.globe-fallback{position:absolute;inset:13%;border-radius:50%;transition:opacity 1.2s;
+  background:radial-gradient(circle at 36% 30%,color-mix(in srgb,var(--sky) 30%,var(--night-2)),var(--night) 72%);
+  box-shadow:0 0 90px color-mix(in srgb,var(--sky) 28%,transparent),inset -24px -34px 70px color-mix(in srgb,var(--coral) 26%,transparent)}
+.globe-stage.ready .globe-fallback{opacity:0}
+.globe-label{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:7px;pointer-events:none;opacity:0;white-space:nowrap;will-change:transform,opacity;
+  font-size:.78rem;font-weight:600;padding:5px 11px 5px 9px;border-radius:999px;color:var(--on-night);
+  background:color-mix(in srgb,var(--night) 72%,transparent);border:1px solid color-mix(in srgb,var(--on-night) 20%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.dot-o,.dot-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-o{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.dot-d{background:var(--sky);box-shadow:0 0 10px var(--sky)}
+.nw{display:inline-block}
+.globe-hint{position:absolute;left:4%;top:3%;margin:0;font-size:.76rem;color:var(--on-night-muted);opacity:.8;display:flex;align-items:center;gap:6px}
+.globe-hint svg{width:14px;height:14px}
+.globe-card{position:absolute;left:2%;bottom:5%;max-width:min(280px,72%);padding:14px 16px;border-radius:14px;font-size:.84rem;
+  background:color-mix(in srgb,var(--night) 70%,transparent);border:1px solid color-mix(in srgb,var(--on-night) 14%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.globe-card .gc-title{margin:0 0 8px;font-weight:600;color:var(--on-night);line-height:1.4}
+.globe-card .legend{margin:0;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--on-night-muted)}
+.globe-card .legend span{display:inline-flex;align-items:center;gap:7px}
+.horizon{position:absolute;left:-25%;right:-25%;bottom:-2px;height:130px;background:var(--bg);border-radius:50% 50% 0 0/100% 100% 0 0;pointer-events:none;
+  box-shadow:0 -1px 0 color-mix(in srgb,var(--amber) 85%,transparent),0 -10px 40px color-mix(in srgb,var(--amber) 38%,transparent),0 -34px 100px color-mix(in srgb,var(--coral) 34%,transparent)}
+
+/* ---------- Stats ---------- */
+.stats{position:relative;z-index:2;margin-top:-76px}
+.stats-card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.stat{display:flex;flex-direction:column;gap:2px;padding:22px 26px;min-width:0}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat dd{order:-1;margin:0;font-size:clamp(1.9rem,3vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums;
+  background:linear-gradient(95deg,var(--em-a),var(--em-b));-webkit-background-clip:text;background-clip:text;color:transparent;width:max-content;max-width:100%}
+.stat dt{color:var(--muted);font-size:.92rem}
+
+/* ---------- Sections ---------- */
+.band{padding-block:clamp(72px,9vw,120px)}
+.band.tint{background:var(--surface-2)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;margin:0;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+.eyebrow::before{content:"";width:22px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--amber),var(--coral))}
+html:lang(zh) .eyebrow{letter-spacing:.18em;font-size:.82rem}
+h2{font-size:clamp(1.9rem,3.8vw,3.05rem);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin:14px 0 16px;text-wrap:balance}
+html:lang(vi) h2{line-height:1.24;letter-spacing:-.02em}
+html:lang(zh) h2{line-height:1.3;letter-spacing:.01em}
+h3{text-wrap:balance}
+.hl{font-family:var(--font-serif);font-style:italic;font-weight:500;letter-spacing:-.02em;padding-right:.08em;
+  background:linear-gradient(95deg,var(--em-a),var(--em-b));-webkit-background-clip:text;background-clip:text;color:transparent}
+html:lang(zh) .hl{font-family:var(--font-sans);font-style:normal;font-weight:800;letter-spacing:.01em}
+.lead{font-size:clamp(1.02rem,1.3vw,1.14rem);color:var(--muted);max-width:60ch;margin:0}
+html:lang(zh) .lead{max-width:34em}
+.ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex-shrink:0}
+.ico svg{width:22px;height:22px}
+
+/* Gap */
+.gap-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 64px;align-items:end}
+.gap-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:56px}
+.gap-item{position:relative;padding-top:22px;border-top:1px solid var(--line);min-width:0}
+.gap-item::before{content:"";position:absolute;top:-1px;left:0;width:48px;height:2px;background:var(--coral)}
+.gap-item .ico{background:var(--surface-2);color:var(--em-a);margin-bottom:16px}
+.band.tint .gap-item .ico{background:var(--surface)}
+.gap-item h3{font-size:1.16rem;line-height:1.35;margin:0 0 8px;letter-spacing:-.01em}
+.gap-item p{margin:0;color:var(--muted)}
+.answer{position:relative;overflow:hidden;isolation:isolate;margin-top:64px;border-radius:24px;background:var(--night);color:var(--on-night);--focus:var(--sky);
+  padding:clamp(28px,4vw,52px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px 56px;align-items:center}
+.answer::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  radial-gradient(50% 80% at 100% 100%,color-mix(in srgb,var(--coral) 34%,transparent),transparent 70%),
+  radial-gradient(40% 60% at 85% 110%,color-mix(in srgb,var(--amber) 40%,transparent),transparent 70%)}
+.answer .eyebrow{color:var(--amber)}
+.answer h3{font-size:clamp(1.5rem,2.7vw,2.15rem);line-height:1.18;letter-spacing:-.02em;margin:12px 0 0}
+html:lang(vi) .answer h3{line-height:1.3}
+.answer p{color:var(--on-night-muted);margin:0}
+.sdg{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:5px 14px 5px 5px;border-radius:999px;font-size:.84rem;color:var(--on-night);
+  background:color-mix(in srgb,var(--on-night) 8%,transparent);border:1px solid color-mix(in srgb,var(--on-night) 14%,transparent)}
+.sdg b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--sdg4);color:#fff;font-size:.82rem;flex-shrink:0}
+
+/* Mission / vision / offers */
+.mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:44px}
+.mv-item{position:relative;overflow:hidden;padding:clamp(24px,3vw,38px);border-radius:var(--radius);background:var(--surface);border:1px solid var(--line);min-width:0}
+.mv-item::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--amber),var(--coral) 50%,var(--sky))}
+.mv-label{margin:0;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.mv-text{margin:12px 0 0;font-size:clamp(1.12rem,1.6vw,1.36rem);line-height:1.5;font-weight:500;letter-spacing:-.01em;text-wrap:pretty}
+html:lang(zh) .mv-text{line-height:1.75;letter-spacing:.01em}
+html:lang(vi) .mv-text{line-height:1.6}
+.offers-title{font-size:clamp(1.3rem,2vw,1.6rem);letter-spacing:-.02em;margin:72px 0 20px}
+.offers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.offer{padding:24px;border-radius:var(--radius);background:var(--surface-2);min-width:0;transition:transform .25s var(--ease),background-color .25s}
+.offer:hover{transform:translateY(-3px)}
+.offer .ico{background:linear-gradient(135deg,var(--amber),var(--coral));color:var(--night)}
+.offer:nth-child(2) .ico{background:linear-gradient(135deg,var(--coral),var(--sky))}
+.offer:nth-child(3) .ico{background:linear-gradient(135deg,var(--sky),var(--blue));color:#fff}
+.offer:nth-child(4) .ico{background:linear-gradient(135deg,var(--amber),var(--sky))}
+.offer h3{font-size:1.04rem;line-height:1.35;margin:18px 0 6px}
+.offer p{font-size:.93rem;color:var(--muted);margin:0}
+
+/* ---------- Roadmap ---------- */
+.rm-grid{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:48px 72px;align-items:start}
+.rm-side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px)}
+.grade-pick{margin-top:30px}
+.grade-pick .pick-q{margin:0 0 12px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;transition:background-color .2s,color .2s,border-color .2s,transform .2s var(--ease)}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.pick-hint{margin:12px 0 0;font-size:.88rem;color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:12px;--progress:1}
+.timeline::before,.timeline::after{content:"";position:absolute;left:21px;top:22px;bottom:22px;width:2px;border-radius:2px}
+.timeline::before{background:var(--line)}
+.timeline::after{background:linear-gradient(180deg,var(--amber),var(--coral) 45%,var(--blue));transform-origin:top;transform:scaleY(var(--progress))}
+.step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px}
+.node{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);
+  font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted);transition:background .4s,border-color .4s,color .4s,box-shadow .4s}
+.step.lit .node{border-color:transparent;background:linear-gradient(135deg,var(--amber),var(--coral));color:var(--night)}
+.step.here .node{box-shadow:0 0 0 6px color-mix(in srgb,var(--coral) 28%,transparent)}
+.step-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0;transition:border-color .25s,box-shadow .25s}
+.step.open .step-card{box-shadow:var(--shadow)}
+.step.here .step-card{border-color:color-mix(in srgb,var(--coral) 60%,var(--line))}
+.step-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 12px;width:100%;padding:14px 18px;min-height:58px;cursor:pointer}
+.step-head:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:16px}
+.step-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;grid-column:1}
+.step-when{font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.here-badge{font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;color:var(--night);background:linear-gradient(100deg,var(--amber),var(--coral))}
+.step-title{grid-column:1;font-size:1.08rem;font-weight:700;letter-spacing:-.01em;line-height:1.35}
+.step-head .chev{grid-column:2;grid-row:1/span 2;width:20px;height:20px;color:var(--muted);transition:transform .3s var(--ease)}
+.step-head[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.step-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--ease)}
+.step.open .step-panel{grid-template-rows:1fr}
+.step-panel>div{overflow:hidden;min-height:0}
+.step-panel .inner{padding:0 18px 18px}
+.step-panel p{margin:0;color:var(--muted)}
+.checks-h{margin:16px 0 8px!important;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)!important}
+.checks{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
+.checks li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.checks svg{width:18px;height:18px;margin-top:3px;color:var(--green)}
+.source{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;font-weight:600;color:var(--blue);text-decoration:none;border-radius:6px}
+.source svg{width:15px;height:15px}
+.source:hover{text-decoration:underline}
+
+/* ---------- Resources ---------- */
+.res-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 40px}
+.res-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:36px}
+.res-count{margin:0;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.res-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.res{position:relative;display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line);overflow:hidden;min-width:0;
+  transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
+.res::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--sky) 16%,transparent),transparent 70%)}
+.res:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--blue) 35%,var(--line))}
+.res:hover::before{opacity:1}
+.res-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.8rem;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;font-size:.74rem;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:999px}
+.b-guide{color:var(--blue);background:color-mix(in srgb,var(--blue) 13%,transparent)}
+.b-official{color:var(--green);background:color-mix(in srgb,var(--green) 14%,transparent)}
+.b-partner{color:var(--em-a);background:color-mix(in srgb,var(--em-a) 13%,transparent)}
+.b-opportunity{color:var(--gold);background:color-mix(in srgb,var(--gold) 15%,transparent)}
+.res h3{margin:0;font-size:1.08rem;line-height:1.35;letter-spacing:-.01em}
+.res p{margin:0;color:var(--muted);font-size:.94rem}
+.res-foot{margin-top:auto;padding-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed var(--line)}
+.langs{font-size:.78rem;color:var(--muted);font-weight:500}
+.res-act{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 4px;font:inherit;font-size:.88rem;font-weight:650;color:var(--blue);text-decoration:none;background:none;border:0;cursor:pointer;border-radius:8px;white-space:nowrap}
+.res-act svg{width:15px;height:15px}
+.res-act.soon{color:var(--muted)}
+
+/* ---------- Partner ---------- */
+.partner{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px 64px;align-items:center}
+.src-h{margin:28px 0 10px;font-weight:700;font-size:.95rem}
+.src-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.src-chips a{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);color:var(--fg);text-decoration:none;font-size:.88rem;font-weight:600;background:var(--surface);transition:border-color .2s}
+.src-chips a:hover{border-color:var(--blue)}
+.src-chips svg{width:13px;height:13px;color:var(--muted)}
+.src-note{margin:10px 0 0;font-size:.84rem;color:var(--muted)}
+.mentor-card{position:relative;overflow:hidden;isolation:isolate;border-radius:24px;padding:clamp(24px,3.4vw,40px);background:var(--night);color:var(--on-night)}
+.mentor-card::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(60% 70% at 0% 0%,color-mix(in srgb,var(--sky) 26%,transparent),transparent 70%),radial-gradient(50% 60% at 100% 100%,color-mix(in srgb,var(--coral) 30%,transparent),transparent 70%)}
+.mentor-card .tag{margin:0;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.mentor-top{display:flex;align-items:center;gap:16px;margin-top:18px}
+.mentor-card h3{margin:0;font-size:1.4rem}
+.mentor-card .role{margin:2px 0 0;color:var(--on-night-muted);font-size:.92rem}
+.mentor-card .body{margin:20px 0 0;color:var(--on-night);font-size:1.05rem;line-height:1.6}
+.co-logo{display:flex;align-items:center;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--on-night) 14%,transparent);color:var(--on-night-muted);font-size:.88rem}
+.co-logo b{color:var(--on-night);font-size:1.05rem;letter-spacing:-.01em}
+
+/* ---------- Team ---------- */
+.team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:48px}
+.member{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line);min-width:0}
+.member.is-mentor{background:transparent;border-style:dashed}
+.avatar{position:relative;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.2rem;letter-spacing:-.02em;color:var(--night);
+  background:conic-gradient(from 210deg,var(--amber),var(--coral),var(--sky),var(--amber))}
+.avatar::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--line)}
+.mentor-card .avatar::after{border-color:color-mix(in srgb,var(--on-night) 20%,transparent)}
+.member h3{margin:0;font-size:1.16rem;letter-spacing:-.01em}
+.member .role{margin:2px 0 0;color:var(--blue);font-weight:600;font-size:.9rem}
+.member dl{margin:0;display:grid;gap:8px;font-size:.88rem}
+.member dl div{display:grid;gap:1px}
+.member dt{color:var(--muted);font-size:.76rem;font-weight:600;letter-spacing:.04em}
+.member dd{margin:0;font-weight:500}
+.legacy{display:flex;gap:14px;align-items:flex-start;margin-top:24px;padding:18px 20px;border-radius:14px;background:var(--surface-2);color:var(--muted)}
+.legacy svg{width:22px;height:22px;flex-shrink:0;color:var(--coral);margin-top:2px}
+.legacy p{margin:0}
+
+/* ---------- Get involved ---------- */
+.inv-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:24px;margin-top:44px;align-items:start}
+.form-card{padding:clamp(22px,3vw,36px);border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0}
+.mode{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:999px;background:var(--surface-2)}
+.mode button{min-height:40px;padding:0 16px;border-radius:999px;border:0;background:none;font:inherit;font-weight:600;font-size:.92rem;color:var(--muted);cursor:pointer;transition:background-color .2s,color .2s}
+.mode button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(14,24,54,.12)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0;margin:0;padding:0;border:0}
+.field.full{grid-column:1/-1}
+.field label,.field legend{font-weight:600;font-size:.9rem;padding:0}
+.field legend{margin-bottom:7px}
+.opt{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:11px 14px;min-height:48px;width:100%;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 21px) 52%,calc(100% - 16px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 18%,transparent)}
+[aria-invalid="true"]{border-color:var(--danger)}
+.err{margin:0;color:var(--danger);font-size:.85rem;font-weight:500}
+.roles-pick{display:flex;flex-wrap:wrap;gap:8px}
+.chk{position:relative;display:inline-flex}
+.chk input{position:absolute;opacity:0;width:100%;height:100%;min-height:0;margin:0;cursor:pointer}
+.chk span{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);font-size:.9rem;font-weight:600;transition:all .2s}
+.chk input:checked+span{background:color-mix(in srgb,var(--blue) 14%,transparent);border-color:var(--blue);color:var(--blue)}
+.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
+.form-card[data-mode="question"] .vol-only{display:none}
+.consent-row{margin-top:18px;display:grid;gap:6px}
+.consent{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;font-size:.92rem;cursor:pointer}
+.consent input{width:20px;height:20px;min-height:0;margin:2px 0 0;padding:0;accent-color:var(--blue)}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:22px}
+.privacy{display:flex;gap:8px;align-items:flex-start;margin:0;color:var(--muted);font-size:.85rem;max-width:34em}
+.privacy svg{width:17px;height:17px;flex-shrink:0;color:var(--green);margin-top:2px}
+.preview-note{margin:16px 0 0;font-size:.8rem;color:var(--muted)}
+.success{text-align:center;padding:28px 8px}
+.success .ok{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--amber),var(--coral));color:var(--night)}
+.success .ok svg{width:30px;height:30px}
+.success h3{margin:0 0 8px;font-size:1.4rem}
+.success p{margin:0 auto 20px;color:var(--muted);max-width:30em}
+.inv-side{display:grid;gap:16px;min-width:0}
+.side-card{padding:24px;border-radius:var(--radius);background:var(--surface-2);min-width:0}
+.side-card h3{margin:0;font-size:1.05rem}
+.roles-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px}
+.roles-list li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:start}
+.roles-list .ico{width:36px;height:36px;border-radius:10px;background:var(--surface);color:var(--blue)}
+.roles-list .ico svg{width:18px;height:18px}
+.roles-list strong{display:block;font-size:.95rem}
+.roles-list span{font-size:.88rem;color:var(--muted)}
+.side-card>p{margin:8px 0 0;color:var(--muted);font-size:.9rem}
+.channels{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.channels li{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border-radius:999px;background:var(--surface);font-size:.86rem;font-weight:600}
+.channels em{font-style:normal;font-weight:500;color:var(--muted);font-size:.78rem}
+
+/* ---------- Footer ---------- */
+.foot{background:var(--night);color:var(--on-night-muted);padding-block:60px 28px;--focus:var(--sky)}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:32px}
+.foot .brand{color:var(--on-night)}
+.foot p{margin:14px 0 0;max-width:30em;font-size:.94rem}
+.foot h2{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--on-night);margin:6px 0 14px;font-weight:700}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.foot a{color:var(--on-night-muted);text-decoration:none;display:inline-block;padding:4px 0}
+.foot a:hover{color:var(--on-night)}
+.foot .sdg{margin-top:20px}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;margin-top:44px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--on-night) 12%,transparent);font-size:.84rem}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,16px);opacity:0;pointer-events:none;
+  max-width:calc(100% - 32px);padding:12px 18px;border-radius:12px;background:var(--fg);color:var(--bg);font-weight:600;font-size:.92rem;box-shadow:var(--shadow);transition:opacity .25s,transform .25s var(--ease)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Scroll reveal: uses scroll-driven animations where supported; elsewhere everything is simply visible */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+  }
+}
+@keyframes rise{from{opacity:0;translate:0 28px}to{opacity:1;translate:0 0}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .nav-links{display:none}
+  .menu-btn{display:grid}
+  .nav-end{margin-left:auto}
+}
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);padding-block:40px 130px;gap:8px}
+  .globe-wrap{width:100%;margin:0 auto;max-width:520px;justify-self:center}
+  .globe-card{position:static;max-width:none;margin:-6% 0 0}
+  .gap-head,.answer,.partner,.inv-grid{grid-template-columns:minmax(0,1fr)}
+  .offers{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rm-grid{grid-template-columns:minmax(0,1fr)}
+  .rm-side{position:static}
+  .res-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .foot-grid>div:first-child{grid-column:1/-1}
+}
+@media (max-width:680px){
+  .nav-cta{display:none}
+  .lang .full{display:none}
+  .lang .short{display:inline}
+  .lang button{padding:0 10px}
+  .stats-card{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .stat{padding:18px 20px}
+  .gap-cols,.mv{grid-template-columns:minmax(0,1fr)}
+  .gap-cols{gap:28px}
+  .res-grid{grid-template-columns:minmax(0,1fr)}
+  .fields{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:520px){
+  .offers,.team-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-ctas .btn{width:100%;white-space:normal;text-align:center}
+  .globe-hint{display:none}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:400px){
+  .nav-row{gap:8px}
+  .nav-end{gap:6px;margin-left:auto}
+  .brand{font-size:1rem;gap:7px}
+  .brand .mark{width:26px;height:26px}
+  .lang button{padding:0 8px;font-size:.8rem}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<div class="sr" id="live" aria-live="polite"></div>
+
+<header class="nav" id="top">
+  <div class="wrap nav-row">
+    <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="pfm" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FFB547"/><stop offset=".55" stop-color="#FF6F59"/><stop offset="1" stop-color="#6EA8FF"/></linearGradient></defs><path d="M4 26.5h24" stroke="currentColor" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/><path d="M5 23C11 22 14 9 25.5 6.5" fill="none" stroke="url(#pfm)" stroke-width="3.2" stroke-linecap="round"/><circle cx="26" cy="6.3" r="3.2" fill="#FFB547"/></svg>
+      <span>Path<b>Forward</b></span>
+    </a>
+    <nav class="nav-links" data-i18n-attr="aria-label:nav.primary">
+      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
+    </nav>
+    <div class="nav-end">
+      <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+        <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+        <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+        <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+        <span class="lang-thumb" aria-hidden="true"></span>
+      </div>
+      <a class="btn btn-sun btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu">
+        <svg class="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="menu-panel" id="menu" hidden>
+    <div class="wrap">
+      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
+      <a class="btn btn-sun" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-dots" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow-pill"><span class="pulse" aria-hidden="true"></span><span data-i18n="hero.eyebrow"></span></p>
+        <h1 id="hero-title" data-i18n-html="hero.title"></h1>
+        <p class="sub" data-i18n="hero.sub"></p>
+        <div class="hero-ctas">
+          <a class="btn btn-sun" href="#roadmap" data-scroll="roadmap"><span data-i18n="hero.cta1"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
+        </div>
+        <ul class="hero-facts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f1"></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f2"></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f3"></span></li>
+        </ul>
+      </div>
+      <div class="globe-wrap">
+        <div class="globe-stage" id="globe" role="img" data-i18n-attr="aria-label:globe.aria">
+          <div class="globe-fallback" aria-hidden="true"></div>
+          <canvas aria-hidden="true"></canvas>
+          <span class="globe-label" data-anchor="cn" aria-hidden="true"><i class="dot-o"></i><span data-i18n="globe.cn"></span></span>
+          <span class="globe-label" data-anchor="vn" aria-hidden="true"><i class="dot-o"></i><span data-i18n="globe.vn"></span></span>
+          <span class="globe-label" data-anchor="us" aria-hidden="true"><i class="dot-d"></i><span data-i18n="globe.us"></span></span>
+          <p class="globe-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7 4 11l4 4M16 7l4 4-4 4M4 11h16"/></svg><span data-i18n="globe.hint"></span></p>
+        </div>
+        <div class="globe-card" aria-hidden="true">
+          <p class="gc-title" data-i18n="globe.card"></p>
+          <p class="legend"><span><i class="dot-o"></i><span data-i18n="globe.from"></span></span><span><i class="dot-d"></i><span data-i18n="globe.to"></span></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="horizon" aria-hidden="true"></div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="wrap">
+      <dl class="stats-card" data-i18n-attr="aria-label:stats.aria">
+        <div class="stat"><dt data-i18n="stats.cl"></dt><dd data-i18n="stats.c"></dd></div>
+        <div class="stat"><dt data-i18n="stats.l"></dt><dd>3</dd></div>
+        <div class="stat"><dt data-i18n="stats.s"></dt><dd>8</dd></div>
+        <div class="stat"><dt data-i18n="stats.f"></dt><dd>2</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- The gap -->
+  <section class="band" id="about" aria-labelledby="gap-title">
+    <div class="wrap">
+      <div class="gap-head">
+        <div>
+          <p class="eyebrow" data-i18n="gap.eyebrow"></p>
+          <h2 id="gap-title" data-i18n-html="gap.title"></h2>
+        </div>
+        <p class="lead" data-i18n="gap.lead"></p>
+      </div>
+      <div class="gap-cols">
+        <div class="gap-item reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div>
+          <h3 data-i18n="gap.1t"></h3><p data-i18n="gap.1b"></p>
+        </div>
+        <div class="gap-item reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+          <h3 data-i18n="gap.2t"></h3><p data-i18n="gap.2b"></p>
+        </div>
+        <div class="gap-item reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <h3 data-i18n="gap.3t"></h3><p data-i18n="gap.3b"></p>
+        </div>
+      </div>
+      <div class="answer reveal">
+        <div>
+          <p class="eyebrow" data-i18n="ans.eyebrow"></p>
+          <h3 data-i18n="ans.title"></h3>
+        </div>
+        <div>
+          <p data-i18n="ans.body"></p>
+          <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & vision, what we offer -->
+  <section class="band tint" id="mission" aria-labelledby="mv-title">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="mv.eyebrow"></p>
+      <h2 id="mv-title" data-i18n="mv.title"></h2>
+      <div class="mv">
+        <div class="mv-item reveal"><p class="mv-label" data-i18n="mv.mLabel"></p><p class="mv-text" data-i18n="mv.m"></p></div>
+        <div class="mv-item reveal"><p class="mv-label" data-i18n="mv.vLabel"></p><p class="mv-text" data-i18n="mv.v"></p></div>
+      </div>
+      <h3 class="offers-title" data-i18n="offer.title"></h3>
+      <div class="offers">
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
+          <h3 data-i18n="offer.1t"></h3><p data-i18n="offer.1b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+          <h3 data-i18n="offer.2t"></h3><p data-i18n="offer.2b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
+          <h3 data-i18n="offer.3t"></h3><p data-i18n="offer.3b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
+          <h3 data-i18n="offer.4t"></h3><p data-i18n="offer.4b"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="band" id="roadmap" aria-labelledby="rm-title">
+    <div class="wrap rm-grid">
+      <div class="rm-side">
+        <p class="eyebrow" data-i18n="rm.eyebrow"></p>
+        <h2 id="rm-title" data-i18n-html="rm.title"></h2>
+        <p class="lead" data-i18n="rm.lead"></p>
+        <div class="grade-pick">
+          <p class="pick-q" id="pick-q" data-i18n="rm.pick"></p>
+          <div class="chips" role="group" aria-labelledby="pick-q">
+            <button class="chip" type="button" data-stage="1" aria-pressed="false" data-i18n="rm.g1"></button>
+            <button class="chip" type="button" data-stage="2" aria-pressed="false" data-i18n="rm.g2"></button>
+            <button class="chip" type="button" data-stage="3" aria-pressed="false" data-i18n="rm.g3"></button>
+          </div>
+          <p class="pick-hint" data-i18n="rm.hint"></p>
+        </div>
+      </div>
+      <ol class="timeline" id="steps"></ol>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="band tint" id="resources" aria-labelledby="res-title">
+    <div class="wrap">
+      <div class="res-top">
+        <div>
+          <p class="eyebrow" data-i18n="res.eyebrow"></p>
+          <h2 id="res-title" data-i18n="res.title"></h2>
+        </div>
+        <p class="lead" data-i18n="res.lead"></p>
+      </div>
+      <div class="res-bar">
+        <div class="chips" role="group" data-i18n-attr="aria-label:res.filter">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true" data-i18n="f.all"></button>
+          <button class="chip" type="button" data-filter="china" aria-pressed="false" data-i18n="f.china"></button>
+          <button class="chip" type="button" data-filter="vietnam" aria-pressed="false" data-i18n="f.vietnam"></button>
+          <button class="chip" type="button" data-filter="english" aria-pressed="false" data-i18n="f.english"></button>
+        </div>
+        <p class="res-count" id="res-count" aria-live="polite"></p>
+      </div>
+      <div class="res-grid" id="res-grid"></div>
+    </div>
+  </section>
+
+  <!-- Partner -->
+  <section class="band" id="partner" aria-labelledby="pt-title">
+    <div class="wrap partner">
+      <div>
+        <p class="eyebrow" data-i18n="pt.eyebrow"></p>
+        <h2 id="pt-title" data-i18n="pt.title"></h2>
+        <p class="lead" data-i18n="pt.body"></p>
+        <p class="src-h" data-i18n="pt.sources"></p>
+        <ul class="src-chips">
+          <li><a href="https://educationusa.state.gov/" target="_blank" rel="noopener noreferrer">EducationUSA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://www.commonapp.org/" target="_blank" rel="noopener noreferrer">Common App<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://www.collegeboard.org/" target="_blank" rel="noopener noreferrer">College Board<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://studyinthestates.dhs.gov/" target="_blank" rel="noopener noreferrer">Study in the States<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://travel.state.gov/" target="_blank" rel="noopener noreferrer">travel.state.gov<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+        </ul>
+        <p class="src-note" data-i18n="pt.sourcesNote"></p>
+      </div>
+      <div class="mentor-card reveal">
+        <p class="tag" data-i18n="pt.mentor"></p>
+        <div class="mentor-top">
+          <div class="avatar" aria-hidden="true">S</div>
+          <div><h3>Sophia</h3><p class="role"><span data-i18n="pt.mentorRole"></span> · <span data-i18n="pt.mentorBase"></span></p></div>
+        </div>
+        <p class="body" data-i18n="pt.mentorBody"></p>
+        <div class="co-logo"><b>Co&amp;Learn</b><span data-i18n="pt.coDesc"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="band tint" id="team" aria-labelledby="team-title">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="team.eyebrow"></p>
+      <h2 id="team-title" data-i18n-html="team.title"></h2>
+      <p class="lead" data-i18n="team.lead"></p>
+      <div class="team-grid">
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">CL</div>
+          <div><h3>Cici Liu</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
+          </dl>
+        </article>
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">LD</div>
+          <div><h3>Lam Do</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.vn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>Tiếng Việt · English</dd></div>
+          </dl>
+        </article>
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">NG</div>
+          <div><h3>Nicki Gong</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
+          </dl>
+        </article>
+        <article class="member is-mentor reveal">
+          <div class="avatar" aria-hidden="true">S</div>
+          <div><h3>Sophia</h3><p class="role" data-i18n="team.mentor"></p></div>
+          <dl>
+            <div><dt data-i18n="team.orgL"></dt><dd data-i18n="pt.mentorRole"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+          </dl>
+        </article>
+      </div>
+      <div class="legacy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+        <p data-i18n="team.legacy"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get involved -->
+  <section class="band" id="involved" aria-labelledby="inv-title">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="inv.eyebrow"></p>
+      <h2 id="inv-title" data-i18n="inv.title"></h2>
+      <p class="lead" data-i18n="inv.lead"></p>
+      <div class="inv-grid">
+        <form class="form-card" id="ask" novalidate data-mode="question">
+          <div class="mode" role="group" data-i18n-attr="aria-label:inv.modeLabel">
+            <button type="button" data-mode="question" aria-pressed="true" data-i18n="inv.modeQ"></button>
+            <button type="button" data-mode="volunteer" aria-pressed="false" data-i18n="inv.modeV"></button>
+          </div>
+          <div class="form-body" id="form-body">
+            <div class="fields">
+              <div class="field"><label for="f-name"><span data-i18n="f.name"></span> <span class="opt" data-i18n="f.opt"></span></label><input id="f-name" name="name" autocomplete="given-name"></div>
+              <div class="field"><label for="f-grade" data-i18n="f.grade"></label><select id="f-grade" name="grade"></select></div>
+              <div class="field"><label for="f-country" data-i18n="f.country"></label><select id="f-country" name="country"></select></div>
+              <div class="field"><label for="f-reply" data-i18n="f.reply"></label><select id="f-reply" name="reply"></select></div>
+              <fieldset class="field full vol-only">
+                <legend data-i18n="f.roles"></legend>
+                <div class="roles-pick">
+                  <label class="chk"><input type="checkbox" id="r-translate" name="roles" value="translate"><span data-i18n="r.translate"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-write" name="roles" value="write"><span data-i18n="r.write"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-mentor" name="roles" value="mentor"><span data-i18n="r.mentor"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-outreach" name="roles" value="outreach"><span data-i18n="r.outreach"></span></label>
+                </div>
+              </fieldset>
+              <div class="field full">
+                <label for="f-msg" id="f-msg-label"></label>
+                <textarea id="f-msg" name="message" aria-describedby="f-msg-err"></textarea>
+                <p class="err" id="f-msg-err" hidden></p>
+              </div>
+              <div class="field full">
+                <label for="f-contact" data-i18n="f.contact"></label>
+                <input id="f-contact" name="contact" autocomplete="email" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err">
+                <p class="err" id="f-contact-err" hidden></p>
+              </div>
+            </div>
+            <div class="consent-row">
+              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-describedby="f-consent-err"><span data-i18n="f.consent"></span></label>
+              <p class="err" id="f-consent-err" hidden></p>
+            </div>
+            <div class="form-foot">
+              <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="f.privacy"></span></p>
+              <button class="btn btn-primary" type="submit"><span id="f-submit-label"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            </div>
+            <p class="preview-note" data-i18n="f.preview"></p>
+          </div>
+          <div class="success" id="f-success" hidden>
+            <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h3 id="f-ok-title" tabindex="-1" data-i18n="f.okTitle"></h3>
+            <p data-i18n="f.okBody"></p>
+            <button class="btn btn-primary btn-sm" type="button" id="f-again" data-i18n="f.again"></button>
+          </div>
+        </form>
+        <aside class="inv-side">
+          <div class="side-card">
+            <h3 data-i18n="side.roles"></h3>
+            <ul class="roles-list">
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div><div><strong data-i18n="r.translate"></strong><span data-i18n="r.translateD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div><strong data-i18n="r.write"></strong><span data-i18n="r.writeD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div><div><strong data-i18n="r.mentor"></strong><span data-i18n="r.mentorD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><div><strong data-i18n="r.outreach"></strong><span data-i18n="r.outreachD"></span></div></li>
+            </ul>
+          </div>
+          <div class="side-card">
+            <h3 data-i18n="side.contact"></h3>
+            <p data-i18n="side.contactBody"></p>
+            <ul class="channels">
+              <li>Email <em data-i18n="side.soon"></em></li>
+              <li>WeChat <em data-i18n="side.soon"></em></li>
+              <li>Zalo <em data-i18n="side.soon"></em></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+          <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 26.5h24" stroke="currentColor" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/><path d="M5 23C11 22 14 9 25.5 6.5" fill="none" stroke="url(#pfm)" stroke-width="3.2" stroke-linecap="round"/><circle cx="26" cy="6.3" r="3.2" fill="#FFB547"/></svg>
+          <span>Path<b>Forward</b></span>
+        </a>
+        <p data-i18n="foot.tag"></p>
+        <p data-i18n="foot.np"></p>
+        <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
+      </div>
+      <div>
+        <h2 data-i18n="foot.explore"></h2>
+        <ul>
+          <li><a href="#about" data-scroll="about" data-i18n="nav.about"></a></li>
+          <li><a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a></li>
+          <li><a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a></li>
+          <li><a href="#team" data-scroll="team" data-i18n="nav.team"></a></li>
+          <li><a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 data-i18n="foot.lang"></h2>
+        <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+          <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+          <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+          <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+          <span class="lang-thumb" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot.copy"></span>
+      <span><span data-i18n="foot.preview"></span> · <a href="#top" data-scroll="top" data-i18n="foot.top"></a></span>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+var T = window.PF_T = {};
+T.en = {
+"skip":"Skip to content",
+"nav.home":"PathForward home","nav.primary":"Main","nav.about":"About","nav.roadmap":"Roadmap","nav.resources":"Resources","nav.team":"Team","nav.involved":"Get involved",
+"nav.cta":"Get free guidance","nav.menu":"Open menu","nav.lang":"Language",
+"hero.eyebrow":"Student-run nonprofit · 100% free",
+"hero.title":"Your path abroad shouldn't depend on what you can <span class='em'>afford</span>.",
+"hero.sub":"PathForward is a nonprofit run by students. We give students in China and Vietnam free, reliable guidance on studying abroad, from the first English test to the first day on campus.",
+"hero.cta1":"Start your roadmap","hero.cta2":"Ask us a question",
+"hero.f1":"Free for every student","hero.f2":"English · 中文 · Tiếng Việt","hero.f3":"Run by students studying in the U.S.",
+"globe.aria":"Animated globe with routes from China and Vietnam to colleges across the United States",
+"globe.cn":"China","globe.vn":"Vietnam","globe.us":"United States",
+"globe.card":"Every arc is one student's path.","globe.from":"Where students start","globe.to":"Where they're headed","globe.hint":"Drag to turn the globe",
+"stats.aria":"PathForward at a glance","stats.c":"$0","stats.cl":"Cost to students","stats.l":"Languages","stats.s":"Steps on the roadmap","stats.f":"Focus countries",
+"gap.eyebrow":"The problem","gap.title":"The <span class='hl'>information gap</span> is the real barrier.",
+"gap.lead":"Every year, capable students in China and Vietnam give up on studying abroad because no one showed them how the process works.",
+"gap.1t":"Agencies charge for the basics","gap.1b":"Many families pay an agency just to learn the steps. Students who can't pay often stop there.",
+"gap.2t":"Advice online is mixed","gap.2b":"Social media posts can be outdated, wrong, or written to sell something. It's hard to know what to trust.",
+"gap.3t":"No one nearby has done it","gap.3b":"If nobody at your school has applied abroad, it's hard to even know which questions to ask.",
+"ans.eyebrow":"Our answer","ans.title":"Free, checked, and in your language.",
+"ans.body":"We collect the questions students actually ask, check every answer against official sources like EducationUSA, and share it for free in English, Chinese and Vietnamese.",
+"sdg":"Supports UN Sustainable Development Goal 4: Quality Education",
+"mv.eyebrow":"Why we exist","mv.title":"What we're working toward",
+"mv.mLabel":"Mission","mv.m":"Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.",
+"mv.vLabel":"Vision","mv.v":"We envision a future where a student's access to educational opportunities is not limited by location, financial resources, or lack of information.",
+"offer.title":"What you get from us",
+"offer.1t":"Step-by-step guides","offer.1b":"Free guides for every stage of applying, checked each year against official sources.",
+"offer.2t":"Advice from students in the U.S.","offer.2b":"Our team studies in the U.S. now. Ask us about classes, campus life and what we wish we'd known.",
+"offer.3t":"English learning with Co&Learn","offer.3b":"Our partner in China offers English learning resources, so you can keep improving after our guides.",
+"offer.4t":"Checked opportunities","offer.4b":"Scholarships, summer programs and competitions in one place, each one checked before we share it.",
+"rm.eyebrow":"Roadmap","rm.title":"Eight steps from first idea to <span class='hl'>first day on campus</span>.",
+"rm.lead":"Pick your grade to see where you are. Open any step for a checklist and the official source.",
+"rm.pick":"Which grade are you in?","rm.g1":"Grade 9–10","rm.g2":"Grade 11","rm.g3":"Grade 12",
+"rm.hint":"We'll highlight the steps for your grade. Tap again to clear.",
+"rm.here":"You are here","rm.checklist":"Checklist","rm.source":"Official source",
+"res.eyebrow":"Resources","res.title":"Free resources we've checked.",
+"res.lead":"Guides we write, official sources we trust, and opportunities we've looked into. Filter by where you study now.",
+"res.filter":"Filter resources","f.all":"All","f.china":"China","f.vietnam":"Vietnam","f.english":"English learning",
+"res.count":"{n} resources","type.guide":"Guide","type.official":"Official","type.partner":"Partner","type.opportunity":"Opportunity",
+"res.visit":"Visit site","res.soon":"Coming soon","res.langs":"Languages","res.toast":"This one is coming soon on the live site.",
+"pt.eyebrow":"Partner","pt.title":"We work with Co&Learn",
+"pt.body":"Co&Learn is a nonprofit in China that offers English learning resources. We help students understand the path abroad, and Co&Learn gives them a place to keep building their English.",
+"pt.mentor":"Our mentor","pt.mentorRole":"Co-Founder, Co&Learn","pt.mentorBase":"China",
+"pt.mentorBody":"Sophia helps us organize information and explain each topic clearly, so every guide is easy to follow.",
+"pt.coDesc":"Nonprofit · English learning · China",
+"pt.sources":"Official sources we check against","pt.sourcesNote":"We cite these sources. We are not affiliated with them.",
+"team.eyebrow":"Team","team.title":"Run by students who <span class='hl'>made the move</span>.",
+"team.lead":"We are three seniors at Maharishi School in Iowa, from China and Vietnam. We remember how confusing the process was, so we're writing the guide we wish we'd had.",
+"team.role":"Co-founder","team.schoolL":"School","team.school":"Maharishi School · Class of 2027","team.fromL":"From","team.cn":"China","team.vn":"Vietnam","team.ask":"Ask me in","team.orgL":"Organization",
+"team.mentor":"Mentor","team.legacy":"We'll graduate, and PathForward will keep going. We're training new student volunteers to keep every guide up to date.",
+"inv.eyebrow":"Get involved","inv.title":"Ask a question or join the team.",
+"inv.lead":"Every question helps us improve the guides. A team member will reply in the language you choose.",
+"inv.modeLabel":"What would you like to do?","inv.modeQ":"I have a question","inv.modeV":"I want to volunteer",
+"f.name":"First name","f.opt":"(optional)","f.grade":"Grade","f.choose":"Choose…",
+"f.g9":"Grade 9","f.g10":"Grade 10","f.g11":"Grade 11","f.g12":"Grade 12","f.gOther":"Other",
+"f.country":"Where do you study now?","f.cCN":"China","f.cVN":"Vietnam","f.cOther":"Somewhere else",
+"f.reply":"Reply in","f.msgQ":"Your question","f.msgV":"How would you like to help?",
+"f.phQ":"For example: Which English test should I take?","f.phV":"For example: I can translate guides into Vietnamese.",
+"f.contact":"Email, WeChat or Zalo","f.phContact":"So we can reply to you",
+"f.roles":"Roles you're interested in",
+"f.consent":"I'm 13 or older, or a parent or guardian has agreed to this.",
+"f.privacy":"We only use your details to reply. We never sell or share them.",
+"f.sendQ":"Send question","f.sendV":"Send application",
+"f.errMsg":"Please write your question.","f.errMsgV":"Please tell us how you'd like to help.","f.errContact":"Add an email, WeChat or Zalo so we can reply.","f.errConsent":"Please check this box to continue.",
+"f.okTitle":"Got it, thank you!","f.okBody":"This is a preview of the site, so nothing was sent. On the live site, a team member will reply to you.","f.again":"Write another",
+"f.preview":"Preview version: this form doesn't send anything yet.",
+"r.translate":"Translator","r.translateD":"Turn guides into Chinese or Vietnamese.",
+"r.write":"Guide writer","r.writeD":"Research a topic and explain it clearly.",
+"r.mentor":"Peer mentor","r.mentorD":"Answer questions from younger students.",
+"r.outreach":"Outreach","r.outreachD":"Share PathForward with schools and communities.",
+"side.roles":"Volunteer roles","side.contact":"Other ways to reach us","side.contactBody":"We're setting up these channels now.","side.soon":"coming soon",
+"foot.tag":"Free, reliable study-abroad guidance for students in China and Vietnam.",
+"foot.np":"A student-run nonprofit project. We never charge students and never sell data.",
+"foot.explore":"Explore","foot.lang":"Language","foot.top":"Back to top","foot.copy":"© 2026 PathForward. Free, always.","foot.preview":"Website preview",
+"a11y.lang":"Language changed to English"
+};
+T.zh = {
+"skip":"跳到正文",
+"nav.home":"PathForward 首页","nav.primary":"主导航","nav.about":"关于我们","nav.roadmap":"申请路线","nav.resources":"资源库","nav.team":"团队","nav.involved":"加入我们",
+"nav.cta":"免费咨询","nav.menu":"打开菜单","nav.lang":"语言",
+"hero.eyebrow":"学生运营 · 非营利 · 完全免费",
+"hero.title":"<span class='nw'>出国留学这条路，</span><span class='nw'>不该取决于你</span><span class='nw'><span class='em'>付得起多少</span>。</span>",
+"hero.sub":"PathForward 是一个由学生运营的非营利教育组织。我们为中国和越南的学生提供免费、可靠的留学指导，从第一次英语考试，一直到走进大学校园的第一天。",
+"hero.cta1":"查看申请路线","hero.cta2":"向我们提问",
+"hero.f1":"对每位学生免费","hero.f2":"中文 · English · Tiếng Việt","hero.f3":"由在美留学生运营",
+"globe.aria":"动态地球：从中国和越南出发、连向美国各地大学的航线",
+"globe.cn":"中国","globe.vn":"越南","globe.us":"美国",
+"globe.card":"每一条弧线，都是一位学生的路。","globe.from":"出发地","globe.to":"目的地","globe.hint":"拖动可旋转地球",
+"stats.aria":"PathForward 概览","stats.c":"¥0","stats.cl":"学生需支付的费用","stats.l":"种语言","stats.s":"步申请路线","stats.f":"个重点国家",
+"gap.eyebrow":"问题所在","gap.title":"真正的门槛，是<span class='hl'>信息差</span>。",
+"gap.lead":"每年都有许多有能力的中国和越南学生放弃留学，只因为没有人告诉他们申请流程是怎样的。",
+"gap.1t":"基础信息也要花钱买","gap.1b":"很多家庭花高价请中介，只为弄清申请步骤。付不起的学生，往往就此止步。",
+"gap.2t":"网上信息真假难辨","gap.2b":"社交媒体上的帖子可能过时、出错，或者只是广告。很难判断该相信什么。",
+"gap.3t":"身边没人走过这条路","gap.3b":"如果你的学校里没人申请过国外大学，你甚至不知道该问什么问题。",
+"ans.eyebrow":"我们的做法","ans.title":"免费、经过核实、用你的语言。",
+"ans.body":"我们收集学生真正关心的问题，对照 EducationUSA 等官方来源逐一核实，再用中文、英文和越南语免费分享。",
+"sdg":"支持联合国可持续发展目标 4：优质教育",
+"mv.eyebrow":"我们为何存在","mv.title":"我们努力的方向",
+"mv.mLabel":"使命","mv.m":"我们的使命是缩小教育信息差，为学生连接免费、可靠的指导、国际教育资源，以及跨越国界的学习机会。",
+"mv.vLabel":"愿景","mv.v":"我们希望在未来，学生获得教育机会，不再受所在地区、经济条件或信息匮乏的限制。",
+"offer.title":"我们能为你做什么",
+"offer.1t":"分步指南","offer.1b":"覆盖申请每个阶段的免费指南，每年对照官方来源更新。",
+"offer.2t":"在美学生的真实建议","offer.2b":"我们的团队正在美国读书。课程、校园生活、我们希望早点知道的事，都可以问我们。",
+"offer.3t":"与 Co&Learn 一起学英语","offer.3b":"我们在中国的合作伙伴提供英语学习资源，看完指南后你可以继续提升。",
+"offer.4t":"核实过的机会","offer.4b":"奖学金、夏校和竞赛信息集中在一处，每一条都在分享前核实过。",
+"rm.eyebrow":"申请路线图","rm.title":"从萌生想法到<span class='hl'>走进校园</span>，一共八步。",
+"rm.lead":"选择你的年级，看看自己处在哪一步。点开任意步骤，查看清单和官方来源。",
+"rm.pick":"你现在读几年级？","rm.g1":"初三–高一","rm.g2":"高二","rm.g3":"高三",
+"rm.hint":"我们会标出你这个年级该做的步骤。再点一次可取消。",
+"rm.here":"你在这里","rm.checklist":"清单","rm.source":"官方来源",
+"res.eyebrow":"资源库","res.title":"经过核实的免费资源。",
+"res.lead":"我们自己写的指南、值得信赖的官方来源，以及我们核实过的机会。可以按你所在的国家筛选。",
+"res.filter":"筛选资源","f.all":"全部","f.china":"中国","f.vietnam":"越南","f.english":"英语学习",
+"res.count":"共 {n} 项","type.guide":"指南","type.official":"官方","type.partner":"合作伙伴","type.opportunity":"机会",
+"res.visit":"访问官网","res.soon":"即将上线","res.langs":"语言","res.toast":"这项内容将在正式版网站上线。",
+"pt.eyebrow":"合作伙伴","pt.title":"我们与 Co&Learn 合作",
+"pt.body":"Co&Learn 是一家位于中国的非营利组织，提供英语学习资源。我们帮助学生看清留学之路，Co&Learn 则让他们有地方继续提升英语。",
+"pt.mentor":"我们的导师","pt.mentorRole":"Co&Learn 联合创始人","pt.mentorBase":"中国",
+"pt.mentorBody":"Sophia 帮助我们梳理信息，把每个主题讲清楚，让每一份指南都容易看懂。",
+"pt.coDesc":"非营利组织 · 英语学习 · 中国",
+"pt.sources":"我们对照核实的官方来源","pt.sourcesNote":"我们引用这些来源，但与它们没有隶属关系。",
+"team.eyebrow":"团队","team.title":"由<span class='hl'>走过这条路</span>的学生运营。",
+"team.lead":"我们是美国爱荷华州 Maharishi School 的三名高三学生，来自中国和越南。我们还记得申请过程有多让人迷茫，所以想写一份自己当初最需要的指南。",
+"team.role":"联合创始人","team.schoolL":"学校","team.school":"Maharishi School · 2027 届","team.fromL":"来自","team.cn":"中国","team.vn":"越南","team.ask":"可以用这些语言问我","team.orgL":"机构",
+"team.mentor":"导师","team.legacy":"我们终将毕业，但 PathForward 会继续走下去。我们正在培训新一批学生志愿者，持续更新每一份指南。",
+"inv.eyebrow":"参与进来","inv.title":"提个问题，或者加入我们。",
+"inv.lead":"每个问题都会帮助我们改进指南。团队成员会用你选择的语言回复。",
+"inv.modeLabel":"你想做什么？","inv.modeQ":"我有问题","inv.modeV":"我想做志愿者",
+"f.name":"名字","f.opt":"（选填）","f.grade":"年级","f.choose":"请选择",
+"f.g9":"初三","f.g10":"高一","f.g11":"高二","f.g12":"高三","f.gOther":"其他",
+"f.country":"你现在在哪里读书？","f.cCN":"中国","f.cVN":"越南","f.cOther":"其他地区",
+"f.reply":"回复语言","f.msgQ":"你的问题","f.msgV":"你想怎样帮忙？",
+"f.phQ":"例如：我应该考托福还是雅思？","f.phV":"例如：我可以把指南翻译成中文。",
+"f.contact":"邮箱或微信号","f.phContact":"方便我们回复你",
+"f.roles":"感兴趣的岗位",
+"f.consent":"我已年满 13 岁，或已获得父母/监护人同意。",
+"f.privacy":"你的信息只用于回复你，我们绝不出售或分享。",
+"f.sendQ":"发送问题","f.sendV":"提交申请",
+"f.errMsg":"请填写你的问题。","f.errMsgV":"请告诉我们你想怎样帮忙。","f.errContact":"请留下邮箱或微信号，方便我们回复。","f.errConsent":"请勾选此项后继续。",
+"f.okTitle":"收到了，谢谢你！","f.okBody":"这是网站预览版，所以内容没有真正发送。正式上线后，团队成员会回复你。","f.again":"再写一条",
+"f.preview":"预览版：此表单暂不会发送任何内容。",
+"r.translate":"翻译","r.translateD":"把指南翻译成中文或越南语。",
+"r.write":"指南撰写","r.writeD":"研究一个主题，并把它讲清楚。",
+"r.mentor":"朋辈导师","r.mentorD":"解答低年级同学的问题。",
+"r.outreach":"推广","r.outreachD":"把 PathForward 介绍给学校和社区。",
+"side.roles":"志愿者岗位","side.contact":"其他联系方式","side.contactBody":"这些渠道正在筹备中。","side.soon":"即将公布",
+"foot.tag":"为中国和越南学生提供免费、可靠的留学指导。",
+"foot.np":"学生运营的非营利项目。我们从不向学生收费，也绝不出售数据。",
+"foot.explore":"浏览","foot.lang":"语言","foot.top":"回到顶部","foot.copy":"© 2026 PathForward · 永远免费","foot.preview":"网站预览版",
+"a11y.lang":"语言已切换为中文"
+};
+T.vi = {
+"skip":"Bỏ qua đến nội dung chính",
+"nav.home":"Trang chủ PathForward","nav.primary":"Điều hướng chính","nav.about":"Giới thiệu","nav.roadmap":"Lộ trình","nav.resources":"Tài nguyên","nav.team":"Đội ngũ","nav.involved":"Tham gia",
+"nav.cta":"Nhận tư vấn miễn phí","nav.menu":"Mở menu","nav.lang":"Ngôn ngữ",
+"hero.eyebrow":"Phi lợi nhuận · Do học sinh điều hành · Miễn phí 100%",
+"hero.title":"Con đường du học không nên phụ thuộc vào việc bạn có <span class='em'>đủ tiền</span> hay không.",
+"hero.sub":"PathForward là tổ chức giáo dục phi lợi nhuận do học sinh điều hành. Chúng tôi mang đến cho học sinh Việt Nam và Trung Quốc những hướng dẫn du học miễn phí, đáng tin cậy, từ bài thi tiếng Anh đầu tiên đến ngày đầu tiên đặt chân vào trường.",
+"hero.cta1":"Bắt đầu lộ trình","hero.cta2":"Đặt câu hỏi",
+"hero.f1":"Miễn phí cho mọi học sinh","hero.f2":"Tiếng Việt · English · 中文","hero.f3":"Do du học sinh tại Mỹ điều hành",
+"globe.aria":"Quả địa cầu động với các đường bay từ Việt Nam và Trung Quốc đến các trường đại học trên khắp nước Mỹ",
+"globe.cn":"Trung Quốc","globe.vn":"Việt Nam","globe.us":"Hoa Kỳ",
+"globe.card":"Mỗi đường cung là hành trình của một học sinh.","globe.from":"Nơi bắt đầu","globe.to":"Nơi đến","globe.hint":"Kéo để xoay địa cầu",
+"stats.aria":"PathForward qua vài con số","stats.c":"0₫","stats.cl":"Chi phí cho học sinh","stats.l":"Ngôn ngữ","stats.s":"Bước trong lộ trình","stats.f":"Quốc gia trọng tâm",
+"gap.eyebrow":"Vấn đề","gap.title":"Rào cản thật sự là <span class='hl'>khoảng cách thông tin</span>.",
+"gap.lead":"Mỗi năm, nhiều học sinh giỏi ở Việt Nam và Trung Quốc từ bỏ giấc mơ du học chỉ vì không ai chỉ cho các bạn quy trình diễn ra như thế nào.",
+"gap.1t":"Phải trả tiền cho cả thông tin cơ bản","gap.1b":"Nhiều gia đình trả phí cao cho trung tâm tư vấn chỉ để biết các bước cần làm. Học sinh không đủ khả năng chi trả thường dừng lại ở đó.",
+"gap.2t":"Thông tin trên mạng lẫn lộn","gap.2b":"Bài đăng trên mạng xã hội có thể đã cũ, sai hoặc chỉ nhằm quảng cáo. Thật khó biết nên tin vào đâu.",
+"gap.3t":"Không ai xung quanh từng trải qua","gap.3b":"Nếu chưa ai ở trường bạn từng nộp hồ sơ du học, bạn thậm chí không biết nên hỏi gì.",
+"ans.eyebrow":"Cách chúng tôi giải quyết","ans.title":"Miễn phí, được kiểm chứng và bằng ngôn ngữ của bạn.",
+"ans.body":"Chúng tôi tổng hợp những câu hỏi học sinh thực sự quan tâm, đối chiếu từng câu trả lời với các nguồn chính thức như EducationUSA và chia sẻ miễn phí bằng tiếng Việt, tiếng Anh và tiếng Trung.",
+"sdg":"Góp phần vào Mục tiêu Phát triển Bền vững số 4 của Liên Hợp Quốc: Giáo dục chất lượng",
+"mv.eyebrow":"Vì sao có PathForward","mv.title":"Điều chúng tôi hướng tới",
+"mv.mLabel":"Sứ mệnh","mv.m":"Sứ mệnh của chúng tôi là thu hẹp khoảng cách thông tin giáo dục bằng cách kết nối học sinh với những hướng dẫn miễn phí, đáng tin cậy, các nguồn tài nguyên giáo dục quốc tế và cơ hội học tập xuyên quốc gia.",
+"mv.vLabel":"Tầm nhìn","mv.v":"Chúng tôi hướng tới một tương lai nơi cơ hội học tập của mỗi học sinh không bị giới hạn bởi nơi sinh sống, điều kiện tài chính hay sự thiếu hụt thông tin.",
+"offer.title":"Những gì bạn nhận được",
+"offer.1t":"Hướng dẫn từng bước","offer.1b":"Hướng dẫn miễn phí cho mọi giai đoạn nộp hồ sơ, được cập nhật hằng năm theo nguồn chính thức.",
+"offer.2t":"Lời khuyên từ học sinh đang học tại Mỹ","offer.2b":"Đội ngũ của chúng tôi đang học tập tại Mỹ. Hãy hỏi về lớp học, cuộc sống ở trường và những điều chúng tôi ước mình biết sớm hơn.",
+"offer.3t":"Học tiếng Anh cùng Co&Learn","offer.3b":"Đối tác của chúng tôi tại Trung Quốc cung cấp tài nguyên học tiếng Anh để bạn tiếp tục tiến bộ sau khi đọc hướng dẫn.",
+"offer.4t":"Cơ hội đã được kiểm chứng","offer.4b":"Học bổng, chương trình hè và các cuộc thi được tổng hợp tại một nơi, mỗi cơ hội đều được kiểm tra trước khi chia sẻ.",
+"rm.eyebrow":"Lộ trình","rm.title":"Tám bước từ ý tưởng đầu tiên đến <span class='hl'>ngày đầu tiên ở trường</span>.",
+"rm.lead":"Chọn lớp của bạn để biết mình đang ở đâu. Mở từng bước để xem danh sách việc cần làm và nguồn chính thức.",
+"rm.pick":"Bạn đang học lớp mấy?","rm.g1":"Lớp 9–10","rm.g2":"Lớp 11","rm.g3":"Lớp 12",
+"rm.hint":"Chúng tôi sẽ đánh dấu các bước dành cho lớp của bạn. Chạm lần nữa để bỏ chọn.",
+"rm.here":"Bạn đang ở đây","rm.checklist":"Việc cần làm","rm.source":"Nguồn chính thức",
+"res.eyebrow":"Tài nguyên","res.title":"Tài nguyên miễn phí đã được kiểm chứng.",
+"res.lead":"Hướng dẫn do chúng tôi biên soạn, nguồn chính thức đáng tin cậy và những cơ hội đã được tìm hiểu kỹ. Lọc theo nơi bạn đang học.",
+"res.filter":"Lọc tài nguyên","f.all":"Tất cả","f.china":"Trung Quốc","f.vietnam":"Việt Nam","f.english":"Học tiếng Anh",
+"res.count":"{n} tài nguyên","type.guide":"Hướng dẫn","type.official":"Chính thức","type.partner":"Đối tác","type.opportunity":"Cơ hội",
+"res.visit":"Truy cập trang","res.soon":"Sắp ra mắt","res.langs":"Ngôn ngữ","res.toast":"Nội dung này sẽ có trên trang chính thức.",
+"pt.eyebrow":"Đối tác","pt.title":"Chúng tôi đồng hành cùng Co&Learn",
+"pt.body":"Co&Learn là một tổ chức phi lợi nhuận tại Trung Quốc, cung cấp tài nguyên học tiếng Anh. Chúng tôi giúp học sinh hiểu rõ con đường du học, còn Co&Learn giúp các bạn tiếp tục nâng cao tiếng Anh.",
+"pt.mentor":"Người hướng dẫn","pt.mentorRole":"Đồng sáng lập Co&Learn","pt.mentorBase":"Trung Quốc",
+"pt.mentorBody":"Sophia giúp chúng tôi sắp xếp thông tin và giải thích từng chủ đề thật rõ ràng, để mọi hướng dẫn đều dễ hiểu.",
+"pt.coDesc":"Phi lợi nhuận · Học tiếng Anh · Trung Quốc",
+"pt.sources":"Các nguồn chính thức chúng tôi đối chiếu","pt.sourcesNote":"Chúng tôi trích dẫn các nguồn này nhưng không liên kết với họ.",
+"team.eyebrow":"Đội ngũ","team.title":"Được điều hành bởi những học sinh <span class='hl'>đã đi trên con đường này</span>.",
+"team.lead":"Chúng tôi là ba học sinh lớp 12 tại Maharishi School (bang Iowa, Mỹ), đến từ Việt Nam và Trung Quốc. Chúng tôi vẫn nhớ quá trình này từng rối rắm thế nào, nên muốn viết cuốn cẩm nang mà chính mình từng ước có.",
+"team.role":"Đồng sáng lập","team.schoolL":"Trường","team.school":"Maharishi School · Khóa 2027","team.fromL":"Đến từ","team.cn":"Trung Quốc","team.vn":"Việt Nam","team.ask":"Có thể hỏi bằng","team.orgL":"Tổ chức",
+"team.mentor":"Người hướng dẫn","team.legacy":"Chúng tôi rồi sẽ tốt nghiệp, nhưng PathForward sẽ tiếp tục. Chúng tôi đang đào tạo các tình nguyện viên mới để mọi hướng dẫn luôn được cập nhật.",
+"inv.eyebrow":"Tham gia","inv.title":"Đặt câu hỏi hoặc tham gia cùng chúng tôi.",
+"inv.lead":"Mỗi câu hỏi đều giúp chúng tôi hoàn thiện hướng dẫn. Thành viên trong nhóm sẽ trả lời bằng ngôn ngữ bạn chọn.",
+"inv.modeLabel":"Bạn muốn làm gì?","inv.modeQ":"Mình có câu hỏi","inv.modeV":"Mình muốn làm tình nguyện viên",
+"f.name":"Tên","f.opt":"(không bắt buộc)","f.grade":"Lớp","f.choose":"Chọn…",
+"f.g9":"Lớp 9","f.g10":"Lớp 10","f.g11":"Lớp 11","f.g12":"Lớp 12","f.gOther":"Khác",
+"f.country":"Bạn đang học ở đâu?","f.cCN":"Trung Quốc","f.cVN":"Việt Nam","f.cOther":"Nơi khác",
+"f.reply":"Trả lời bằng","f.msgQ":"Câu hỏi của bạn","f.msgV":"Bạn muốn giúp như thế nào?",
+"f.phQ":"Ví dụ: Mình nên thi IELTS hay TOEFL?","f.phV":"Ví dụ: Mình có thể dịch hướng dẫn sang tiếng Việt.",
+"f.contact":"Email hoặc số Zalo","f.phContact":"Để chúng tôi trả lời bạn",
+"f.roles":"Vị trí bạn quan tâm",
+"f.consent":"Mình từ 13 tuổi trở lên, hoặc đã được cha mẹ/người giám hộ đồng ý.",
+"f.privacy":"Thông tin của bạn chỉ dùng để trả lời. Chúng tôi không bao giờ bán hay chia sẻ.",
+"f.sendQ":"Gửi câu hỏi","f.sendV":"Gửi đăng ký",
+"f.errMsg":"Vui lòng nhập câu hỏi của bạn.","f.errMsgV":"Vui lòng cho chúng tôi biết bạn muốn giúp như thế nào.","f.errContact":"Vui lòng để lại email hoặc số Zalo để chúng tôi trả lời.","f.errConsent":"Vui lòng đánh dấu ô này để tiếp tục.",
+"f.okTitle":"Đã nhận, cảm ơn bạn!","f.okBody":"Đây là bản xem trước của trang web nên chưa có gì được gửi đi. Khi trang chính thức hoạt động, thành viên trong nhóm sẽ trả lời bạn.","f.again":"Viết câu khác",
+"f.preview":"Bản xem trước: biểu mẫu này chưa gửi đi bất kỳ thông tin nào.",
+"r.translate":"Dịch thuật","r.translateD":"Dịch hướng dẫn sang tiếng Việt hoặc tiếng Trung.",
+"r.write":"Viết hướng dẫn","r.writeD":"Tìm hiểu một chủ đề và giải thích thật dễ hiểu.",
+"r.mentor":"Cố vấn đồng trang lứa","r.mentorD":"Giải đáp thắc mắc cho các bạn nhỏ tuổi hơn.",
+"r.outreach":"Lan tỏa","r.outreachD":"Giới thiệu PathForward đến trường học và cộng đồng.",
+"side.roles":"Vị trí tình nguyện","side.contact":"Cách liên hệ khác","side.contactBody":"Chúng tôi đang thiết lập các kênh này.","side.soon":"sắp cập nhật",
+"foot.tag":"Hướng dẫn du học miễn phí, đáng tin cậy cho học sinh Việt Nam và Trung Quốc.",
+"foot.np":"Dự án phi lợi nhuận do học sinh điều hành. Chúng tôi không bao giờ thu phí học sinh và không bao giờ bán dữ liệu.",
+"foot.explore":"Khám phá","foot.lang":"Ngôn ngữ","foot.top":"Lên đầu trang","foot.copy":"© 2026 PathForward. Luôn miễn phí.","foot.preview":"Bản xem trước",
+"a11y.lang":"Đã chuyển sang tiếng Việt"
+};
+var EDUSA = {name:"EducationUSA", url:"https://educationusa.state.gov/"};
+var STEPS = window.PF_STEPS = [
+{stages:[1], src:EDUSA,
+ en:{when:"Grade 9–10", title:"Explore your options", desc:"Learn how U.S. colleges differ: research universities, liberal arts colleges and community colleges. Think about what you want to study and what kind of place fits you.", checks:["Compare the main types of U.S. colleges","Talk with your family about goals and budget","Write down subjects and activities you enjoy"]},
+ zh:{when:"初三–高一", title:"了解你的选择", desc:"了解美国大学的不同类型：研究型大学、文理学院和社区学院。想清楚你想学什么、适合什么样的环境。", checks:["比较美国大学的主要类型","和家人聊聊目标与预算","记下你喜欢的学科和活动"]},
+ vi:{when:"Lớp 9–10", title:"Tìm hiểu các lựa chọn", desc:"Tìm hiểu sự khác nhau giữa các trường ở Mỹ: đại học nghiên cứu, trường khai phóng (liberal arts) và cao đẳng cộng đồng. Suy nghĩ xem bạn muốn học ngành gì và môi trường nào phù hợp với mình.", checks:["So sánh các loại trường đại học chính ở Mỹ","Trao đổi với gia đình về mục tiêu và ngân sách","Ghi lại các môn học và hoạt động bạn yêu thích"]}},
+{stages:[1,2], src:{name:"TOEFL (ETS)", url:"https://www.ets.org/toefl.html"},
+ en:{when:"Grade 10–11", title:"Prove your English", desc:"Most U.S. colleges ask international students for an English test score. Common choices are TOEFL iBT, IELTS Academic and the Duolingo English Test.", checks:["Take a free practice test to find your level","Check which tests your target schools accept","Keep practicing with Co&Learn's English resources"]},
+ zh:{when:"高一–高二", title:"证明你的英语水平", desc:"大多数美国大学要求国际学生提交英语成绩。常见考试有托福（TOEFL iBT）、雅思学术类（IELTS Academic）和多邻国英语测试（Duolingo English Test）。", checks:["做一次免费模考，了解自己的水平","查清目标学校接受哪些考试","用 Co&Learn 的英语资源持续练习"]},
+ vi:{when:"Lớp 10–11", title:"Chứng minh trình độ tiếng Anh", desc:"Hầu hết các trường đại học Mỹ yêu cầu học sinh quốc tế nộp điểm thi tiếng Anh. Các bài thi phổ biến gồm TOEFL iBT, IELTS Academic và Duolingo English Test.", checks:["Làm một bài thi thử miễn phí để biết trình độ","Kiểm tra trường bạn nhắm tới chấp nhận bài thi nào","Luyện tập đều đặn với tài nguyên tiếng Anh của Co&Learn"]}},
+{stages:[1,2], src:EDUSA,
+ en:{when:"Grade 9–11", title:"Build your profile", desc:"Grades matter most. Then go deep in a few activities you care about, such as clubs, projects, volunteering or competitions.", checks:["Keep your grades steady every year","Commit to two or three activities","Record awards and hours as you go"]},
+ zh:{when:"初三–高二", title:"打造个人背景", desc:"成绩最重要。在此基础上，深入投入几项你真正在乎的活动，比如社团、项目、志愿服务或竞赛。", checks:["每一年都保持稳定的成绩","专注投入两到三项活动","随时记录奖项和服务时长"]},
+ vi:{when:"Lớp 9–11", title:"Xây dựng hồ sơ cá nhân", desc:"Điểm số là quan trọng nhất. Sau đó, hãy đầu tư sâu vào một vài hoạt động bạn thật sự yêu thích như câu lạc bộ, dự án, tình nguyện hoặc các cuộc thi.", checks:["Giữ điểm số ổn định qua các năm","Tập trung vào hai đến ba hoạt động","Ghi lại giải thưởng và số giờ hoạt động"]}},
+{stages:[2], src:{name:"SAT (College Board)", url:"https://satsuite.collegeboard.org/sat"},
+ en:{when:"Grade 11", title:"Plan for the SAT or ACT", desc:"Some colleges require the SAT or ACT, and many are test-optional. Policies change, so check each school's website.", checks:["Check the testing policy of each school","Register early, since seats fill up","Plan for one or two attempts"]},
+ zh:{when:"高二", title:"规划 SAT 或 ACT", desc:"部分大学要求 SAT 或 ACT，也有很多学校可以不提交成绩（test-optional）。政策常有变化，请以各校官网为准。", checks:["查清每所学校的考试政策","尽早报名，考位很快就满","计划考一到两次"]},
+ vi:{when:"Lớp 11", title:"Lên kế hoạch thi SAT hoặc ACT", desc:"Một số trường yêu cầu SAT hoặc ACT, nhiều trường khác không bắt buộc (test-optional). Chính sách thay đổi thường xuyên, hãy kiểm tra trên website của từng trường.", checks:["Kiểm tra chính sách thi của từng trường","Đăng ký sớm vì chỗ thi nhanh hết","Dự tính thi một hoặc hai lần"]}},
+{stages:[2], src:EDUSA,
+ en:{when:"Grade 11", title:"Build your college list", desc:"Choose about 8 to 12 schools across reach, match and likely. As an international student, check which schools offer financial aid to you.", checks:["Research schools on their official websites","Compare the full cost of attendance","Write down every deadline"]},
+ zh:{when:"高二", title:"确定选校名单", desc:"选择大约 8 到 12 所学校，涵盖冲刺、匹配和保底三档。作为国际学生，要特别确认哪些学校会给你提供经济资助。", checks:["在学校官网上做调研","比较总就读费用（cost of attendance）","记下每一个截止日期"]},
+ vi:{when:"Lớp 11", title:"Lập danh sách trường", desc:"Chọn khoảng 8 đến 12 trường, chia thành nhóm mơ ước, vừa sức và an toàn. Là học sinh quốc tế, hãy kiểm tra trường nào có hỗ trợ tài chính cho bạn.", checks:["Tìm hiểu trường qua website chính thức","So sánh tổng chi phí học tập (cost of attendance)","Ghi lại tất cả các hạn nộp"]}},
+{stages:[3], src:{name:"Common App", url:"https://www.commonapp.org/"},
+ en:{when:"Grade 12 · Aug–Jan", title:"Submit your applications", desc:"Most schools accept the Common App. You'll need a personal essay, transcripts, teacher recommendations and your test scores. Early deadlines are usually November 1 or 15, and regular deadlines are usually in January.", checks:["Draft and revise your personal essay","Ask teachers for recommendations early","Submit a few days before each deadline"]},
+ zh:{when:"高三 · 8月–次年1月", title:"提交申请", desc:"大多数学校接受 Common App。你需要准备个人文书、成绩单、老师推荐信和考试成绩。早申截止日期通常是 11 月 1 日或 15 日，常规申请通常在 1 月截止。", checks:["撰写并反复修改个人文书","尽早请老师写推荐信","在每个截止日期前几天提交"]},
+ vi:{when:"Lớp 12 · Tháng 8–1", title:"Nộp hồ sơ", desc:"Hầu hết các trường chấp nhận Common App. Bạn cần bài luận cá nhân, bảng điểm, thư giới thiệu của giáo viên và điểm thi. Hạn nộp sớm thường là ngày 1 hoặc 15 tháng 11, hạn nộp thường kỳ thường vào tháng 1.", checks:["Viết và chỉnh sửa bài luận cá nhân","Nhờ giáo viên viết thư giới thiệu sớm","Nộp hồ sơ trước hạn vài ngày"]}},
+{stages:[3], src:{name:"CSS Profile", url:"https://cssprofile.collegeboard.org/"},
+ en:{when:"Grade 12 · Oct–Feb", title:"Apply for financial aid", desc:"Aid for international students is limited but real. Many schools ask for the CSS Profile, and some offer merit scholarships you apply for separately.", checks:["Confirm which schools give aid to international students","Complete the CSS Profile if a school requires it","Prepare your family's financial documents"]},
+ zh:{when:"高三 · 10月–次年2月", title:"申请奖学金与助学金", desc:"面向国际学生的资助名额有限，但确实存在。很多学校要求提交 CSS Profile，也有学校提供需要单独申请的奖学金。", checks:["确认哪些学校为国际学生提供资助","按学校要求填写 CSS Profile","准备好家庭财务证明材料"]},
+ vi:{when:"Lớp 12 · Tháng 10–2", title:"Xin hỗ trợ tài chính", desc:"Hỗ trợ tài chính cho học sinh quốc tế có hạn nhưng vẫn có thật. Nhiều trường yêu cầu nộp CSS Profile, một số trường có học bổng dựa trên thành tích cần nộp đơn riêng.", checks:["Xác nhận trường nào hỗ trợ tài chính cho học sinh quốc tế","Hoàn thành CSS Profile nếu trường yêu cầu","Chuẩn bị giấy tờ tài chính của gia đình"]}},
+{stages:[3], src:{name:"Study in the States", url:"https://studyinthestates.dhs.gov/"},
+ en:{when:"Grade 12 · Apr–Aug", title:"Get your visa and go", desc:"After you accept an offer, your school sends you a Form I-20. Pay the SEVIS fee, book your F-1 visa interview, and get ready for life in the U.S.", checks:["Receive your Form I-20 from your school","Pay the SEVIS fee and book your visa interview","Prepare for the interview and your arrival"]},
+ zh:{when:"高三 · 4月–8月", title:"办理签证，准备出发", desc:"接受录取后，学校会寄给你 I-20 表格。缴纳 SEVIS 费用，预约 F-1 签证面试，然后为在美国的生活做准备。", checks:["从学校拿到 I-20 表格","缴纳 SEVIS 费并预约签证面试","准备面试和抵达后的生活"]},
+ vi:{when:"Lớp 12 · Tháng 4–8", title:"Xin visa và lên đường", desc:"Sau khi nhận lời mời nhập học, trường sẽ gửi cho bạn mẫu I-20. Đóng phí SEVIS, đặt lịch phỏng vấn visa F-1 và chuẩn bị cho cuộc sống tại Mỹ.", checks:["Nhận mẫu I-20 từ trường","Đóng phí SEVIS và đặt lịch phỏng vấn visa","Chuẩn bị cho buổi phỏng vấn và ngày đến Mỹ"]}}
+];
+
+var RES = window.PF_RES = [
+{type:"guide", tags:["china","vietnam"],
+ en:{t:"Month-by-month application timeline", d:"What to do each month of Grade 11 and 12, from test dates to decision day."},
+ zh:{t:"逐月申请时间表", d:"高二、高三每个月该做什么，从考试日期到放榜日。"},
+ vi:{t:"Lịch nộp hồ sơ theo từng tháng", d:"Việc cần làm mỗi tháng trong lớp 11 và 12, từ ngày thi đến ngày nhận kết quả."}},
+{type:"official", tags:["china","vietnam"], url:"https://educationusa.state.gov/",
+ en:{t:"Find an EducationUSA adviser", d:"Free, official advising supported by the U.S. Department of State, with advisers in both China and Vietnam."},
+ zh:{t:"查找 EducationUSA 顾问", d:"由美国国务院支持的免费官方咨询，在中国和越南都设有顾问。"},
+ vi:{t:"Tìm cố vấn EducationUSA", d:"Tư vấn chính thức, miễn phí do Bộ Ngoại giao Hoa Kỳ hỗ trợ, có cố vấn ở cả Việt Nam và Trung Quốc."}},
+{type:"partner", tags:["china","english"],
+ en:{t:"English learning with Co&Learn", d:"Lessons and practice materials from our partner nonprofit in China."},
+ zh:{t:"Co&Learn 英语学习资源", d:"来自我们在中国的非营利合作伙伴的课程与练习材料。"},
+ vi:{t:"Học tiếng Anh cùng Co&Learn", d:"Bài học và tài liệu luyện tập từ tổ chức phi lợi nhuận đối tác của chúng tôi tại Trung Quốc."}},
+{type:"guide", tags:["china"],
+ en:{t:"Applying from a Chinese high school", d:"Transcripts, school reports and translations: what public and international schools in China need to prepare."},
+ zh:{t:"从中国高中申请美国大学", d:"成绩单、学校报告和翻译件：普通高中和国际学校分别需要准备什么。"},
+ vi:{t:"Nộp hồ sơ từ trường THPT ở Trung Quốc", d:"Bảng điểm, báo cáo của trường và bản dịch: trường công lập và trường quốc tế ở Trung Quốc cần chuẩn bị gì."}},
+{type:"guide", tags:["vietnam"],
+ en:{t:"Applying from a Vietnamese high school", d:"Translating your học bạ, getting school documents ready, and preparing for the visa interview in Hanoi or Ho Chi Minh City."},
+ zh:{t:"从越南高中申请美国大学", d:"翻译成绩册（học bạ）、准备学校文件，以及在河内或胡志明市参加签证面试。"},
+ vi:{t:"Nộp hồ sơ từ trường THPT ở Việt Nam", d:"Dịch học bạ, chuẩn bị giấy tờ của trường và chuẩn bị phỏng vấn visa tại Hà Nội hoặc TP. Hồ Chí Minh."}},
+{type:"guide", tags:["english","china","vietnam"],
+ en:{t:"English tests compared", d:"Format, scoring and cost of TOEFL, IELTS and Duolingo, with links to free official practice."},
+ zh:{t:"三大英语考试对比", d:"托福、雅思、多邻国的题型、计分和费用对比，附官方免费练习链接。"},
+ vi:{t:"So sánh các bài thi tiếng Anh", d:"Định dạng, cách tính điểm và chi phí của TOEFL, IELTS và Duolingo, kèm đường dẫn luyện tập miễn phí chính thức."}},
+{type:"opportunity", tags:["china","vietnam"],
+ en:{t:"Colleges that give aid to international students", d:"A list we check every year, with each school's aid policy and deadline."},
+ zh:{t:"为国际学生提供资助的大学", d:"我们每年核对一次的名单，包含各校的资助政策和截止日期。"},
+ vi:{t:"Các trường hỗ trợ tài chính cho học sinh quốc tế", d:"Danh sách được chúng tôi kiểm tra mỗi năm, kèm chính sách hỗ trợ và hạn nộp của từng trường."}},
+{type:"official", tags:["china","vietnam"], url:"https://studyinthestates.dhs.gov/",
+ en:{t:"Study in the States: I-20 and F-1", d:"The U.S. government's guide to student visas, the SEVIS fee and arriving on campus."},
+ zh:{t:"Study in the States：I-20 与 F-1", d:"美国政府关于学生签证、SEVIS 费用和入学报到的官方指南。"},
+ vi:{t:"Study in the States: I-20 và F-1", d:"Hướng dẫn chính thức của chính phủ Mỹ về visa du học, phí SEVIS và ngày nhập học."}},
+{type:"opportunity", tags:["china","vietnam","english"],
+ en:{t:"Summer programs and competitions", d:"Free and low-cost programs we've checked that accept students from China and Vietnam."},
+ zh:{t:"夏校与竞赛", d:"我们核实过的免费或低价项目，接受中国和越南学生申请。"},
+ vi:{t:"Chương trình hè và cuộc thi", d:"Các chương trình miễn phí hoặc chi phí thấp đã được kiểm chứng, nhận học sinh Việt Nam và Trung Quốc."}}
+];
+(function(){
+  var LANGS = ["en","zh","vi"];
+  var HTML_LANG = {en:"en", zh:"zh-Hans", vi:"vi"};
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var state = {lang:"en", stage:null, open:{0:true}, filter:"all", mode:"question", touched:{}};
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  function store(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function t(key, vars){
+    var d = T[state.lang] || T.en;
+    var s = d[key] != null ? d[key] : (T.en[key] != null ? T.en[key] : key);
+    if (vars) for (var k in vars) s = s.replace("{"+k+"}", vars[k]);
+    return s;
+  }
+  var I = {
+    chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+    ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg>',
+    clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+  };
+
+  /* ---------- Language detection ---------- */
+  function detect(){
+    var h = (location.hash || "").slice(1).toLowerCase();
+    if (LANGS.indexOf(h) > -1) return h;
+    var s = load("pf-lang"); if (LANGS.indexOf(s) > -1) return s;
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < list.length; i++){
+      var x = String(list[i] || "").toLowerCase();
+      if (x.indexOf("zh") === 0) return "zh";
+      if (x.indexOf("vi") === 0) return "vi";
+      if (x.indexOf("en") === 0) return "en";
+    }
+    return "en";
+  }
+
+  /* ---------- Static strings ---------- */
+  function applyStatic(){
+    $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+    $$("[data-i18n-html]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+    $$("[data-i18n-attr]").forEach(function(el){
+      el.getAttribute("data-i18n-attr").split(";").forEach(function(pair){
+        var p = pair.split(":"); if (p.length === 2) el.setAttribute(p[0].trim(), t(p[1].trim()));
+      });
+    });
+  }
+
+  /* ---------- Language switcher thumbs ---------- */
+  function placeThumbs(){
+    $$(".lang").forEach(function(g){
+      var b = $('button[aria-pressed="true"]', g), th = $(".lang-thumb", g);
+      if (!b || !th || !b.offsetWidth) return;
+      g.style.setProperty("--x", b.offsetLeft + "px");
+      g.style.setProperty("--w", b.offsetWidth + "px");
+      if (!g.classList.contains("ready")) requestAnimationFrame(function(){ g.classList.add("ready"); });
+    });
+  }
+  function updateLangButtons(){
+    $$(".lang button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === state.lang)); });
+    placeThumbs();
+  }
+
+  /* ---------- Roadmap ---------- */
+  function renderSteps(){
+    var ol = $("#steps"); if (!ol) return;
+    ol.innerHTML = STEPS.map(function(s, i){
+      var L = s[state.lang] || s.en, open = !!state.open[i];
+      var here = state.stage && s.stages.indexOf(state.stage) > -1;
+      return '<li class="step' + (open ? " open" : "") + (here ? " here" : "") + '" data-i="' + i + '">' +
+        '<div class="node" aria-hidden="true"><span>' + (i + 1) + '</span></div>' +
+        '<div class="step-card">' +
+          '<button class="step-head" type="button" id="st-' + i + '" aria-expanded="' + open + '" aria-controls="sp-' + i + '">' +
+            '<span class="step-meta"><span class="step-when">' + esc(L.when) + '</span>' + (here ? '<span class="here-badge">' + esc(t("rm.here")) + '</span>' : "") + '</span>' +
+            '<span class="step-title">' + esc(L.title) + '</span>' + I.chev +
+          '</button>' +
+          '<div class="step-panel" id="sp-' + i + '" role="region" aria-labelledby="st-' + i + '"' + (open ? "" : " inert") + '><div><div class="inner">' +
+            '<p>' + esc(L.desc) + '</p>' +
+            '<p class="checks-h">' + esc(t("rm.checklist")) + '</p>' +
+            '<ul class="checks">' + L.checks.map(function(c){ return "<li>" + I.check + "<span>" + esc(c) + "</span></li>"; }).join("") + '</ul>' +
+            '<a class="source" href="' + esc(s.src.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("rm.source")) + ": " + esc(s.src.name) + I.ext + '</a>' +
+          '</div></div></div>' +
+        '</div></li>';
+    }).join("");
+    updateProgress();
+  }
+  function toggleStep(i){
+    state.open[i] = !state.open[i];
+    var li = $('.step[data-i="' + i + '"]'); if (!li) return;
+    li.classList.toggle("open", state.open[i]);
+    $(".step-head", li).setAttribute("aria-expanded", String(state.open[i]));
+    var panel = $(".step-panel", li);
+    if (state.open[i]) panel.removeAttribute("inert"); else panel.setAttribute("inert", "");
+  }
+  function setStage(stage){
+    state.stage = state.stage === stage ? null : stage;
+    store("pf-stage", state.stage ? String(state.stage) : "");
+    $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === state.stage)); });
+    if (state.stage){
+      state.open = {};
+      for (var i = 0; i < STEPS.length; i++) if (STEPS[i].stages.indexOf(state.stage) > -1){ state.open[i] = true; break; }
+    }
+    renderSteps();
+    if (state.stage){
+      var first = $(".step.here");
+      if (first){
+        var r = first.getBoundingClientRect();
+        if (r.top < 80 || r.bottom > innerHeight) first.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "center"});
+      }
+    }
+  }
+  var ticking = false;
+  function updateProgress(){
+    ticking = false;
+    var tl = $("#steps"); if (!tl) return;
+    var r = tl.getBoundingClientRect(), mark = innerHeight * 0.6;
+    var p = Math.min(1, Math.max(0, (mark - r.top) / Math.max(1, r.height)));
+    tl.style.setProperty("--progress", p.toFixed(3));
+    $$(".step", tl).forEach(function(li){
+      var n = $(".node", li).getBoundingClientRect();
+      li.classList.toggle("lit", n.top + n.height / 2 < mark);
+    });
+  }
+  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(updateProgress); } }
+
+  /* ---------- Resources ---------- */
+  function renderResources(){
+    var grid = $("#res-grid"); if (!grid) return;
+    var list = RES.filter(function(r){ return state.filter === "all" || r.tags.indexOf(state.filter) > -1; });
+    grid.innerHTML = list.map(function(r){
+      var L = r[state.lang] || r.en;
+      var regions = r.tags.filter(function(x){ return x !== "english"; }).map(function(x){ return esc(t("f." + x)); }).join(" · ");
+      var act = r.url
+        ? '<a class="res-act" href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("res.visit")) + I.ext + '</a>'
+        : '<button type="button" class="res-act soon" data-soon>' + I.clock + esc(t("res.soon")) + '</button>';
+      return '<article class="res reveal">' +
+        '<div class="res-meta"><span class="badge b-' + r.type + '">' + esc(t("type." + r.type)) + '</span>' + (regions ? "<span>" + regions + "</span>" : "") + '</div>' +
+        '<h3>' + esc(L.t) + '</h3><p>' + esc(L.d) + '</p>' +
+        '<div class="res-foot"><span class="langs"><span class="sr">' + esc(t("res.langs")) + ': </span>EN · 中文 · VI</span>' + act + '</div>' +
+      '</article>';
+    }).join("");
+    $("#res-count").textContent = t("res.count", {n: list.length});
+  }
+
+  /* ---------- Form ---------- */
+  function fillSelect(sel, opts, fallback){
+    var cur = sel.value;
+    sel.innerHTML = opts.map(function(o){ return '<option value="' + o[0] + '"' + (o[2] ? ' lang="' + o[2] + '"' : "") + '>' + esc(o[1]) + '</option>'; }).join("");
+    sel.value = cur !== "" && opts.some(function(o){ return o[0] === cur; }) ? cur : fallback;
+  }
+  function renderForm(){
+    var g = $("#f-grade"), c = $("#f-country"), r = $("#f-reply");
+    fillSelect(g, [["", t("f.choose")],["9", t("f.g9")],["10", t("f.g10")],["11", t("f.g11")],["12", t("f.g12")],["other", t("f.gOther")]], "");
+    fillSelect(c, [["", t("f.choose")],["cn", t("f.cCN")],["vn", t("f.cVN")],["other", t("f.cOther")]], "");
+    fillSelect(r, [["en","English","en"],["zh","中文","zh-Hans"],["vi","Tiếng Việt","vi"]], state.lang);
+    if (!state.touched.country) c.value = state.lang === "zh" ? "cn" : state.lang === "vi" ? "vn" : "";
+    if (!state.touched.reply) r.value = state.lang;
+    var q = state.mode === "question";
+    $("#f-msg-label").textContent = t(q ? "f.msgQ" : "f.msgV");
+    $("#f-msg").setAttribute("placeholder", t(q ? "f.phQ" : "f.phV"));
+    $("#f-submit-label").textContent = t(q ? "f.sendQ" : "f.sendV");
+    $$(".err").forEach(function(e){ if (!e.hidden && e.dataset.key) e.textContent = t(e.dataset.key); });
+  }
+  function setErr(input, errEl, key){
+    if (key){ input.setAttribute("aria-invalid", "true"); errEl.dataset.key = key; errEl.textContent = t(key); errEl.hidden = false; }
+    else { input.removeAttribute("aria-invalid"); errEl.hidden = true; errEl.textContent = ""; delete errEl.dataset.key; }
+  }
+  function validate(){
+    var msg = $("#f-msg"), contact = $("#f-contact"), consent = $("#f-consent"), first = null;
+    var m = msg.value.trim() ? null : (state.mode === "question" ? "f.errMsg" : "f.errMsgV");
+    setErr(msg, $("#f-msg-err"), m); if (m) first = first || msg;
+    var c = contact.value.trim() ? null : "f.errContact";
+    setErr(contact, $("#f-contact-err"), c); if (c) first = first || contact;
+    var k = consent.checked ? null : "f.errConsent";
+    setErr(consent, $("#f-consent-err"), k); if (k) first = first || consent;
+    return first;
+  }
+
+  /* ---------- Toast ---------- */
+  var toastTimer;
+  function toast(msg){
+    var el = $("#toast"); el.textContent = msg; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2600);
+  }
+
+  /* ---------- Set language ---------- */
+  function setLang(lang, opts){
+    opts = opts || {};
+    if (LANGS.indexOf(lang) < 0) lang = "en";
+    state.lang = lang;
+    document.documentElement.lang = HTML_LANG[lang];
+    applyStatic(); renderSteps(); renderResources(); renderForm(); updateLangButtons();
+    if (opts.persist){
+      store("pf-lang", lang);
+      try { history.replaceState(null, "", "#" + lang); } catch(e){}
+    }
+    if (opts.announce) $("#live").textContent = t("a11y.lang");
+    window.dispatchEvent(new CustomEvent("pf:lang", {detail: lang}));
+  }
+  function switchTo(lang){
+    if (lang === state.lang) return;
+    if (reduce){ setLang(lang, {persist:true, announce:true}); return; }
+    document.body.classList.add("switching");
+    setTimeout(function(){
+      setLang(lang, {persist:true, announce:true});
+      requestAnimationFrame(function(){ document.body.classList.remove("switching"); });
+    }, 150);
+  }
+
+  /* ---------- Menu ---------- */
+  var menuBtn = $(".menu-btn"), menu = $("#menu");
+  function setMenu(open){
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menu.hidden = !open;
+  }
+
+  /* ---------- Events ---------- */
+  document.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    var langBtn = el.closest(".lang button");
+    if (langBtn){ switchTo(langBtn.getAttribute("data-lang")); return; }
+    var sc = el.closest("[data-scroll]");
+    if (sc){
+      e.preventDefault();
+      var id = sc.getAttribute("data-scroll"), target = document.getElementById(id);
+      setMenu(false);
+      if (target){
+        target.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "start"});
+        if (id !== "top"){ target.setAttribute("tabindex", "-1"); target.focus({preventScroll:true}); }
+      }
+      return;
+    }
+    if (el.closest(".menu-btn")){ setMenu(menuBtn.getAttribute("aria-expanded") !== "true"); return; }
+    var head = el.closest(".step-head");
+    if (head){ toggleStep(Number(head.closest(".step").getAttribute("data-i"))); return; }
+    var chip = el.closest(".chip[data-stage]");
+    if (chip){ setStage(Number(chip.getAttribute("data-stage"))); return; }
+    var f = el.closest(".chip[data-filter]");
+    if (f){
+      state.filter = f.getAttribute("data-filter");
+      $$(".chip[data-filter]").forEach(function(c){ c.setAttribute("aria-pressed", String(c === f)); });
+      renderResources(); return;
+    }
+    if (el.closest("[data-soon]")){ toast(t("res.toast")); return; }
+    var mb = el.closest(".mode button");
+    if (mb){
+      state.mode = mb.getAttribute("data-mode");
+      $("#ask").setAttribute("data-mode", state.mode);
+      $$(".mode button").forEach(function(b){ b.setAttribute("aria-pressed", String(b === mb)); });
+      setErr($("#f-msg"), $("#f-msg-err"), null);
+      renderForm(); return;
+    }
+    if (el.closest("#f-again")){
+      $("#ask").reset(); state.touched = {}; renderForm();
+      $("#f-success").hidden = true; $("#form-body").hidden = false; $("#f-msg").focus();
+    }
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && menuBtn.getAttribute("aria-expanded") === "true"){ setMenu(false); menuBtn.focus(); } });
+  $("#f-country").addEventListener("change", function(){ state.touched.country = true; });
+  $("#f-reply").addEventListener("change", function(){ state.touched.reply = true; });
+  ["#f-msg","#f-contact","#f-consent"].forEach(function(s){
+    $(s).addEventListener("input", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
+    $(s).addEventListener("change", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
+  });
+  $("#ask").addEventListener("submit", function(e){
+    e.preventDefault();
+    var bad = validate();
+    if (bad){ bad.focus(); return; }
+    $("#form-body").hidden = true; $("#f-success").hidden = false; $("#f-ok-title").focus();
+  });
+  $("#res-grid").addEventListener("pointermove", function(e){
+    var card = e.target.closest(".res"); if (!card) return;
+    var r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    card.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", function(){ placeThumbs(); onScroll(); if (innerWidth > 1100) setMenu(false); });
+  window.addEventListener("hashchange", function(){
+    var h = location.hash.slice(1).toLowerCase();
+    if (LANGS.indexOf(h) > -1 && h !== state.lang) setLang(h, {persist:true});
+  });
+
+  /* ---------- Init ---------- */
+  var savedStage = Number(load("pf-stage"));
+  if (savedStage >= 1 && savedStage <= 3){
+    state.stage = savedStage; state.open = {};
+    for (var i = 0; i < STEPS.length; i++) if (STEPS[i].stages.indexOf(savedStage) > -1){ state.open[i] = true; break; }
+    $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === savedStage)); });
+  }
+  setLang(detect());
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeThumbs);
+  window.PF = {setLang: function(l){ setLang(l, {persist:true}); }, t: t, state: state};
+})();
+</script>
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js";
+// Simplified coastlines as [lon,lat,...] rings. Low resolution on purpose: they only decide which globe dots are land.
+const LAND = [
+// North America
+[-168,65.6,-165.5,68.5,-161,70.3,-156.8,71.3,-152,70.8,-146,70.2,-141,69.7,-136,69,-128,70.4,-120,69.5,-110,68,-100,67.9,-95,69.5,-90,68.5,-82,67,-78,62.5,-72,62,-69.5,59,-65,60.3,-64,58.5,-61.5,56.5,-59,54.5,-56,52.5,-55.5,51.6,-53,49.5,-52.7,47.5,-53.5,46.7,-56,47.6,-59.3,47.6,-60,46,-63.5,44.6,-66,43.8,-67,44.5,-69,43.8,-70.6,42.6,-70,41.8,-71.5,41.3,-74,40.6,-74,39.5,-75,38.8,-76,37,-75.7,35.6,-76.5,34.7,-78,33.8,-79.5,33,-81,31.8,-81.4,30.2,-80.6,28.4,-80,26.7,-80.4,25.2,-81.2,25.2,-81.8,26.5,-82.7,28,-82.8,29.2,-84,30.1,-85.3,29.7,-86.5,30.4,-88,30.4,-89.6,30.2,-89.2,29.2,-90.5,29.1,-92,29.6,-94,29.6,-94.9,29.3,-96.5,28.3,-97.4,27.2,-97.2,25.9,-97.7,24,-97.7,22,-97.2,20.6,-96.3,19.3,-95,18.6,-94.4,18.2,-92.5,18.6,-91.3,18.7,-90.5,19.7,-90.3,21,-88,21.5,-86.8,21.4,-87.4,20,-87.7,18.5,-88.3,17,-88.6,15.8,-87.5,15.8,-85,16,-83.4,15.2,-83.2,14,-83.5,12.4,-83.7,11,-82.5,9.5,-81.5,8.9,-80,9.3,-79,9.6,-77.4,8.7,-77.9,7.2,-78.5,8.4,-79.5,8.9,-80.4,8,-80,7.4,-81.2,7.6,-82,8.2,-83.6,8.4,-85.8,10.2,-85.8,11.2,-87.3,12.9,-89,13.5,-91.4,13.9,-92.3,14.5,-94,16.1,-95.2,16,-96.5,15.6,-98.5,16.3,-101,17.2,-103.5,18.3,-105.3,19.9,-105.6,21,-105.3,22.5,-106.4,23.3,-108,25.2,-109.4,26.6,-111,27.9,-112.2,29.3,-113.1,31.2,-114.7,31.7,-114.4,30.5,-113,28.8,-112.2,27,-110.6,24.3,-109.5,23.2,-110.2,22.9,-111.8,24.6,-112.2,26,-114.2,27.8,-114.8,28.7,-115.7,30.3,-116.7,31.9,-117.1,32.5,-118.4,33.9,-120.6,34.6,-121.9,36.5,-122.5,37.7,-123.8,39.7,-124.4,40.5,-124.2,42,-124.1,44,-124,46.2,-124.7,48.4,-122.8,49,-125,50.5,-127.5,51,-128,52.5,-130,54,-131,55.5,-133.5,57.5,-135.5,58.5,-137.5,58.7,-139.8,59.6,-142,60,-144.5,60.1,-146.5,60.9,-148.5,60.2,-151.8,59.2,-154,58.2,-156.5,57,-158.5,56,-161,55.5,-163,54.9,-164.5,54.5,-162,55.8,-158,57.5,-157.4,58.7,-162,59.9,-164.5,60.6,-165.3,62.3,-164.5,63.2,-161,64.7,-163,64.6,-166,64.6],
+[-73,78.5,-60,82,-40,83.5,-22,82.5,-18,77,-20,72,-22,70,-26,68.5,-32,67.8,-38,65.5,-42,61,-44,60,-48,61,-50,63.5,-52,66,-54,69,-52,71,-56,72.5,-58,75.5,-66,76.5,-71,77.5],
+[-62,67,-66,62.5,-74,64.5,-79,67.5,-84,70,-90,73.5,-80,73.8,-72,71.5,-67,69.5],
+[-95,74.5,-80,74.5,-75,78,-62,82,-75,83,-95,81.5,-100,78,-97,76],
+[-125,71.5,-123,74,-115,73,-105,73.5,-101,70,-110,68.6,-118,69,-123,70.5],
+[-24,65.5,-22,66.4,-16,66.5,-13.5,65,-15,64.3,-18.5,63.4,-22.5,63.8],
+[-85,21.9,-82.5,23.2,-80,23.2,-77,21.8,-74.2,20.2,-77.7,19.9,-78.5,21.5,-81.5,22.2],
+[-74.4,18.5,-72.8,19.9,-70,19.7,-68.4,18.6,-70.5,18.2,-71.8,17.7,-74.4,18.2],
+// South America
+[-77.4,8.6,-75.5,10.5,-72,12,-70,12.2,-68,10.6,-63,10.7,-60.5,8.5,-57,6,-52,5,-50,1.8,-48.5,-1,-44,-2.5,-40,-2.9,-35.2,-5.5,-34.8,-7.5,-35.5,-9.5,-37.5,-12,-39,-14,-39,-17.8,-40.5,-20.5,-42,-23,-45,-23.8,-48.5,-26.5,-48.7,-28.5,-51,-31,-53,-34,-55,-35,-57.5,-36,-57,-38,-62,-39,-62.5,-41,-65,-42,-64.5,-45,-67.5,-46.5,-66,-48,-69,-51,-68.5,-52.5,-66,-55,-68,-55.5,-72,-53.5,-74.5,-51,-75.5,-47,-74,-43.5,-73.5,-40,-73.5,-37,-72,-33,-71.5,-30,-71,-25,-70.3,-18.5,-71.5,-17.5,-75,-15.5,-76.5,-13,-78.5,-9.5,-80,-7,-81.2,-5,-80.3,-3.3,-80.8,-1.5,-80,0.8,-78.8,1.5,-77.6,4,-77.4,6.5],
+// Africa + Madagascar
+[-5.9,35.8,-2,35.1,1,36.5,3,36.8,8.6,36.9,10.3,37.3,11,36.8,10.5,36,11,35.2,10.2,34.2,11.5,33.2,12.5,32.8,15.3,32.3,19,30.3,20.1,32.1,22,32.9,25,32,29,30.9,32.3,31.3,34.2,31.3,34.9,29.5,34.3,27.8,33.6,27.5,35.5,23.9,37.2,21,37.4,18.8,38.5,18,39.3,15.8,41.2,14.6,43.3,12.6,44.5,10.4,47.5,11.2,51.2,11.8,51,10.4,49.8,7.5,48,4.7,46,2,43,-0.9,41.5,-1.8,40.2,-3.3,39.2,-4.7,38.8,-6.5,39.4,-8.3,40.5,-10.5,40.6,-14.5,39,-17,35.5,-20,35.5,-23.9,32.9,-26.4,32.4,-29,30.8,-30.8,28,-33,25.6,-34,22,-34.4,20,-34.8,18.4,-34.2,18,-32.5,17.3,-30,16.5,-28.6,15.3,-26.7,14.5,-23,13.5,-20.9,11.8,-17.3,12.3,-14.5,13.5,-12.4,13.2,-9,12.3,-6,11.9,-5,9.6,-2.6,9.3,0.5,9.8,2.5,9.5,3.9,8.5,4.6,6,4.3,4.5,6.3,3.4,6.4,1.2,6.1,-2,4.8,-4,5.2,-7.5,4.4,-9.5,5.6,-11.5,6.9,-13.2,8.5,-15,10.8,-16.7,12.5,-17.2,14.7,-16.5,16.2,-16.1,18.5,-17.1,21,-16,23.7,-14.5,26.1,-13,27.7,-11,28.5,-9.8,29.8,-9.6,31.5,-8.5,33.3,-6.8,34.1],
+[49.3,-12,50.4,-15.5,49.8,-17,48.5,-20.5,47.2,-24.8,45.2,-25.6,43.6,-23.4,43.3,-21.5,44.3,-18.5,44,-16.2,46.3,-15.7,47.8,-14],
+// Eurasia
+[-8.9,37,-9.5,38.8,-8.8,42,-9.3,43.1,-8,43.7,-4,43.5,-1.8,43.4,-1.2,46,-2.5,47.3,-4.7,48.4,-1.6,48.7,-1.3,49.7,0.2,49.7,1.6,50.9,3.5,51.4,4.8,53,7,53.6,8.6,53.9,8.6,55.5,8.2,56.8,10.6,57.7,11.8,57.7,11.2,59,10.7,59.9,9.5,59,8,58.1,6,58.1,5.5,59,5,61,5.2,62.5,8,63.5,11,64.8,13.5,67.5,16,68.8,19,70,23.5,70.8,28,71.1,31,70.3,33,69.3,37,68.7,41,67.5,44,68.5,53,68.5,58,68.8,60,69.8,66,69.3,68,71.5,72.5,72.8,76,72.5,80,73.5,87,74.8,98,76,104.5,77.7,112,76.3,113,73.5,120,73,128,72.5,131,71,140,72.5,150,71.5,160,70,170,70,180,69,180,65,177,62.5,173,61.5,170,60,166,59.8,163.5,59.9,162.5,58,162,56,160,54,158.5,52.5,156.7,51,156,53,155.6,56.5,156.8,57.8,160,60.3,160.5,61.5,155,59.5,151,59.2,145,59.4,141.3,58.6,138.5,56,137,54,140.5,53.6,141.4,52.3,140.4,48.5,138.2,46.6,135,43.4,132,42.8,130.7,42.3,129.5,40.8,128,39,129.4,37,129.4,35.5,127,34.6,126.3,34.7,126.5,36,126.7,37.4,125.3,37.7,125,38.5,125.3,39.5,124.4,39.9,122.8,39.5,121.2,38.8,122.2,40.6,121,40.8,119.5,39.8,118,39.1,117.7,38.4,118.9,37.5,119.8,37.1,120.7,37.8,122.6,37.4,121.4,36.7,120.3,36,119.3,35,120.3,34.3,120.9,32.7,121.9,31.7,121.9,30.9,122,29.9,121.5,28.4,120.6,27.2,119.6,25.8,118.6,24.6,117.2,23.6,116,22.9,114.3,22.3,113.6,22.2,112.2,21.7,110.5,21.1,110.2,20.3,109.8,21.4,108.6,21.6,107.8,21.5,106.8,20.8,106.2,20,105.7,18.9,106.5,17.6,107.4,16.6,108.2,16.1,108.9,15.2,109.3,13.6,109.2,11.7,108.2,10.9,106.9,10.4,106.2,9.5,105.1,8.6,104.8,9.6,104.5,10.4,103.5,10.6,102.9,11.6,102.3,12.2,100.9,12.7,100.5,13.5,99.95,12.6,99.5,11,99.2,10.2,99.9,9.2,100.3,8,100.6,7,101.5,6.9,102.2,6.2,103.1,5.4,103.4,4.3,103.4,2.8,104.2,1.4,103.5,1.3,102.5,2,101.3,2.8,100.5,4.5,100.3,5.5,99.6,7,98.3,8.1,98.5,9.5,98.5,12,98,14.5,97.7,16.5,96.9,16.8,95.4,15.8,94.3,16.1,94.5,17.5,94.2,19,93,20.5,92.2,21.3,91.8,22.4,90.6,22,89,21.8,87.8,21.6,86.9,20.6,85.2,19.5,84,18.2,82.3,16.6,81.2,15.8,80.2,15.3,80.3,13.3,79.9,11.5,79.8,10.3,78.9,9.4,78.2,8.9,77.5,8.1,76.6,8.9,76.1,10.4,75.6,11.8,74.7,13.5,74,15.3,73.4,16.5,72.9,18.9,72.7,20.8,72.6,22.2,72,21.3,70.9,20.8,69.1,22.4,68.4,23.5,67.4,24,66.6,25.4,64.6,25.2,61.6,25.2,58.9,25.5,57.3,26,56.6,27.1,55.6,26.8,54,26.7,51.8,27.8,50.3,29,49.3,30.1,48.6,29.9,48,29.4,48.5,28.4,49.5,27,50.2,26.4,50.8,25.6,51.2,26.1,51.6,25.3,51.6,24.3,52.5,24.2,54.4,24.3,55.6,25.4,56.2,26.3,56.4,24.9,57.8,23.7,58.9,22.8,59.8,22.4,58.6,20.6,57.8,19,56.7,17.9,55.3,17.3,52.2,15.9,49.1,14.5,45.7,13.3,43.5,12.7,42.9,14.7,42.6,16.4,41.8,17.8,40.5,19.5,39.1,21.6,38.4,23.7,37.2,25.2,36.6,26.4,35.2,28,34.95,29.4,34.2,31.3,35,33,35.9,35.5,36,36.8,34.5,36.8,32,36.2,30.5,36.4,28,36.7,27,37.8,26.5,39.5,26.6,41,23,40.5,24,38.2,23,36.5,21.7,36.8,21.1,38.3,19.5,40.5,19.4,41.8,16,43.5,13.7,45.6,12.3,45.3,12.3,44.2,14,42.5,16,41.4,18.5,40.2,17.2,40.5,16.6,40,17.1,39,16.5,38.4,15.7,37.95,15.8,38.7,15.6,40,14.2,40.8,12.5,41.5,11.1,42.4,10.5,43,8.9,44.4,8.2,43.9,6.5,43.1,4.5,43.4,3.1,43,3.2,41.9,1,41,0,39.5,-0.6,37.6,-2.1,36.7,-4.4,36.7,-5.6,36,-6.4,36.8,-7.4,37.2],
+[-180,68.9,-175,67.6,-171.5,66.8,-169.7,66,-171,65.4,-173,64.3,-176,65,-180,65],
+[-5.7,50.1,-3,50.6,1.3,51.2,1.7,52.6,0.3,53.4,-0.1,54.5,-1.6,55.6,-2.1,57.1,-1.8,57.6,-3.3,58.6,-5,58.6,-6.2,57.5,-5.6,56.3,-5,55,-3.5,54.9,-3.2,54,-3,53.3,-4.6,53.3,-4.2,52.3,-5.3,51.7,-3.2,51.4,-4.2,51.2],
+[-6,52.2,-6.2,53.9,-5.7,54.6,-7.3,55.4,-8.5,54.9,-10,54.2,-9.6,53,-10.4,51.9,-9.5,51.4,-8,51.8],
+[12.4,38.1,15.6,38.3,15.1,36.7,12.6,37.6],
+[130.2,31.2,131.3,31.4,132,33.2,133,33.3,134.6,33.8,135.5,33.5,136.9,34.3,138.8,34.7,140,35,140.9,36.4,141,38.3,141.9,39.4,141.4,41.4,140.2,41.2,140,40.5,139.8,39,139,37.9,137.3,36.8,136.7,37.3,136,35.7,133.3,35.5,131.5,34.6,130.9,34,129.8,33.3,130.3,32.3],
+[140,41.5,141.2,42.5,143.3,42,145.8,43.3,145,44.2,142,45.4,141.6,44.3,140.4,43.3,139.8,42.3],
+[142,46,143.5,46.5,143,49,143.2,51.5,142.8,54.3,142,53.5,141.8,50,142,48],
+[120.1,23,120.7,22,121,22.3,121.9,24.5,121.6,25.3,121,25.1,120.2,23.8],
+[108.6,19.2,109.6,18.2,110.6,18.6,111,19.8,110.6,20.1,109.2,20],
+[120,16,120.6,18.5,122.3,18.5,122.1,16.5,121.5,15.5,122,14,124,13.6,124.2,12.6,123.3,13,121.7,13.9,120.6,14.3],
+[122,10.5,123,9.2,124.6,10,125.6,11.2,125,12.5,124,11.6,122.9,11.6,122,11.8],
+[122,7,123.5,8.7,124.8,8.9,125.5,9.8,126.6,7.5,126,6.3,125.4,5.6,124,6.3,122.1,6.9],
+[109,1.5,111,1.8,113,3.2,115.5,5.2,117,7,117.7,6,119.2,5.3,118,4.4,117.7,3,118.5,1,117.5,0,116.5,-2.3,116,-3.8,114.5,-3.6,111.7,-3,110.2,-2.9,110,-1.5,109,0],
+[95.3,5.6,97.5,5.2,100.3,2.3,103.8,-1,106,-3.2,105.8,-5.8,104.5,-5.9,102.2,-4,100.3,-1,98.7,1.7,96.5,3.6],
+[105.2,-6.8,106,-5.9,108.5,-6.4,111,-6.4,112.6,-6.9,114.5,-7.7,114.4,-8.7,111,-8.2,108,-7.8,106,-7.3],
+[118.8,-3,119.5,-5.6,120.5,-5.5,120.3,-3,121.3,-4.8,122.7,-4.6,121.5,-2,123.3,-0.8,124.9,1.6,124.2,1,121,0.9,120.2,0.5,119.8,-0.8],
+[131,-1.2,132.5,-0.4,135,-3.3,138,-1.6,141,-2.6,144.5,-3.8,146,-5.5,147.8,-6.3,147.4,-8,150.2,-10.3,148.4,-10.1,146,-8.1,144,-7.6,143.3,-9.1,141,-9.1,139,-8.1,138,-8.4,137.6,-5.5,135,-4.4,132.8,-4.1,131.9,-2.8,133,-2.4],
+[79.9,6.1,80.6,5.9,81.8,7.5,81.2,8.6,80.1,9.8,79.8,8],
+// Australia + NZ
+[113.5,-22,114,-26,115,-30,115,-33.5,116,-35,118,-35,121,-33.8,124,-33,126,-32.3,129,-31.6,131.5,-31.5,134,-32.5,135.6,-34.8,137.8,-32.6,138,-35.6,139.5,-36,140.5,-38,143.5,-38.8,146.3,-39,148,-37.8,150,-37.5,150.8,-34.5,153,-31,153.5,-28,153,-25.3,151,-23.5,149.5,-22.3,146.2,-19,145.3,-15,143.5,-14,142.5,-10.7,141.6,-13,141.5,-17,140,-17.7,137,-16,135.6,-15,136.8,-12.2,132.6,-11.5,130,-12.5,129.5,-15,127,-14,125,-15,123.5,-17,122,-18.5,119,-20,116.5,-20.7,114,-21.8],
+[144.6,-40.7,148.3,-40.9,148,-43.2,146,-43.6,145,-42.2],
+[172.6,-34.4,174.8,-36.5,178.5,-37.6,177,-39.5,175.3,-41.6,174.6,-39.5,173.8,-39.2,174.6,-37.5],
+[172.7,-40.5,174.3,-41.5,173.2,-43,171.2,-44.5,170.8,-45.9,168.4,-46.6,166.5,-46,167,-45,168.5,-44,170.6,-43,172,-41.5]
+];
+const WATER = [
+[-94.5,58.5,-94,61,-92,62.8,-88,64.2,-85,66.5,-82,66.5,-79.5,63.5,-78,62.4,-77.4,60,-77,57.5,-79,55,-79.5,52,-82,52.5,-85,55.3,-88.5,56.8,-92.5,57.2],
+[10.6,57.6,11.9,57.6,12.6,56.2,12.9,55.5,14.3,55.5,16,56.2,16.6,57.9,18.8,59.4,17.2,60.7,17.5,62.3,19,63.5,22,65.7,24.5,65.7,25.3,64.8,23,63.5,21.4,62,21.4,60.8,23,60,28,60.4,29.9,60,28,59.5,23.4,59.2,23.5,58.5,21.6,57.5,21,56.5,21.2,55.4,19.8,54.5,18.5,54.8,14.3,53.9,12,54.2,10.8,54.1,10.6,56.5],
+[29,41.2,31.5,41.2,34,42,36,41.7,38,41,41.5,41.5,41.6,42.6,40,43.4,38,44.4,36.5,45,33.5,44.4,32.5,45.4,31,46.6,30.2,45.8,29.6,45,28.7,44.2,27.9,42.7,28,41.9],
+[47,45,49,46.5,51.5,47,53,46.8,53,45.3,51.3,44.5,52.8,42,53,40,53.9,38.9,53.9,37.3,51,36.7,49,37.6,49.5,40.2,48.5,41.8,47.5,43]
+];
+// ---------- Globe ----------
+(function(){
+const stage = document.getElementById("globe");
+if (!stage) return;
+const canvas = stage.querySelector("canvas");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = getComputedStyle(document.documentElement);
+const tok = (n, f) => (css.getPropertyValue(n).trim() || f);
+
+THREE.ColorManagement.enabled = false;
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:"high-performance"});
+} catch (e) { return; }
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+renderer.setClearColor(0x000000, 0);
+
+const scene = new THREE.Scene();
+const FOV = 30;
+const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
+camera.position.set(0, 0, 4.4);
+const tilt = new THREE.Group(), spin = new THREE.Group();
+tilt.add(spin); scene.add(tilt);
+
+const C = {
+  night: new THREE.Color(tok("--night-2", "#0E2152")),
+  sky: new THREE.Color(tok("--sky", "#6EA8FF")),
+  amber: new THREE.Color(tok("--amber", "#FFB547")),
+  coral: new THREE.Color(tok("--coral", "#FF6F59")),
+  dotA: new THREE.Color("#7FA4FF"), dotB: new THREE.Color("#E4ECFF")
+};
+const D2R = Math.PI / 180;
+function ll(lat, lon, r = 1){
+  const phi = (90 - lat) * D2R, th = (lon + 180) * D2R;
+  return new THREE.Vector3(-r * Math.sin(phi) * Math.cos(th), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(th));
+}
+
+// --- land mask
+function poly(a){ let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9; for (let i=0;i<a.length;i+=2){ x0=Math.min(x0,a[i]); x1=Math.max(x1,a[i]); y0=Math.min(y0,a[i+1]); y1=Math.max(y1,a[i+1]); } return {a,x0,x1,y0,y1}; }
+const LP = LAND.map(poly), WP = WATER.map(poly);
+function inside(p, x, y){
+  if (x < p.x0 || x > p.x1 || y < p.y0 || y > p.y1) return false;
+  const a = p.a; let c = false;
+  for (let i = 0, j = a.length - 2; i < a.length; j = i, i += 2){
+    const xi = a[i], yi = a[i+1], xj = a[j], yj = a[j+1];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+  }
+  return c;
+}
+function isLand(lon, lat){
+  if (lat < -67) return true;
+  let land = false;
+  for (const p of LP) if (inside(p, lon, lat)){ land = true; break; }
+  if (!land) return false;
+  for (const p of WP) if (inside(p, lon, lat)) return false;
+  return true;
+}
+
+// --- globe body (occluder with rim light)
+const bodyMat = new THREE.ShaderMaterial({
+  uniforms:{uBase:{value:C.night}, uRim:{value:C.sky}, uWarm:{value:C.coral}},
+  vertexShader:`varying vec3 vN; varying vec3 vV;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
+  fragmentShader:`uniform vec3 uBase; uniform vec3 uRim; uniform vec3 uWarm; varying vec3 vN; varying vec3 vV;
+    void main(){ float f = 1.0 - max(dot(vN, vV), 0.0);
+      vec3 rim = mix(uRim, uWarm, 1.0 - smoothstep(-0.8, 0.2, vN.y));
+      vec3 col = mix(uBase*0.85, rim, pow(f, 3.0)*0.75);
+      gl_FragColor = vec4(col, 1.0); }`
+});
+const body = new THREE.Mesh(new THREE.SphereGeometry(0.985, 64, 48), bodyMat);
+body.renderOrder = 0; spin.add(body);
+
+// --- land dots on a Fibonacci sphere
+const N = 30000, golden = Math.PI * (3 - Math.sqrt(5));
+const pos = [], rnd = [];
+for (let i = 0; i < N; i++){
+  const y = 1 - (i + 0.5) / N * 2;
+  const lat = Math.asin(y) / D2R;
+  let lon = ((golden * i / D2R) % 360) - 180;
+  if (isLand(lon, lat)){ const v = ll(lat, lon, 1.0); pos.push(v.x, v.y, v.z); rnd.push(Math.random()); }
+}
+const dotGeo = new THREE.BufferGeometry();
+dotGeo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+dotGeo.setAttribute("aRand", new THREE.Float32BufferAttribute(rnd, 1));
+const U = {uTime:{value:0}, uProj:{value:600}};
+const dotMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:U.uTime, uProj:U.uProj, uSize:{value:0.0125}, uA:{value:C.dotA}, uB:{value:C.dotB}},
+  vertexShader:`attribute float aRand; uniform float uSize; uniform float uProj; varying float vRand; varying float vFace;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); vec3 n = normalize(normalMatrix*position);
+      vFace = dot(n, normalize(-mv.xyz)); vRand = aRand; gl_PointSize = uSize*uProj/-mv.z; gl_Position = projectionMatrix*mv; }`,
+  fragmentShader:`uniform float uTime; uniform vec3 uA; uniform vec3 uB; varying float vRand; varying float vFace;
+    void main(){ float r = length(gl_PointCoord-0.5); if (r > 0.5) discard;
+      float a = 1.0 - smoothstep(0.15, 0.5, r);
+      float tw = 0.72 + 0.28*sin(uTime*1.3 + vRand*50.0);
+      vec3 col = mix(uA, uB, vRand)*tw;
+      float edge = smoothstep(-0.05, 0.45, vFace);
+      gl_FragColor = vec4(col, a*(0.3 + 0.7*edge)); }`,
+  transparent:true, depthWrite:false
+});
+const dots = new THREE.Points(dotGeo, dotMat); dots.renderOrder = 1; spin.add(dots);
+
+// --- routes
+const O = {bj:[39.9,116.4], sh:[31.23,121.47], gz:[23.13,113.26], cd:[30.57,104.07], hn:[21.03,105.85], dn:[16.05,108.2], hcm:[10.82,106.63]};
+const Dd = {ff:[41.0,-91.96], bos:[42.36,-71.06], nyc:[40.71,-74.0], la:[34.05,-118.24], sea:[47.6,-122.33], chi:[41.88,-87.63], sf:[37.77,-122.42], aus:[30.27,-97.74]};
+const ROUTES = [["hn","ff"],["hcm","la"],["dn","sea"],["bj","bos"],["sh","nyc"],["gz","sf"],["cd","chi"],["hcm","aus"],["sh","ff"],["hn","bos"]];
+function slerp(a, b, ang, t){ const s = Math.sin(ang); return new THREE.Vector3().addScaledVector(a, Math.sin((1-t)*ang)/s).addScaledVector(b, Math.sin(t*ang)/s); }
+const arcs = [];
+const arcVS = `varying float vT; void main(){ vT = uv.x; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`;
+const arcFS = `uniform float uHead; uniform float uStatic; uniform vec3 uA; uniform vec3 uB; varying float vT;
+  void main(){ float d = uHead - vT;
+    float trail = d >= 0.0 ? 1.0 - smoothstep(0.0, 0.42, d) : 0.0;
+    float glow = 1.0 - smoothstep(0.0, 0.03, abs(d));
+    float base = mix(0.14, 0.8, uStatic);
+    float a = clamp(max(base, trail*0.95) + glow*0.7*(1.0-uStatic), 0.0, 1.0);
+    vec3 col = mix(uA, uB, vT) + glow*0.45*(1.0-uStatic);
+    gl_FragColor = vec4(col, a); }`;
+ROUTES.forEach(([o, d], k) => {
+  const a = ll(O[o][0], O[o][1]).normalize(), b = ll(Dd[d][0], Dd[d][1]).normalize();
+  const ang = a.angleTo(b), h = 0.1 + ang * 0.2, pts = [];
+  for (let i = 0; i <= 80; i++){ const t = i / 80; pts.push(slerp(a, b, ang, t).multiplyScalar(1.0 + Math.sin(Math.PI * t) * h)); }
+  const curve = new THREE.CatmullRomCurve3(pts);
+  const mat = new THREE.ShaderMaterial({
+    uniforms:{uHead:{value:-1}, uStatic:{value:reduce ? 1 : 0}, uA:{value:C.amber}, uB:{value:C.sky}},
+    vertexShader:arcVS, fragmentShader:arcFS, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+  });
+  const mesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 140, 0.0045, 6, false), mat);
+  mesh.renderOrder = 2; spin.add(mesh);
+  arcs.push({curve, mat, off: (k * 0.137 + Math.random() * 0.05) % 1, speed: 0.06 + Math.random() * 0.025});
+});
+
+// --- moving heads
+const headGeo = new THREE.BufferGeometry();
+headGeo.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(arcs.length * 3), 3));
+headGeo.setAttribute("aAlpha", new THREE.Float32BufferAttribute(new Float32Array(arcs.length), 1));
+const heads = new THREE.Points(headGeo, new THREE.ShaderMaterial({
+  uniforms:{uProj:U.uProj, uSize:{value:0.075}, uC:{value:new THREE.Color("#FFE2B8")}},
+  vertexShader:`attribute float aAlpha; uniform float uSize; uniform float uProj; varying float vA;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); gl_PointSize = uSize*uProj/-mv.z; gl_Position = projectionMatrix*mv; vA = aAlpha; }`,
+  fragmentShader:`uniform vec3 uC; varying float vA;
+    void main(){ float r = length(gl_PointCoord-0.5); if (r > 0.5) discard;
+      float core = 1.0 - smoothstep(0.0, 0.1, r); float halo = 1.0 - smoothstep(0.0, 0.5, r);
+      gl_FragColor = vec4(uC*(core + halo*halo*0.8), (core + halo*halo*0.6)*vA); }`,
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+}));
+heads.renderOrder = 4; heads.visible = !reduce; spin.add(heads);
+
+// --- city markers with pulse rings
+const mPos = [], mCol = [], mRnd = [];
+const addM = (c, col) => { const v = ll(c[0], c[1], 1.008); mPos.push(v.x, v.y, v.z); mCol.push(col.r, col.g, col.b); mRnd.push(Math.random()); };
+Object.values(O).forEach(c => addM(c, C.amber));
+Object.values(Dd).forEach(c => addM(c, C.sky));
+const mGeo = new THREE.BufferGeometry();
+mGeo.setAttribute("position", new THREE.Float32BufferAttribute(mPos, 3));
+mGeo.setAttribute("aColor", new THREE.Float32BufferAttribute(mCol, 3));
+mGeo.setAttribute("aRand", new THREE.Float32BufferAttribute(mRnd, 1));
+const markers = new THREE.Points(mGeo, new THREE.ShaderMaterial({
+  uniforms:{uTime:U.uTime, uProj:U.uProj, uSize:{value:0.11}, uStatic:{value:reduce ? 1 : 0}},
+  vertexShader:`attribute vec3 aColor; attribute float aRand; uniform float uSize; uniform float uProj; varying vec3 vC; varying float vR; varying float vFace;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); vec3 n = normalize(normalMatrix*position); vFace = smoothstep(0.0, 0.3, dot(n, normalize(-mv.xyz)));
+      vC = aColor; vR = aRand; gl_PointSize = uSize*uProj/-mv.z; gl_Position = projectionMatrix*mv; }`,
+  fragmentShader:`uniform float uTime; uniform float uStatic; varying vec3 vC; varying float vR; varying float vFace;
+    void main(){ float r = length(gl_PointCoord-0.5); if (r > 0.5) discard;
+      float core = 1.0 - smoothstep(0.05, 0.11, r);
+      float p = fract(uTime*0.45 + vR);
+      float ring = (1.0 - smoothstep(0.0, 0.03, abs(r - (0.11 + p*0.36)))) * (1.0 - p) * (1.0 - uStatic);
+      gl_FragColor = vec4(vC*(core*1.25 + ring), (core + ring*0.85)*vFace); }`,
+  transparent:true, depthWrite:false
+}));
+markers.renderOrder = 3; spin.add(markers);
+
+// --- atmosphere (soft glow, warm at the bottom like a sunrise)
+const atmo = new THREE.Mesh(new THREE.SphereGeometry(1.0, 64, 48), new THREE.ShaderMaterial({
+  uniforms:{uC1:{value:C.sky}, uC2:{value:C.coral}},
+  vertexShader:`varying vec3 vN; varying vec3 vP; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); vN = normalize(normalMatrix*normal); vP = mv.xyz; gl_Position = projectionMatrix*mv; }`,
+  fragmentShader:`uniform vec3 uC1; uniform vec3 uC2; varying vec3 vN; varying vec3 vP;
+    void main(){ float f = dot(vN, normalize(vP)); float i = pow(smoothstep(0.0, 0.55, f), 2.2);
+      vec3 c = mix(uC1, uC2, 1.0 - smoothstep(-0.9, 0.25, vN.y));
+      gl_FragColor = vec4(c*i, i); }`,
+  side:THREE.BackSide, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending
+}));
+atmo.scale.setScalar(1.17); atmo.renderOrder = 5; tilt.add(atmo);
+
+// --- stars behind the globe
+const sPos = [], sSize = [], sRnd = [];
+for (let i = 0; i < 380; i++){
+  const v = new THREE.Vector3(Math.random()*2-1, Math.random()*2-1, Math.random()*2-1).normalize().multiplyScalar(6 + Math.random()*6);
+  v.z = -Math.abs(v.z) - 2; sPos.push(v.x, v.y, v.z); sSize.push(0.8 + Math.random()*1.8); sRnd.push(Math.random());
+}
+const sGeo = new THREE.BufferGeometry();
+sGeo.setAttribute("position", new THREE.Float32BufferAttribute(sPos, 3));
+sGeo.setAttribute("aSize", new THREE.Float32BufferAttribute(sSize, 1));
+sGeo.setAttribute("aRand", new THREE.Float32BufferAttribute(sRnd, 1));
+const sMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:U.uTime, uPR:{value:1}},
+  vertexShader:`attribute float aSize; attribute float aRand; uniform float uTime; uniform float uPR; varying float vA;
+    void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); gl_PointSize = aSize*uPR; gl_Position = projectionMatrix*mv; vA = 0.3 + 0.7*(0.5 + 0.5*sin(uTime*0.8 + aRand*30.0)); }`,
+  fragmentShader:`varying float vA; void main(){ float r = length(gl_PointCoord-0.5); if (r > 0.5) discard; gl_FragColor = vec4(0.86, 0.9, 1.0, (1.0 - smoothstep(0.0, 0.5, r))*vA*0.75); }`,
+  transparent:true, depthWrite:false
+});
+const stars = new THREE.Points(sGeo, sMat); stars.renderOrder = -1; scene.add(stars);
+
+// --- HTML labels
+const labels = [
+  {el: stage.querySelector('[data-anchor="cn"]'), v: ll(34, 104, 1.02)},
+  {el: stage.querySelector('[data-anchor="vn"]'), v: ll(14, 108.5, 1.02)},
+  {el: stage.querySelector('[data-anchor="us"]'), v: ll(39.5, -99, 1.02)}
+].filter(l => l.el);
+
+// --- sizing
+let W = 1, H = 1;
+function resize(){
+  W = stage.clientWidth || 1; H = stage.clientHeight || 1;
+  const pr = Math.min(window.devicePixelRatio || 1, 2);
+  renderer.setPixelRatio(pr); renderer.setSize(W, H, false);
+  camera.aspect = W / H; camera.updateProjectionMatrix();
+  U.uProj.value = (H * pr) / (2 * Math.tan(FOV * D2R / 2));
+  sMat.uniforms.uPR.value = pr;
+  requestRender();
+}
+
+// --- interaction
+const BASE_LON = 182, BASE_LAT = 26, AMP = 34;
+let yaw = 0, pitch = 0, vel = 0, dragging = false, lx = 0, ly = 0, lastTouch = -1e9;
+canvas.addEventListener("pointerdown", e => { dragging = true; lx = e.clientX; ly = e.clientY; vel = 0; stage.classList.add("dragging"); try { canvas.setPointerCapture(e.pointerId); } catch(_){} });
+canvas.addEventListener("pointermove", e => {
+  if (!dragging) return;
+  const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
+  const k = 3.2 / Math.max(W, 1);
+  yaw += dx * k; vel = dx * k; pitch = Math.max(-0.45, Math.min(0.45, pitch + dy * k * 0.7));
+  lastTouch = performance.now(); requestRender();
+});
+const end = () => { dragging = false; stage.classList.remove("dragging"); lastTouch = performance.now(); };
+canvas.addEventListener("pointerup", end); canvas.addEventListener("pointercancel", end); canvas.addEventListener("lostpointercapture", end);
+
+// --- loop
+const tmp = new THREE.Vector3(), camDir = new THREE.Vector3();
+let visible = true, running = false, needs = true, clock = 0, last = performance.now(), phase = -Math.PI / 2;
+function requestRender(){ needs = true; if (!running) loopOnce(); }
+function loopOnce(){ running = true; requestAnimationFrame(frame); }
+function sstep(a, b, x){ const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+function frame(now){
+  running = false;
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const animate = !reduce && visible && !document.hidden;
+  if (animate){ clock += dt; phase += dt * 0.11; }
+  if (!dragging){
+    yaw += vel; vel *= 0.93;
+    if (now - lastTouch > 3500){ yaw *= 0.985; pitch *= 0.985; }
+  }
+  const lon = BASE_LON + (reduce ? -AMP * 0.6 : AMP * Math.sin(phase));
+  spin.rotation.y = -(lon + 90) * D2R + yaw;
+  tilt.rotation.x = BASE_LAT * D2R + pitch;
+  U.uTime.value = clock;
+
+  const hp = headGeo.attributes.position, ha = headGeo.attributes.aAlpha;
+  arcs.forEach((a, i) => {
+    const head = ((clock * a.speed + a.off) % 1) * 1.5 - 0.08;
+    a.mat.uniforms.uHead.value = head;
+    const u = Math.max(0, Math.min(1, head));
+    const p = a.curve.getPointAt(u);
+    hp.setXYZ(i, p.x, p.y, p.z);
+    ha.setX(i, head < 0 || head > 1 ? 0 : sstep(0, 0.04, head) * (1 - sstep(0.96, 1, head)));
+  });
+  hp.needsUpdate = true; ha.needsUpdate = true;
+
+  scene.updateMatrixWorld();
+  camDir.copy(camera.position).normalize();
+  labels.forEach(l => {
+    tmp.copy(l.v); spin.localToWorld(tmp);
+    const face = tmp.clone().normalize().dot(camDir);
+    tmp.project(camera);
+    const x = (tmp.x * 0.5 + 0.5) * W, y = (-tmp.y * 0.5 + 0.5) * H;
+    l.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -150%)`;
+    l.el.style.opacity = sstep(0.12, 0.42, face).toFixed(3);
+  });
+
+  renderer.render(scene, camera);
+  needs = false;
+  if (animate || dragging || Math.abs(vel) > 1e-4 || Math.abs(yaw) > 1e-3) loopOnce();
+}
+
+new ResizeObserver(resize).observe(stage);
+new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) requestRender(); }).observe(stage);
+document.addEventListener("visibilitychange", () => { if (!document.hidden){ last = performance.now(); requestRender(); } });
+renderer.domElement.addEventListener("webglcontextlost", e => { e.preventDefault(); stage.classList.remove("ready"); });
+resize();
+requestAnimationFrame(() => stage.classList.add("ready"));
+})();
+</script>
+</body></html>
