@@ -179,7 +179,7 @@ html:lang(zh) .hero .sub{max-width:29em}
 .stage-fallback span:nth-child(2){inset:35% 5% 5% 35%;background:var(--peach);animation-delay:-2s}
 .stage-fallback span:nth-child(3){inset:45% 45% 10% 15%;background:var(--mint);animation-delay:-4s}
 @keyframes blob{50%{border-radius:55% 45% 40% 60%/45% 60% 40% 55%;transform:translateY(-6px)}}
-.stage-hint{position:absolute;left:50%;bottom:-1.5%;transform:translateX(-50%) rotate(-2deg);margin:0;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+.stage-hint{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;width:max-content;max-width:100%;margin:18px auto 0;transform:rotate(-2deg);text-align:center;
   font-family:var(--font-hand);font-weight:600;font-size:.98rem;color:var(--primary);pointer-events:none}
 html:lang(zh) .stage-hint{font-weight:400;font-size:1.05rem}
 .stage-hint svg{width:20px;height:20px}
@@ -670,14 +670,14 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
         <div class="stage" id="stage3d" role="img" data-i18n-attr="aria-label:scene.aria">
           <div class="stage-fallback" aria-hidden="true"><span></span><span></span><span></span></div>
           <canvas aria-hidden="true"></canvas>
-          <p class="stage-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5V4.5a1.5 1.5 0 0 1 3 0V10m0-1a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 15a1.6 1.6 0 0 1 2.6-1.8L9 16"/></svg><span data-i18n="scene.hint"></span></p>
         </div>
+        <p class="stage-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5V4.5a1.5 1.5 0 0 1 3 0V10m0-1a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 15a1.6 1.6 0 0 1 2.6-1.8L9 16"/></svg><span data-i18n="scene.hint"></span></p>
         <div class="seal" aria-hidden="true">
           <svg viewBox="0 0 120 120">
             <defs><path id="sealCircle" d="M60 60 m-43 0 a43 43 0 1 1 86 0 a43 43 0 1 1 -86 0"/></defs>
             <circle class="seal-bg" cx="60" cy="60" r="57"/>
             <circle class="seal-ring" cx="60" cy="60" r="31"/>
-            <g class="seal-spin"><text class="seal-text"><textPath href="#sealCircle" textLength="266" lengthAdjust="spacingAndGlyphs" data-i18n="ill.seal"></textPath></text></g>
+            <g class="seal-spin"><text class="seal-text"><textPath href="#sealCircle" textLength="266" lengthAdjust="spacing" data-i18n="ill.seal"></textPath></text></g>
             <text class="seal-mid" x="60" y="69" text-anchor="middle" data-i18n="stats.c"></text>
           </svg>
         </div>
@@ -1784,13 +1784,23 @@ var RES = window.PF_RES = [
     clearTimeout(toastTimer); toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2600);
   }
 
+  /* ---------- Rotating seal: pick a font size so the text fills the circle without stretching the glyphs ---------- */
+  function fitSeal(){
+    var tp = $(".seal textPath"); if (!tp || !tp.getComputedTextLength) return;
+    var text = tp.parentNode, target = 262;
+    tp.removeAttribute("textLength"); text.style.fontSize = "10px";
+    var len = 0; try { len = tp.getComputedTextLength(); } catch(e){}
+    if (len > 0) text.style.fontSize = Math.max(7, Math.min(13.5, 10 * target / len)).toFixed(2) + "px";
+    tp.setAttribute("textLength", "266"); tp.setAttribute("lengthAdjust", "spacing");
+  }
+
   /* ---------- Set language ---------- */
   function setLang(lang, opts){
     opts = opts || {};
     if (LANGS.indexOf(lang) < 0) lang = "en";
     state.lang = lang;
     document.documentElement.lang = HTML_LANG[lang];
-    applyStatic(); renderSteps(); renderResources(); renderForm(); updateLangButtons();
+    applyStatic(); renderSteps(); renderResources(); renderForm(); updateLangButtons(); fitSeal();
     if (opts.persist){
       store("pf-lang", lang);
       try { history.replaceState(null, "", "#" + lang); } catch(e){}
@@ -1918,7 +1928,7 @@ var RES = window.PF_RES = [
     $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === savedStage)); });
   }
   setLang(detect());
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeThumbs);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ placeThumbs(); fitSeal(); });
   window.PF = {setLang: function(l){ setLang(l, {persist:true}); }, switchTo: switchTo, t: t, state: state};
 })();
 </script>
@@ -2006,17 +2016,30 @@ function canvasTex(w, h, draw){
   t.userData.redraw(); return t;
 }
 const INK = "#3A3560";
-function pageTex(word, font){
-  return canvasTex(256, 340, (x, w, h) => {
-    x.fillStyle = "#FFFDF8"; x.fillRect(0, 0, w, h);
-    x.strokeStyle = "rgba(107,91,214,.18)"; x.lineWidth = 2;
-    for (let y = 70; y < h - 20; y += 26){ x.beginPath(); x.moveTo(22, y); x.lineTo(w - 22, y); x.stroke(); }
-    if (word){
-      x.fillStyle = INK; x.textAlign = "center"; x.textBaseline = "alphabetic";
-      x.font = font; x.fillText(word, w / 2, 148);
-      x.fillStyle = "rgba(255,224,138,.7)"; x.fillRect(w * 0.18, 156, w * 0.64, 12);
-    }
-  });
+function drawPage(x, w, h, word, side, pageNo){
+  x.fillStyle = "#FFFDF8"; x.fillRect(0, 0, w, h);
+  const g = x.createLinearGradient(0, 0, 40, 0); g.addColorStop(0, "rgba(58,53,96,.10)"); g.addColorStop(1, "rgba(58,53,96,0)");
+  if (side === 2){ x.fillStyle = g; x.fillRect(0, 0, 40, h); }
+  if (side === 1){ x.save(); x.translate(w, 0); x.scale(-1, 1); x.fillStyle = g; x.fillRect(0, 0, 40, h); x.restore(); }
+  x.strokeStyle = "rgba(107,91,214,.16)"; x.lineWidth = 3;
+  for (let y = 430; y < h - 80; y += 46){ x.beginPath(); x.moveTo(60, y); x.lineTo(w - 60, y); x.stroke(); }
+  x.strokeStyle = "rgba(247,182,200,.55)"; x.beginPath(); x.moveTo(96, 40); x.lineTo(96, h - 40); x.stroke();
+  if (word){
+    x.fillStyle = "rgba(255,224,138,.8)"; x.beginPath(); x.roundRect ? x.roundRect(104, 318, w - 160, 40, 18) : x.rect(104, 318, w - 160, 40); x.fill();
+    x.fillStyle = INK; x.textAlign = "center"; x.textBaseline = "alphabetic"; x.font = word[1]; x.fillText(word[0], w / 2 + 22, 336);
+    x.font = "600 30px 'Be Vietnam Pro', 'PingFang SC', sans-serif"; x.fillStyle = "rgba(58,53,96,.55)"; x.fillText(word[2], w / 2 + 22, 170);
+    x.fillStyle = "rgba(58,53,96,.22)"; for (let i = 0; i < 3; i++){ x.fillRect(120, 430 + i * 46 - 14, (w - 220) * (0.9 - i * 0.2), 10); }
+    x.fillStyle = "rgba(201,192,247,.9)"; x.beginPath(); const sx = w - 110, sy = h - 150;
+    x.moveTo(sx, sy - 22); x.quadraticCurveTo(sx + 3, sy - 3, sx + 22, sy); x.quadraticCurveTo(sx + 3, sy + 3, sx, sy + 22); x.quadraticCurveTo(sx - 3, sy + 3, sx - 22, sy); x.quadraticCurveTo(sx - 3, sy - 3, sx, sy - 22); x.fill();
+  }
+  if (pageNo){ x.font = "600 26px 'Be Vietnam Pro', sans-serif"; x.fillStyle = "rgba(58,53,96,.45)"; x.textAlign = side === 1 ? "left" : "right"; x.fillText(String(pageNo), side === 1 ? 60 : w - 60, h - 40); }
+}
+function pageCanvas(){ return canvasTex(512, 720, () => {}); }
+function paint(tex, word, side, pageNo, mirror){
+  const c = tex.image, x = c.getContext("2d");
+  x.save(); x.clearRect(0, 0, c.width, c.height);
+  if (mirror){ x.translate(c.width, 0); x.scale(-1, 1); }
+  drawPage(x, c.width, c.height, word, side, pageNo); x.restore(); tex.needsUpdate = true;
 }
 function stripeTex(){
   const t = canvasTex(64, 64, (x, w, h) => { x.fillStyle = "#FFFDF8"; x.fillRect(0, 0, w, h); x.fillStyle = "rgba(46,42,71,.10)"; for (let y = 0; y < h; y += 6) x.fillRect(0, y, w, 1.5); });
@@ -2068,25 +2091,80 @@ mesh(new THREE.SphereGeometry(0.055, 16, 8), mat("--butter", "#FFE08A", {roughne
 mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.74, 6), mat("--butter", "#FFE08A"), cap, [0.37, 0.2, 0], [0, 0, Math.PI / 2]);
 mesh(new THREE.CylinderGeometry(0.045, 0.06, 0.28, 12), mat("--butter", "#FFE08A"), cap, [0.74, 0.04, 0]);
 
-// open book with a turning page
-const open = new THREE.Group(); open.position.set(0.95, 0.2, 0.72); open.rotation.y = 0.92; island.add(open);
-mesh(rbox(2.0, 0.06, 1.36, 0.025), mat("--lav", "#C9C0F7", {roughness:0.55}), open, [0, 0.03, 0]);
-const leftBlock = mesh(rbox(0.94, 0.1, 1.24, 0.03), fixed("#FFFDF8", {roughness:0.9}), open, [-0.48, 0.1, 0], [0, 0, 0.05]);
-const rightBlock = mesh(rbox(0.94, 0.1, 1.24, 0.03), fixed("#FFFDF8", {roughness:0.9}), open, [0.48, 0.1, 0], [0, 0, -0.05]);
-const WORDS = [["Hello", "600 54px Mali, 'Comic Sans MS', cursive"], ["你好", "400 64px 'ZCOOL KuaiLe', 'PingFang SC', sans-serif"], ["Xin chào", "600 46px Mali, 'Comic Sans MS', cursive"]];
+// open book: hard cover, curved page blocks, page text that follows the curve, ribbon, and a turning page
+const open = new THREE.Group(); open.position.set(1.0, 0.2, 0.75); open.rotation.y = 0.92; open.scale.setScalar(0.78); island.add(open);
+const PW = 0.96, PD = 1.3;                                   // half-spread width, page depth
+const topY = u => 0.035 + 0.13 * Math.sin(Math.min(u / 0.32, 1) * Math.PI / 2) - 0.02 * (u / PW);
+const coverMat = mat("--lav", "#C9C0F7", {roughness:0.5});
+mesh(rbox(PW + 0.08, 0.05, PD + 0.12, 0.022), coverMat, open, [-(PW + 0.08) / 2 + 0.01, 0.025, 0], [0, 0, -0.035]);
+mesh(rbox(PW + 0.08, 0.05, PD + 0.12, 0.022), coverMat, open, [(PW + 0.08) / 2 - 0.01, 0.025, 0], [0, 0, 0.035]);
+mesh(new THREE.CylinderGeometry(0.06, 0.06, PD + 0.12, 20, 1, false, -Math.PI / 2, Math.PI), coverMat, open, [0, 0.03, 0], [Math.PI / 2, 0, 0]);
+function pageBlock(side){
+  const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(PW, 0);
+  for (let i = 20; i >= 0; i--){ const u = PW * i / 20; s.lineTo(u, topY(u)); }
+  const g = new THREE.ExtrudeGeometry(s, {depth:PD, bevelEnabled:true, bevelSize:0.01, bevelThickness:0.01, bevelSegments:2, curveSegments:4});
+  g.translate(0, 0, -PD / 2);
+  if (side < 0){ g.scale(-1, 1, 1); const idx = g.index ? g.index.array : null; if (!idx){ const p = g.attributes.position; for (let i = 0; i < p.count; i += 3){ for (const a of [p, g.attributes.normal, g.attributes.uv]){ if (!a) continue; const n = a.itemSize; for (let k = 0; k < n; k++){ const t = a.array[(i + 1) * n + k]; a.array[(i + 1) * n + k] = a.array[(i + 2) * n + k]; a.array[(i + 2) * n + k] = t; } } } } }
+  g.computeVertexNormals(); return g;
+}
+const paperMat = fixed("#FFFDF8", {roughness:0.92});
+const edgeTex = stripes.clone(); edgeTex.repeat.set(3, 10); edgeTex.needsUpdate = true;
+const edgeMat = new THREE.MeshStandardMaterial({color:"#F4EFE6", map:edgeTex, roughness:0.95});
+const blockMats = [edgeMat, paperMat];   // ExtrudeGeometry groups: 0 = end caps (page edges), 1 = sides
+const rightBlock = mesh(pageBlock(1), blockMats, open, [0.012, 0.052, 0]);
+const leftBlock = mesh(pageBlock(-1), blockMats, open, [-0.012, 0.052, 0]);
+function pageSurface(side){
+  const w = PW - 0.06, g = new THREE.PlaneGeometry(w, PD - 0.08, 28, 1); g.rotateX(-Math.PI / 2);
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++){ let x = p.getX(i) + w / 2 + 0.03; if (side < 0) x = x - PW; p.setX(i, x); p.setY(i, topY(Math.abs(x)) + 0.0125); }
+  g.computeVertexNormals(); return g;
+}
+const WORDS = [["Hello", "600 128px Mali, 'Comic Sans MS', cursive", "English"], ["你好", "400 150px 'ZCOOL KuaiLe', 'PingFang SC', sans-serif", "中文"], ["Xin chào", "600 100px Mali, 'Comic Sans MS', cursive", "Tiếng Việt"]];
 let wordIdx = 0;
-const leftTex = pageTex(WORDS[2][0], WORDS[2][1]), rightTex = pageTex(WORDS[0][0], WORDS[0][1]);
-const pageGeo = new THREE.PlaneGeometry(0.88, 1.18);
-const leftPage = mesh(pageGeo, new THREE.MeshStandardMaterial({map:leftTex, roughness:0.9}), leftBlock, [0, 0.051, 0], [-Math.PI / 2, 0, 0]);
-const rightPage = mesh(pageGeo, new THREE.MeshStandardMaterial({map:rightTex, roughness:0.9}), rightBlock, [0, 0.051, 0], [-Math.PI / 2, 0, 0]);
+// Six page textures: two on the open spread, four prepared ahead for the next turn.
+// They are painted and uploaded to the GPU one per frame while idle, so starting or ending a turn only swaps which texture a page shows.
+const pool = Array.from({length:6}, pageCanvas);
+let leftTex = pool[0], rightTex = pool[1], prep = null;
+let spread = 0;   // left page = previous word (page 2n+1), right page = current word (page 2n+2)
+const jobs = [];
+function upload(t){ try { renderer.initTexture(t); } catch (e) {} }
+function paintSpread(){ paint(leftTex, WORDS[(wordIdx + 2) % 3], 1, 2 * spread + 1); paint(rightTex, WORDS[wordIdx], 2, 2 * spread + 2); upload(leftTex); upload(rightTex); }
+function prepareNext(){
+  prep = null; jobs.length = 0;
+  const spare = pool.filter(t => t !== leftTex && t !== rightTex);
+  const cur = WORDS[wordIdx], next = WORDS[(wordIdx + 1) % 3], n = spread;
+  const p = {front:spare[0], back:spare[1], right:spare[2], left:spare[3]};
+  jobs.push(() => { paint(p.front, cur, 2, 2 * n + 2, false); upload(p.front); });   // turning page, front = current right page
+  jobs.push(() => { paint(p.back, cur, 1, 2 * n + 3, true); upload(p.back); });      // turning page, back (pre-mirrored)
+  jobs.push(() => { paint(p.right, next, 2, 2 * n + 4, false); upload(p.right); });  // revealed underneath on the right
+  jobs.push(() => { paint(p.left, cur, 1, 2 * n + 3, false); upload(p.left); });     // replaces the left page when the turn lands
+  jobs.push(() => { prep = p; });
+}
+paintSpread(); prepareNext();
+const leftPage = mesh(pageSurface(-1), new THREE.MeshStandardMaterial({map:leftTex, roughness:0.9}), open, [0, 0.052, 0]);
+const rightPage = mesh(pageSurface(1), new THREE.MeshStandardMaterial({map:rightTex, roughness:0.9}), open, [0, 0.052, 0]);
 leftPage.castShadow = rightPage.castShadow = false;
-const flipPivot = new THREE.Group(); flipPivot.position.set(0, 0.16, 0); open.add(flipPivot);
-const flipGeo = new THREE.PlaneGeometry(0.9, 1.2, 16, 1); flipGeo.translate(0.45, 0, 0); flipGeo.rotateX(-Math.PI / 2);
+// ribbon bookmark hanging from the gutter over the front edge
+const ribbonCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(0.0, 0.08, -0.1), new THREE.Vector3(0.03, 0.07, PD / 2 - 0.08), new THREE.Vector3(0.06, 0.02, PD / 2 + 0.07), new THREE.Vector3(0.08, -0.12, PD / 2 + 0.11)]);
+mesh(new THREE.TubeGeometry(ribbonCurve, 24, 0.016, 6, false).scale(1.6, 1, 1), mat("--rose", "#F7B6C8", {roughness:0.45}), open);
+// turning page
+const flipPivot = new THREE.Group(); flipPivot.position.set(0, 0.052 + 0.0175 + topY(0), 0); open.add(flipPivot);
+const FW = PW - 0.06;
+const flipGeo = new THREE.PlaneGeometry(FW, PD - 0.08, 28, 1); flipGeo.translate(FW / 2 + 0.03, 0, 0); flipGeo.rotateX(-Math.PI / 2);
+(function(){ const p = flipGeo.attributes.position; for (let i = 0; i < p.count; i++){ const x = p.getX(i); p.setY(i, topY(x) - topY(0) + 0.002); } })();
 const flipBase = flipGeo.attributes.position.array.slice();
-const flipPage = mesh(flipGeo, new THREE.MeshStandardMaterial({map:pageTex("", ""), roughness:0.9, side:THREE.DoubleSide}), flipPivot);
-flipPage.visible = false;
+const flipPage = mesh(flipGeo, new THREE.MeshStandardMaterial({map:pool[2], roughness:0.9, side:THREE.FrontSide}), flipPivot);
+const flipBack = mesh(flipGeo, new THREE.MeshStandardMaterial({map:pool[3], roughness:0.9, side:THREE.BackSide}), flipPivot);
+flipPage.visible = flipBack.visible = false;
+// The turning page casts and receives no shadows: otherwise its shadow pops onto the pages when it appears and vanishes when it lands,
+// which reads as the text "jumping" at the start and end of every turn.
+flipPage.castShadow = flipBack.castShadow = flipPage.receiveShadow = flipBack.receiveShadow = false;
 let flipT = -1;
-function startFlip(){ if (flipT < 0){ flipT = 0; flipPage.visible = true; } }
+function startFlip(){
+  if (flipT >= 0 || !prep) return;
+  flipPage.material.map = prep.front; flipBack.material.map = prep.back; rightPage.material.map = prep.right;
+  flipT = 0; flipPage.visible = flipBack.visible = true;
+}
 
 // pencil lying in front
 const pencil = new THREE.Group(); pencil.position.set(-0.55, 0.29, 1.5); pencil.rotation.set(0, 0.38, 0); island.add(pencil);
@@ -2115,7 +2193,7 @@ for (let i = 0; i < 6; i++){
 const tiles = [];
 const TILE_DEF = [
   {lang:"en", ch:"A", font:"800 150px 'Baloo 2', sans-serif", token:"--peach", fb:"#FFC2AE", pos:[-2.35, 1.55, 1.05]},
-  {lang:"zh", ch:"文", font:"500 128px 'ZCOOL KuaiLe', 'PingFang SC', sans-serif", token:"--mint", fb:"#A8E0C9", pos:[2.35, 1.85, 1.25]},
+  {lang:"zh", ch:"文", font:"500 128px 'ZCOOL KuaiLe', 'PingFang SC', sans-serif", token:"--mint", fb:"#A8E0C9", pos:[2.85, 2.05, -0.45]},
   {lang:"vi", ch:"Ơ", font:"800 150px 'Baloo 2', sans-serif", token:"--butter", fb:"#FFE08A", pos:[0.6, 3.05, -1.55]}
 ];
 const tileTextures = [];
@@ -2153,7 +2231,7 @@ const sparkGeo = new THREE.OctahedronGeometry(0.07, 0);
 });
 
 repaint();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { leftTex.userData.redraw(); rightTex.userData.redraw(); tileTextures.forEach(t => t.userData.redraw()); requestRender(); });
+if (document.fonts && document.fonts.load) Promise.all(["600 92px Mali", "400 108px 'ZCOOL KuaiLe'", "800 150px 'Baloo 2'", "600 30px 'Be Vietnam Pro'"].map(f => document.fonts.load(f, 'Hello Xin chào 你好 文 A Ơ English 中文 Tiếng Việt').catch(() => null))).then(() => { if (flipT < 0){ paintSpread(); prepareNext(); } tileTextures.forEach(t => t.userData.redraw()); requestRender(); });
 
 // --- sizing / framing
 let W = 1, H = 1;
@@ -2219,7 +2297,7 @@ function frame(now){
 
   px += (tx - px) * 0.06; py += (ty - py) * 0.06;
   if (!dragging) yawUser *= 0.985;
-  world.rotation.y = -0.18 + (reduce ? 0 : Math.sin(clock * 0.22) * 0.22) + px * 0.22 + yawUser;
+  world.rotation.y = -0.18 + (reduce ? 0 : Math.sin(clock * 0.26) * 0.28) + px * 0.22 + yawUser;
   world.rotation.x = py * 0.05;
   island.position.y = reduce ? 0 : Math.sin(clock * 0.9) * 0.06;
 
@@ -2239,37 +2317,42 @@ function frame(now){
   sparkles.forEach(s => { const k = 0.7 + Math.sin(clock * 2.2 + s.userData.phase) * 0.35; s.scale.setScalar(k); s.rotation.y = clock + s.userData.phase; });
 
   // paper plane
+  // The plane lives inside the rotating `world` group, but lookAt() expects a world-space target,
+  // so convert the point just ahead on the path before aiming the nose (+x) at it.
   const p = planeAt(clock), q = planeAt(clock + 0.05);
-  plane.position.copy(p); plane.lookAt(q); plane.rotateY(-Math.PI / 2); plane.rotateX(-0.35);
+  world.updateMatrixWorld();
+  plane.position.copy(p); plane.lookAt(world.localToWorld(q)); plane.rotateY(-Math.PI / 2); plane.rotateX(-0.35);
   if (animate){ trailPos.copyWithin(3, 0, (TRAIL - 1) * 3); trailPos.set([p.x, p.y, p.z], 0); trailGeo.attributes.position.needsUpdate = true; trail.computeLineDistances(); }
 
-  // page flip
+  // page flip (prepared textures are painted one per frame, never during the turn itself)
+  if (jobs.length && flipT < 0) jobs.shift()();
   if (!reduce && clock > nextFlip) startFlip();
   if (flipT >= 0){
     flipT += dt / 1.3; const k = Math.min(1, flipT), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-    flipPivot.rotation.z = e * Math.PI * 0.97;
+    flipPivot.rotation.z = e * Math.PI;
+    // Curl and resting curve are scaled by cos(angle): in the page's own frame "away from the book" flips sign once it passes 90°,
+    // so the paper always bows upward and never dips into the page it is landing on.
     const pos = flipGeo.attributes.position, bend = Math.sin(k * Math.PI) * 0.22;
-    for (let i = 0; i < pos.count; i++){ const x = flipBase[i * 3]; const u = x / 0.9; pos.setY(i, flipBase[i * 3 + 1] + bend * Math.sin(u * Math.PI * 0.9) * u); }
+    for (let i = 0; i < pos.count; i++){ const x = flipBase[i * 3]; const u = x / PW; pos.setY(i, (flipBase[i * 3 + 1] + bend * Math.sin(u * Math.PI * 0.9) * u) * Math.cos(flipPivot.rotation.z)); }
     pos.needsUpdate = true; flipGeo.computeVertexNormals();
     if (k >= 1){
-      flipT = -1; flipPage.visible = false; flipPivot.rotation.z = 0; nextFlip = clock + 3.2;
-      wordIdx = (wordIdx + 1) % WORDS.length;
-      const prev = WORDS[(wordIdx + 2) % 3], cur = WORDS[wordIdx];
-      leftTex.userData.redraw = rebuild(leftTex, prev); rightTex.userData.redraw = rebuild(rightTex, cur);
-      leftTex.userData.redraw(); rightTex.userData.redraw();
+      // the turned page now lies exactly on the left page, which gets the same content: no visible jump
+      leftPage.material.map = prep.left; leftTex = prep.left; rightTex = prep.right;
+      wordIdx = (wordIdx + 1) % WORDS.length; spread = (spread + 1) % 50;
+      flipT = -1; flipPage.visible = flipBack.visible = false; flipPivot.rotation.z = 0; nextFlip = clock + 3.2;
+      prepareNext();
     }
   }
 
   renderer.render(scene, camera);
-  if (animate || dragging || flipT >= 0 || Math.abs(yawUser) > 1e-3 || Math.abs(tx - px) > 1e-3 || Math.abs(ty - py) > 1e-3 || tiles.some(t => Math.abs((t.userData.activeTarget || 0) - t.userData.active) > 1e-3)) requestRender();
+  if (animate || dragging || flipT >= 0 || jobs.length || Math.abs(yawUser) > 1e-3 || Math.abs(tx - px) > 1e-3 || Math.abs(ty - py) > 1e-3 || tiles.some(t => Math.abs((t.userData.activeTarget || 0) - t.userData.active) > 1e-3)) requestRender();
 }
-function rebuild(tex, wd){
-  const img = tex.image;
-  return () => { const fresh = pageTex(wd[0], wd[1]); const x = img.getContext("2d"); x.clearRect(0, 0, img.width, img.height); x.drawImage(fresh.image, 0, 0); fresh.dispose(); tex.needsUpdate = true; };
-}
-
 new ResizeObserver(resize).observe(stage);
-new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible){ last = performance.now(); requestRender(); } }).observe(stage);
+// Use the most recent entry: one callback can carry several changes (scrolling out and back in), and reading the
+// first one left the scene thinking it was off-screen, so the animation stopped for good.
+new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; if (visible){ last = performance.now(); requestRender(); } }, {rootMargin:"120px"}).observe(stage);
+// Watchdog: if the scene should be animating but no frame is queued, start the loop again.
+setInterval(() => { if (!reduce && visible && !document.hidden && !running){ last = performance.now(); requestRender(); } }, 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden){ last = performance.now(); requestRender(); } });
 canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); stage.classList.remove("ready"); });
 resize(); markActive();
