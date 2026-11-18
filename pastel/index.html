@@ -1,10 +1,12 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style></head><body>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#FDFCFD"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%221%22 y=%221%22 width=%2230%22 height=%2230%22 rx=%2210%22 fill=%22%23F9B2D7%22/%3E%3Cpath d=%22M7 23C12 22 14 12 23 9%22 fill=%22none%22 stroke=%22%231D1A26%22 stroke-width=%222.6%22 stroke-linecap=%22round%22 stroke-dasharray=%221 4.4%22/%3E%3Ccircle cx=%2223.5%22 cy=%228.8%22 r=%223.4%22 fill=%22%23EEF8C2%22 stroke=%22%231D1A26%22 stroke-width=%221.5%22/%3E%3C/svg%3E"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style></head><body>
 <title>PathForward</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#FDFCFD">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%221%22 y=%221%22 width=%2230%22 height=%2230%22 rx=%2210%22 fill=%22%23F9B2D7%22/%3E%3Cpath d=%22M7 23C12 22 14 12 23 9%22 fill=%22none%22 stroke=%22%231D1A26%22 stroke-width=%222.6%22 stroke-linecap=%22round%22 stroke-dasharray=%221 4.4%22/%3E%3Ccircle cx=%2223.5%22 cy=%228.8%22 r=%223.4%22 fill=%22%23EEF8C2%22 stroke=%22%231D1A26%22 stroke-width=%221.5%22/%3E%3C/svg%3E">
 <meta name="description" content="PathForward: free, reliable study-abroad guidance for students in China and Vietnam, run by students.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400..600&family=Mali:wght@500;600&family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400..600&family=Mali:wght@500;600&family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" media="print" onload="this.media='all'">
 <style>
 :root{
   /* Layout: "morning pastel". Generous white space; a slow four-colour light field (pink, mist blue, mint, cream) behind a floating 3D study scene; ink-black type and buttons anchor the softness. */
@@ -39,18 +41,22 @@
   --font-hand:"Mali","ZCOOL KuaiLe","Noto Sans SC","Comic Sans MS",cursive;
   --radius:22px;
   --ease:cubic-bezier(.22,.8,.22,1);
-  --spring:cubic-bezier(.34,1.4,.64,1);
+  --spring:cubic-bezier(.16,1,.3,1);
+  --field-line:#958FA0;
 }
 
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
 html:lang(zh) body{line-height:1.8;letter-spacing:.01em}
 html:lang(vi) body{line-height:1.72}
 img,svg{max-width:100%}
-a{color:var(--primary)}
+a{color:var(--primary);text-underline-offset:.22em;text-decoration-thickness:1.5px}
+::selection{background:var(--lav);color:var(--fg)}
+input,textarea{caret-color:var(--fg)}
+button,a,input,select,textarea,label{touch-action:manipulation}
 :focus-visible{outline:2.5px solid var(--focus);outline-offset:3px}
 .wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -96,9 +102,9 @@ html:lang(zh) .em,html:lang(zh) .hl{font-family:var(--font-sans);font-style:norm
 .menu-btn .i-x{display:none}
 .menu-btn[aria-expanded="true"] .i-x{display:block}
 .menu-btn[aria-expanded="true"] .i-menu{display:none}
-.menu-panel{position:absolute;top:100%;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px 20px;box-shadow:var(--shadow)}
+.menu-panel{position:absolute;top:100%;left:0;right:0;max-height:calc(100dvh - 68px - env(safe-area-inset-top,0px));overflow-y:auto;overscroll-behavior:contain;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px 20px;box-shadow:var(--shadow)}
 .menu-panel .wrap{display:flex;flex-direction:column;gap:2px}
-.menu-panel a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:500;padding:13px 4px;border-bottom:1px solid var(--line)}
+.menu-panel a:not(.btn){color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:500;padding:13px 4px;border-bottom:1px solid var(--line)}
 .menu-panel .btn{margin-top:14px;border-bottom:0}
 
 /* Language switcher */
@@ -132,12 +138,9 @@ html:lang(zh) .em,html:lang(zh) .hl{font-family:var(--font-sans);font-style:norm
     radial-gradient(34% 40% at 64% 82%,var(--mint),transparent 70%),radial-gradient(28% 30% at 14% 86%,var(--butter),transparent 70%);
   filter:blur(40px) saturate(115%);animation:aurora 26s ease-in-out infinite alternate}
 @keyframes aurora{0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}50%{transform:translate3d(3%,-2%,0) rotate(5deg) scale(1.06)}100%{transform:translate3d(-3%,2%,0) rotate(-4deg) scale(1.02)}}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 25%,transparent),transparent 30%,transparent 70%,var(--bg))}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 25%,transparent),transparent 30%,transparent 70%,var(--surface-2))}
 .hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);align-items:center;gap:24px 40px;padding-block:44px 64px}
-.eyebrow-pill{display:inline-flex;align-items:center;gap:10px;margin:0;padding:7px 15px 7px 12px;border-radius:999px;font-size:.86rem;font-weight:500;color:var(--muted);background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.pulse{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--lav),var(--sky));flex-shrink:0;animation:pulse 2.4s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--mint) 80%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.hero h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:600;letter-spacing:-.045em;line-height:1.04;margin:22px 0 18px;text-wrap:balance}
+.hero h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:600;letter-spacing:-.04em;line-height:1.04;margin:0 0 20px;text-wrap:balance}
 html:lang(vi) .hero h1{font-size:clamp(2.1rem,4.2vw,3.45rem);line-height:1.22;letter-spacing:-.01em}
 html:lang(zh) .hero h1{font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.28;letter-spacing:.01em;font-weight:600}
 .hero .sub{font-size:clamp(1.02rem,1.35vw,1.14rem);color:var(--muted);max-width:33em;margin:0 0 30px}
@@ -148,6 +151,11 @@ html:lang(zh) .hero .sub{max-width:29em}
 .hero-facts li:nth-child(2){background:var(--lav-soft)}
 .hero-facts li:nth-child(3){background:var(--peach-soft)}
 .hero-facts svg{width:15px;height:15px;color:var(--fg);flex-shrink:0;opacity:.75}
+@media (max-width:520px){
+  .hero-facts{gap:4px 14px;margin-top:20px}
+  .hero-facts li,.hero-facts li:nth-child(2),.hero-facts li:nth-child(3){padding:0;background:none;border:0;font-size:.84rem;color:var(--muted);gap:5px}
+  .hero-facts svg{width:13px;height:13px;color:#3E9B57;opacity:1}
+}
 
 /* 3D stage */
 .stage-wrap{position:relative;min-width:0}
@@ -168,6 +176,8 @@ html:lang(zh) .hero .sub{max-width:29em}
   font-family:var(--font-hand);font-weight:600;font-size:.98rem;color:var(--primary);pointer-events:none}
 html:lang(zh) .stage-hint{font-weight:400;font-size:1.05rem}
 .stage-hint svg{width:20px;height:20px}
+.stage:not(.ready)~.stage-hint{opacity:0}
+.stage-hint{transition:opacity .8s var(--ease) .3s}
 .seal{position:absolute;left:2%;top:3%;width:clamp(96px,10vw,120px);aspect-ratio:1;filter:drop-shadow(0 14px 22px rgba(150,70,120,.25));z-index:2}
 .seal svg{width:100%;height:100%;display:block}
 .seal-bg{fill:#F6FFDC}
@@ -176,16 +186,14 @@ html:lang(zh) .stage-hint{font-weight:400;font-size:1.05rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .seal-text{font-family:var(--font-sans);font-size:10px;font-weight:600;letter-spacing:.06em;fill:#1D1A26}
 .seal-mid{font-family:var(--font-serif);font-style:italic;font-size:26px;font-weight:600;fill:#1D1A26}
+.motion-btn{position:absolute;z-index:2;right:3%;bottom:58px;width:40px;height:40px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;cursor:pointer;color:var(--fg);
+  background:color-mix(in srgb,var(--surface) 78%,transparent);box-shadow:inset 0 0 0 1px var(--line),0 8px 18px -12px rgba(80,40,90,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background-color .2s,box-shadow .2s}
+.motion-btn svg{width:16px;height:16px}
+.motion-btn .i-play,.motion-btn[aria-pressed="true"] .i-pause{display:none}
+.motion-btn[aria-pressed="true"] .i-play{display:block}
+@media (hover:hover){.motion-btn:hover{background:var(--surface);box-shadow:inset 0 0 0 1px var(--field-line),0 8px 18px -12px rgba(80,40,90,.4)}}
+html.still .hero::before,html.still .seal-spin,html.still .ill .float,html.still .ill .sway,html.still .ill .twinkle,html.still .stage-fallback span{animation-play-state:paused}
 
-/* ---------- Stats ---------- */
-.stats{position:relative;z-index:2}
-.stats-card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0}
-.stat{display:flex;flex-direction:column;gap:2px;padding:20px 22px;min-width:0;border-radius:var(--radius);background:var(--lav-soft);box-shadow:var(--clay)}
-.stat:nth-child(2){background:var(--peach-soft)}
-.stat:nth-child(3){background:var(--mint-soft)}
-.stat:nth-child(4){background:var(--butter-soft)}
-.stat dd{order:-1;margin:0;font-family:var(--font-serif);font-size:clamp(2.1rem,3.4vw,2.9rem);font-weight:500;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--fg)}
-.stat dt{color:var(--muted);font-size:.92rem;font-weight:500}
 </style>
 <style>
 /* ---------- Illustration paint (shared by every inline SVG illustration) ---------- */
@@ -212,11 +220,11 @@ html:lang(zh) .stage-hint{font-weight:400;font-size:1.05rem}
 /* ---------- Sections ---------- */
 .band{padding-block:clamp(72px,9vw,116px)}
 .band.tint{background:var(--surface-2)}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0;padding:5px 13px 5px 10px;border-radius:999px;background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);
-  font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}
-.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lav);box-shadow:10px 0 0 var(--sky),20px 0 0 var(--mint);margin-right:20px}
-html:lang(zh) .eyebrow{letter-spacing:.16em;font-size:.82rem}
-h2{font-size:clamp(1.95rem,3.8vw,3.05rem);line-height:1.1;letter-spacing:-.04em;font-weight:600;margin:16px 0 14px;text-wrap:balance}
+h2{font-size:clamp(1.95rem,3.8vw,3.05rem);line-height:1.1;letter-spacing:-.04em;font-weight:600;margin:0 0 16px;text-wrap:balance}
+/* Section headings keep the highlighter band but speak in their own face; the italic serif is saved for the hero */
+h2 .hl{font-family:inherit;font-style:normal;font-weight:inherit;letter-spacing:inherit;padding:0 .06em;margin:0}
+#about h2 .hl,#resources h2 .hl,#team h2 .hl{background:none;padding:0;animation:none}
+p,li,dd{text-wrap:pretty}
 html:lang(vi) h2{line-height:1.28}
 html:lang(zh) h2{line-height:1.35;letter-spacing:.02em}
 h3{text-wrap:balance}
@@ -228,8 +236,7 @@ html:lang(zh) .lead{max-width:34em}
 /* Gap */
 .gap-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 64px;align-items:end}
 .gap-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px}
-.gap-item{position:relative;padding:22px 24px 26px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
-.gap-item:hover{transform:translateY(-5px)}
+.gap-item{position:relative;padding:22px 24px 26px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0}
 .spot{height:128px;margin:-4px 0 14px;border-radius:16px;display:grid;place-items:center;background:var(--peach-soft)}
 .gap-item:nth-child(2) .spot{background:var(--sky-soft)}
 .gap-item:nth-child(3) .spot{background:var(--mint-soft)}
@@ -238,30 +245,22 @@ html:lang(zh) .lead{max-width:34em}
 .gap-item p{margin:0;color:var(--muted)}
 .answer{position:relative;overflow:hidden;margin-top:28px;border-radius:28px;background:var(--lav-soft);box-shadow:var(--clay);
   padding:clamp(26px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:20px 40px;align-items:center}
-.answer h3{font-size:clamp(1.55rem,2.8vw,2.2rem);line-height:1.2;margin:14px 0 12px}
+.answer h3{font-size:clamp(1.55rem,2.8vw,2.2rem);line-height:1.2;margin:0 0 12px}
 html:lang(vi) .answer h3{line-height:1.32}
-.answer p{color:var(--muted);margin:0}
+.answer>div>p{color:var(--muted);margin:0;max-width:36em}
 .answer-ill{width:100%;max-width:300px;justify-self:center}
 .sdg{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:5px 14px 5px 5px;border-radius:999px;font-size:.84rem;color:var(--fg);background:var(--surface);box-shadow:var(--clay)}
 .sdg b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--sdg4);color:#fff;font-size:.82rem;flex-shrink:0}
 
 /* Mission / vision / offers */
-.mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:40px}
-.mv-item{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:16px;align-items:start;padding:clamp(24px,3vw,34px);border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0}
-.mv-item svg{width:112px;height:auto}
-.mv-label{display:inline-block;margin:0;padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);background:var(--butter-soft)}
-.mv-item:nth-child(2) .mv-label{background:var(--sky-soft)}
-.mv-text{margin:14px 0 0;font-size:clamp(1.08rem,1.5vw,1.28rem);line-height:1.55;font-weight:500;text-wrap:pretty}
-html:lang(zh) .mv-text{line-height:1.8}
-.offers-title{font-size:clamp(1.35rem,2vw,1.65rem);margin:64px 0 18px}
-.offers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.offer{padding:22px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
-.offer:hover{transform:translateY(-5px) rotate(-.6deg)}
-.offer .ico{background:var(--lav-soft);color:var(--primary)}
-.offer:nth-child(2) .ico{background:var(--peach-soft)}
-.offer:nth-child(3) .ico{background:var(--mint-soft)}
-.offer:nth-child(4) .ico{background:var(--butter-soft)}
-.offer h3{font-size:1.08rem;line-height:1.35;margin:16px 0 6px}
+.answer{--ans-line:color-mix(in srgb,var(--fg) 11%,transparent)}
+.offers{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(24px,4vw,56px);margin-top:4px;border-top:1px solid var(--ans-line)}
+.offer{display:grid;grid-template-columns:46px minmax(0,1fr);grid-template-rows:auto 1fr;gap:4px 18px;align-items:start;padding:24px 0;min-width:0}
+.offer:nth-child(n+3){border-top:1px solid var(--ans-line)}
+.offer:nth-child(n+3){padding-bottom:0}
+.offer .ico{grid-row:span 2;background:var(--surface);color:var(--primary);box-shadow:0 0 0 1px var(--ans-line),0 6px 14px -10px rgba(150,70,120,.45)}
+.offer h4{font-family:var(--font-round);font-size:1.06rem;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin:2px 0 4px;color:var(--fg)}
+html:lang(zh) .offer h4{font-family:var(--font-sans)}
 .offer p{font-size:.93rem;color:var(--muted);margin:0}
 
 /* ---------- Roadmap ---------- */
@@ -272,7 +271,7 @@ html:lang(zh) .mv-text{line-height:1.8}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--surface);color:var(--fg);font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;box-shadow:var(--clay),inset 0 0 0 1px var(--line);
   transition:background-color .2s,color .2s,transform .25s var(--spring)}
-.chip:hover{transform:translateY(-2px)}
+@media (hover:hover){.chip:hover{transform:translateY(-2px)}}
 .chip:active{transform:scale(.96)}
 .chip[aria-pressed="true"]{background:var(--primary);color:var(--primary-ink);box-shadow:inset 0 -3px 0 var(--primary-press)}
 .pick-hint{margin:12px 0 0;font-size:.88rem;color:var(--muted)}
@@ -292,12 +291,12 @@ html:lang(zh) .note{font-weight:400;font-size:clamp(.9rem,1.3vw,1.08rem)}
 .tl-wrap{position:relative;--progress:1}
 .timeline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:12px}
 .tl-wrap::before,.tl-wrap::after{content:"";position:absolute;left:21px;top:22px;bottom:22px;width:3px;border-radius:3px}
-.tl-wrap::before{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px)}
+.tl-wrap::before{background:var(--line)}
 .tl-wrap::after{background:linear-gradient(180deg,var(--peach),var(--lav) 50%,var(--mint));transform-origin:top;transform:scaleY(var(--progress))}
-.rm-plane{position:absolute;z-index:2;left:22.5px;top:calc(22px + (100% - 44px) * var(--progress));width:30px;height:30px;transform:translate(-50%,-50%) rotate(90deg);pointer-events:none;transition:top .12s linear}
+.rm-plane{position:absolute;z-index:1;left:22.5px;top:22px;width:30px;height:30px;transform:translate(-50%,-50%) translateY(calc((var(--tl-h,0px) - 44px) * var(--progress))) rotate(90deg);pointer-events:none;will-change:transform}
 .rm-plane svg{width:100%;height:100%;display:block}
 .step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px}
-.node{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);box-shadow:var(--clay),inset 0 0 0 1.5px var(--line);
+.node{position:relative;z-index:2;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);box-shadow:var(--clay),inset 0 0 0 1.5px var(--line);
   font-family:var(--font-round);font-weight:800;font-variant-numeric:tabular-nums;color:var(--muted);transition:background .4s,color .4s,box-shadow .4s}
 .step.lit .node{background:var(--lav);color:#1D1A26;box-shadow:var(--clay)}
 .step.here .node{box-shadow:0 0 0 6px var(--hi-mark)}
@@ -352,11 +351,11 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
 .res[data-tone="peach"]{--tone:var(--peach-soft);--dot:var(--peach)}
 .res[data-tone="sky"]{--tone:var(--sky-soft);--dot:var(--sky)}
 .res[data-tone="butter"]{--tone:var(--butter-soft);--dot:var(--butter)}
-.res:hover{transform:translateY(-6px)}
+
 .res-cover{position:relative;margin:10px 10px 0;height:178px;border-radius:20px;background:var(--tone);overflow:hidden}
 .res-cover::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(color-mix(in srgb,var(--fg) 7%,transparent) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.6}
 .res-art{position:relative;z-index:1;display:block;width:100%;height:100%;transition:transform .5s var(--spring)}
-.res:hover .res-art{transform:scale(1.05) rotate(-.6deg)}
+@media (hover:hover){.res:hover .res-art{transform:scale(1.04)}}
 .badge{position:absolute;z-index:2;left:12px;top:12px;display:inline-flex;align-items:center;gap:7px;font-size:.76rem;font-weight:700;letter-spacing:.03em;padding:5px 12px 5px 9px;border-radius:999px;color:var(--fg);background:var(--surface);box-shadow:0 4px 10px -6px rgba(46,42,71,.35)}
 .badge i{width:9px;height:9px;border-radius:50%;background:var(--dot);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--fg) 25%,transparent)}
 .res-thumb{display:none}
@@ -370,7 +369,7 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
 .langs{display:inline-flex;gap:4px;flex-wrap:wrap}
 .langs b{font-size:.7rem;font-weight:700;padding:3px 7px;border-radius:8px;background:var(--surface-2);color:var(--muted)}
 .res-act{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 14px;font:inherit;font-size:.86rem;font-weight:650;color:var(--primary);text-decoration:none;background:var(--lav-soft);border:0;cursor:pointer;border-radius:999px;white-space:nowrap;transition:transform .25s var(--spring)}
-.res-act:hover{transform:translateY(-2px)}
+@media (hover:hover){.res-act:hover{transform:translateY(-2px)}}
 .res-act svg{width:15px;height:15px}
 .res-act.soon{color:var(--muted);background:var(--surface-2)}
 /* Featured: a wide card with the illustration beside the text */
@@ -396,6 +395,7 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
   .res-how span{font-size:.82rem}
   .res-bar .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:4px 16px 8px;width:calc(100% + 32px)}
   .res-bar .chips::-webkit-scrollbar{display:none}
+  .res-bar .chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent)}
   .res-bar .chip{flex-shrink:0}
   .res-grid{gap:12px}
   .res,.res.feat{grid-column:auto;display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 14px;padding:16px;border-radius:22px}
@@ -411,7 +411,6 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
   .res-foot{justify-content:flex-start;border-top:0;padding-top:4px;margin-top:2px}
   .res,.res.feat{padding:14px 14px 12px}
   .res-act{min-height:40px;padding:0 12px}
-  .res:hover{transform:none}
 }
 
 /* ---------- Partner ---------- */
@@ -419,7 +418,7 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
 .src-h{margin:28px 0 10px;font-weight:700;font-size:.95rem}
 .src-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
 .src-chips a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 15px;border-radius:999px;color:var(--fg);text-decoration:none;font-size:.88rem;font-weight:600;background:var(--surface);box-shadow:var(--clay);transition:transform .25s var(--spring)}
-.src-chips a:hover{transform:translateY(-2px)}
+@media (hover:hover){.src-chips a:hover{transform:translateY(-2px)}}
 .src-chips svg{width:13px;height:13px;color:var(--muted)}
 .src-note{margin:10px 0 0;font-size:.84rem;color:var(--muted)}
 .mentor-card{position:relative;overflow:hidden;border-radius:28px;padding:clamp(24px,3.4vw,38px);background:var(--peach-soft);box-shadow:var(--clay)}
@@ -434,10 +433,8 @@ html:lang(zh) .mentor-card .tag{font-weight:400}
 .co-logo b{color:var(--fg);font-family:var(--font-round);font-size:1.1rem}
 
 /* ---------- Team ---------- */
-.team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:44px}
-.member{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
-.member:hover{transform:translateY(-5px) rotate(-.5deg)}
-.member.is-mentor{background:transparent;box-shadow:none;border:2px dashed var(--line)}
+.team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:44px}
+.member{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0}
 .avatar{width:68px;height:68px;display:grid;place-items:center;font-family:var(--font-round);font-weight:800;font-size:1.2rem;color:#1D1A26;
   border-radius:58% 42% 52% 48%/48% 56% 44% 52%;background:#F9B2D7;box-shadow:inset 0 -4px 0 rgba(46,42,71,.1),inset 0 3px 0 rgba(255,255,255,.6)}
 .member:nth-child(2) .avatar{background:#C6F1CD;border-radius:44% 56% 46% 54%/56% 44% 56% 44%}
@@ -467,20 +464,23 @@ html:lang(zh) .mentor-card .tag{font-weight:400}
 .field label,.field legend{font-weight:600;font-size:.9rem;padding:0}
 .field legend{margin-bottom:7px}
 .opt{font-weight:400;color:var(--muted)}
-input,select,textarea{font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;min-height:48px;width:100%;transition:border-color .2s,box-shadow .2s}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--fg);background:var(--surface);border:1px solid var(--field-line);border-radius:14px;padding:11px 14px;min-height:48px;width:100%;transition:border-color .2s,box-shadow .2s}
 textarea{min-height:120px;resize:vertical;line-height:1.5}
 select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
   background-position:calc(100% - 21px) 52%,calc(100% - 16px) 52%;background-size:5px 5px;background-repeat:no-repeat}
-input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent)}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}
+input:not([type=checkbox]):focus,select:focus,textarea:focus{outline:none;border-color:var(--fg);box-shadow:0 0 0 1px var(--fg),0 0 0 5px color-mix(in srgb,var(--lav) 70%,transparent)}
 [aria-invalid="true"]{border-color:var(--danger)}
 .err{margin:0;color:var(--danger);font-size:.85rem;font-weight:500}
 .roles-pick{display:flex;flex-wrap:wrap;gap:8px}
 .chk{position:relative;display:inline-flex}
 .chk input{position:absolute;opacity:0;width:100%;height:100%;min-height:0;margin:0;cursor:pointer}
-.chk span{display:inline-flex;align-items:center;min-height:40px;padding:0 15px;border-radius:999px;background:var(--surface-2);font-size:.9rem;font-weight:600;transition:all .2s}
-.chk input:checked+span{background:var(--lav);color:#1D1A26}
+.chk span{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 15px;border-radius:999px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);font-size:.9rem;font-weight:600;transition:background-color .2s,box-shadow .2s,color .2s}
+.chk span::before{content:"";width:0;height:14px;margin-left:-7px;background:currentColor;-webkit-mask:var(--tick) center/contain no-repeat;mask:var(--tick) center/contain no-repeat;transition:width .2s var(--ease),margin .2s var(--ease)}
+.chk{--tick:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22black%22 stroke-width=%223%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M20 6 9 17l-5-5%22/%3E%3C/svg%3E")}
+.chk input:checked+span{background:var(--lav);color:#1D1A26;box-shadow:inset 0 0 0 1.5px var(--fg)}
+.chk input:checked+span::before{width:14px;margin-left:0}
 .chk input:focus-visible+span{outline:2.5px solid var(--focus);outline-offset:2px}
 .form-card[data-mode="question"] .vol-only{display:none}
 .consent-row{margin-top:18px;display:grid;gap:6px}
@@ -513,6 +513,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 .foot{position:relative;background:var(--lav-soft);color:var(--muted);padding-block:72px 28px}
 .foot::before{content:"";position:absolute;left:0;right:0;top:-1px;height:28px;background:var(--bg);
   -webkit-mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x;mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x}
+.foot-mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 48px;margin:0 0 44px;padding-bottom:36px;border-bottom:1px dashed color-mix(in srgb,var(--fg) 16%,transparent)}
+.foot-mv dt{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)}
+html:lang(zh) .foot-mv dt{letter-spacing:.2em}
+.foot-mv dd{margin:8px 0 0;color:var(--fg);font-size:clamp(1rem,1.3vw,1.1rem);line-height:1.6;max-width:34em}
+html:lang(zh) .foot-mv dd{line-height:1.85}
 .foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:32px}
 .foot p{margin:14px 0 0;max-width:30em;font-size:.94rem}
 .foot h2{font-family:var(--font-sans);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin:6px 0 14px;font-weight:700}
@@ -531,10 +536,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 /* Scroll reveal: scroll-driven where supported; elsewhere everything is simply visible */
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion: no-preference){
-    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
   }
 }
-@keyframes rise{from{opacity:0;translate:0 28px;scale:.97}to{opacity:1;translate:0 0;scale:1}}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1100px){
@@ -547,13 +550,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   .stage{max-width:520px}
   .gap-head,.answer,.partner,.inv-grid{grid-template-columns:minmax(0,1fr)}
   .answer-ill{max-width:240px}
-  .offers{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rm-grid{grid-template-columns:minmax(0,1fr)}
   .rm-side{position:static}
   .rm-ill{display:none}
   .res-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stats-card{grid-template-columns:repeat(2,minmax(0,1fr))}
   .foot-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .foot-grid>div:first-child{grid-column:1/-1}
 }
@@ -562,22 +562,35 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   .lang .full{display:none}
   .lang .short{display:inline}
   .lang button{padding:0 10px}
-  .gap-cols,.mv{grid-template-columns:minmax(0,1fr)}
-  .mv-item{grid-template-columns:minmax(0,1fr) 84px}
-  .mv-item svg{width:84px}
+  .gap-cols{grid-template-columns:minmax(0,1fr)}
   .res-grid{grid-template-columns:minmax(0,1fr)}
   .fields{grid-template-columns:minmax(0,1fr)}
   .inv-head{grid-template-columns:minmax(0,1fr)}
   .inv-ill{display:none}
   .mentor-ill{width:96px;right:8px;top:8px}
-  .stat{padding:16px 18px}
+}
+@media (max-width:680px){
+  .offers{grid-template-columns:minmax(0,1fr)}
+  .offer:nth-child(n+2){border-top:1px solid var(--ans-line)}
 }
 @media (max-width:520px){
-  .offers,.team-grid{grid-template-columns:minmax(0,1fr)}
+  .team-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .member{display:grid;grid-template-columns:52px minmax(0,1fr);gap:4px 14px;padding:18px 16px}
+  .member .avatar{grid-row:span 2;width:52px;height:52px;font-size:1rem}
+  .member dl{grid-column:2;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;font-size:.84rem}
+  .member dl div:last-child{grid-column:1/-1}
+  .offer,.offer:nth-child(n+3){grid-template-columns:36px minmax(0,1fr);gap:2px 14px;padding:18px 0}
+  .offer:last-child{padding-bottom:2px}
+  .offer .ico{width:36px;height:36px;border-radius:12px}
+  .offer .ico svg{width:18px;height:18px}
   .hero-ctas .btn{width:100%;white-space:normal;text-align:center}
   .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .foot-mv{grid-template-columns:minmax(0,1fr)}
   .seal{width:84px;left:0;top:0}
   .stage-hint{font-size:.9rem}
+}
+@media (max-width:350px){
+  .brand>span{display:none}
 }
 @media (max-width:400px){
   .nav-row{gap:8px}
@@ -598,7 +611,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   <div class="wrap nav-row">
     <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
       <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
-      <span>Path<b>Forward</b></span>
+      <span translate="no">Path<b>Forward</b></span>
     </a>
     <nav class="nav-links" data-i18n-attr="aria-label:nav.primary">
       <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
@@ -609,12 +622,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     </nav>
     <div class="nav-end">
       <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
-        <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+        <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
         <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
-        <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+        <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
         <span class="lang-thumb" aria-hidden="true"></span>
       </div>
-      <a class="btn btn-primary btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+      <a class="btn btn-primary btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu">
         <svg class="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         <svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -628,7 +641,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
       <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
       <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
-      <a class="btn btn-primary" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+      <a class="btn btn-primary" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
     </div>
   </div>
 </header>
@@ -638,7 +651,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow-pill"><span class="pulse" aria-hidden="true"></span><span data-i18n="hero.eyebrow"></span></p>
         <h1 id="hero-title" data-i18n-html="hero.title"></h1>
         <p class="sub" data-i18n="hero.sub"></p>
         <div class="hero-ctas">
@@ -666,28 +678,19 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             <text class="seal-mid" x="60" y="69" text-anchor="middle" data-i18n="stats.c"></text>
           </svg>
         </div>
+        <button class="motion-btn" type="button" aria-pressed="false" data-i18n-attr="aria-label:motion.pause;title:motion.pause">
+          <svg class="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
+          <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7z"/></svg>
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="wrap">
-      <dl class="stats-card" data-i18n-attr="aria-label:stats.aria">
-        <div class="stat reveal"><dt data-i18n="stats.cl"></dt><dd data-i18n="stats.c"></dd></div>
-        <div class="stat reveal"><dt data-i18n="stats.l"></dt><dd>3</dd></div>
-        <div class="stat reveal"><dt data-i18n="stats.s"></dt><dd>8</dd></div>
-        <div class="stat reveal"><dt data-i18n="stats.f"></dt><dd>2</dd></div>
-      </dl>
-    </div>
-  </div>
-
   <!-- The gap -->
-  <section class="band" id="about" aria-labelledby="gap-title">
+  <section class="band tint" id="about" aria-labelledby="gap-title">
     <div class="wrap">
       <div class="gap-head">
         <div>
-          <p class="eyebrow" data-i18n="gap.eyebrow"></p>
           <h2 id="gap-title" data-i18n-html="gap.title"></h2>
         </div>
         <p class="lead" data-i18n="gap.lead"></p>
@@ -743,10 +746,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       </div>
       <div class="answer reveal">
         <div>
-          <p class="eyebrow" data-i18n="ans.eyebrow"></p>
           <h3 data-i18n="ans.title"></h3>
           <p data-i18n="ans.body"></p>
-          <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
         </div>
         <svg class="ill answer-ill" viewBox="0 0 260 200" aria-hidden="true">
           <ellipse class="shade" cx="130" cy="186" rx="96" ry="8"/>
@@ -763,65 +764,32 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <g class="float" style="--d:-3s"><rect class="f-butter s-ink" x="196" y="20" width="26" height="26" rx="8"/><text class="t" x="202" y="39" font-size="16">Ơ</text></g>
           <g transform="translate(62 30)"><path class="twinkle f-lav s-ink" style="--d:.4s" stroke-width="1.2" d="M0 -9 C1 -2 2 -1 9 0 C2 1 1 2 0 9 C-1 2 -2 1 -9 0 C-2 -1 -1 -2 0 -9Z"/></g>
         </svg>
+        <div class="offers">
+          <div class="offer">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
+            <h4 data-i18n="offer.1t"></h4><p data-i18n="offer.1b"></p>
+          </div>
+          <div class="offer">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+            <h4 data-i18n="offer.2t"></h4><p data-i18n="offer.2b"></p>
+          </div>
+          <div class="offer">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
+            <h4 data-i18n="offer.3t"></h4><p data-i18n="offer.3b"></p>
+          </div>
+          <div class="offer">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
+            <h4 data-i18n="offer.4t"></h4><p data-i18n="offer.4b"></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Mission & vision, what we offer -->
-  <section class="band tint" id="mission" aria-labelledby="mv-title">
-    <div class="wrap">
-      <p class="eyebrow" data-i18n="mv.eyebrow"></p>
-      <h2 id="mv-title" data-i18n-html="mv.title"></h2>
-      <div class="mv">
-        <div class="mv-item reveal">
-          <div><p class="mv-label" data-i18n="mv.mLabel"></p><p class="mv-text" data-i18n="mv.m"></p></div>
-          <svg class="ill" viewBox="0 0 112 90" aria-hidden="true">
-            <path class="f-mint s-ink" d="M2 88 V54 C 10 47, 22 47, 30 54 V88 Z"/>
-            <path class="f-lav s-ink" d="M82 88 V44 C 90 37, 102 37, 110 44 V88 Z"/>
-            <path class="s-ink nf" d="M28 56 C 48 32, 64 30, 84 46"/>
-            <path class="s-ink nf" d="M28 64 C 48 50, 64 48, 84 54"/>
-            <path class="s-thin" d="M38 50 v10 M48 44 v12 M58 41 v13 M68 41 v12 M76 43 v10"/>
-            <rect class="f-peach s-ink" x="9" y="40" width="13" height="10" rx="2"/>
-            <path class="s-ink nf" d="M100 40 v-16"/><path class="f-butter s-ink" d="M100 24 l11 4 l-11 4 z"/>
-            <g transform="translate(56 14)"><path class="twinkle f-butter s-ink" stroke-width="1.1" d="M0 -7 C1 -2 2 -1 7 0 C2 1 1 2 0 7 C-1 2 -2 1 -7 0 C-2 -1 -1 -2 0 -7Z"/></g>
-          </svg>
-        </div>
-        <div class="mv-item reveal">
-          <div><p class="mv-label" data-i18n="mv.vLabel"></p><p class="mv-text" data-i18n="mv.v"></p></div>
-          <svg class="ill" viewBox="0 0 112 90" aria-hidden="true">
-            <path class="s-ink nf" d="M40 88 L54 58 L68 88 M54 58 V88"/>
-            <g transform="rotate(-28 54 52)"><rect class="f-sky s-ink" x="22" y="44" width="60" height="16" rx="7"/><rect class="f-lav s-ink" x="78" y="40" width="13" height="24" rx="5"/><rect class="f-peach s-ink" x="15" y="47" width="9" height="10" rx="3"/><path class="shine" d="M30 48 h30 v3 h-30z"/></g>
-            <g transform="translate(98 14)"><path class="twinkle f-butter s-ink" stroke-width="1.3" d="M0 -11 C1 -3 3 -1 11 0 C3 1 1 3 0 11 C-1 3 -3 1 -11 0 C-3 -1 -1 -3 0 -11Z"/></g>
-            <circle class="f-lav" cx="78" cy="10" r="2.4"/><circle class="f-rose" cx="106" cy="38" r="2"/>
-          </svg>
-        </div>
-      </div>
-      <h3 class="offers-title" data-i18n="offer.title"></h3>
-      <div class="offers">
-        <div class="offer reveal">
-          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
-          <h3 data-i18n="offer.1t"></h3><p data-i18n="offer.1b"></p>
-        </div>
-        <div class="offer reveal">
-          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
-          <h3 data-i18n="offer.2t"></h3><p data-i18n="offer.2b"></p>
-        </div>
-        <div class="offer reveal">
-          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
-          <h3 data-i18n="offer.3t"></h3><p data-i18n="offer.3b"></p>
-        </div>
-        <div class="offer reveal">
-          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
-          <h3 data-i18n="offer.4t"></h3><p data-i18n="offer.4b"></p>
-        </div>
-      </div>
-    </div>
-  </section>
   <!-- Roadmap -->
   <section class="band" id="roadmap" aria-labelledby="rm-title">
     <div class="wrap rm-grid">
       <div class="rm-side">
-        <p class="eyebrow" data-i18n="rm.eyebrow"></p>
         <h2 id="rm-title" data-i18n-html="rm.title"></h2>
         <p class="lead" data-i18n="rm.lead"></p>
         <div class="grade-pick">
@@ -904,7 +872,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     <div class="wrap">
       <div class="res-head">
         <div>
-          <p class="eyebrow" data-i18n="res.eyebrow"></p>
           <h2 id="res-title" data-i18n-html="res.title"></h2>
           <p class="lead" data-i18n="res.lead"></p>
         </div>
@@ -934,7 +901,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   <section class="band" id="partner" aria-labelledby="pt-title">
     <div class="wrap partner">
       <div>
-        <p class="eyebrow" data-i18n="pt.eyebrow"></p>
         <h2 id="pt-title" data-i18n="pt.title"></h2>
         <p class="lead" data-i18n="pt.body"></p>
         <p class="src-h" data-i18n="pt.sources"></p>
@@ -969,7 +935,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
   <!-- Team -->
   <section class="band tint" id="team" aria-labelledby="team-title">
     <div class="wrap">
-      <p class="eyebrow" data-i18n="team.eyebrow"></p>
       <h2 id="team-title" data-i18n-html="team.title"></h2>
       <p class="lead" data-i18n="team.lead"></p>
       <div class="team-grid">
@@ -979,7 +944,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <dl>
             <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
             <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
         <article class="member reveal">
@@ -988,7 +953,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <dl>
             <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
             <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.vn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd>Tiếng Việt · English</dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd><span lang="vi">Tiếng Việt</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
         <article class="member reveal">
@@ -997,15 +962,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <dl>
             <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
             <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
-          </dl>
-        </article>
-        <article class="member is-mentor reveal">
-          <div class="avatar" aria-hidden="true">S</div>
-          <div><h3>Sophia</h3><p class="role" data-i18n="team.mentor"></p></div>
-          <dl>
-            <div><dt data-i18n="team.orgL"></dt><dd data-i18n="pt.mentorRole"></dd></div>
-            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
       </div>
@@ -1024,7 +981,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
     <div class="wrap">
       <div class="inv-head">
         <div>
-          <p class="eyebrow" data-i18n="inv.eyebrow"></p>
           <h2 id="inv-title" data-i18n-html="inv.title"></h2>
           <p class="lead" data-i18n="inv.lead"></p>
         </div>
@@ -1050,8 +1006,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
           <div class="form-body" id="form-body">
             <div class="fields">
               <div class="field"><label for="f-name"><span data-i18n="f.name"></span> <span class="opt" data-i18n="f.opt"></span></label><input id="f-name" name="name" autocomplete="given-name"></div>
-              <div class="field"><label for="f-grade" data-i18n="f.grade"></label><select id="f-grade" name="grade"></select></div>
-              <div class="field"><label for="f-country" data-i18n="f.country"></label><select id="f-country" name="country"></select></div>
+              <div class="field"><label for="f-grade"><span data-i18n="f.grade"></span> <span class="opt" data-i18n="f.opt"></span></label><select id="f-grade" name="grade"></select></div>
+              <div class="field"><label for="f-country"><span data-i18n="f.country"></span> <span class="opt" data-i18n="f.opt"></span></label><select id="f-country" name="country"></select></div>
               <div class="field"><label for="f-reply" data-i18n="f.reply"></label><select id="f-reply" name="reply"></select></div>
               <fieldset class="field full vol-only">
                 <legend data-i18n="f.roles"></legend>
@@ -1064,17 +1020,17 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
               </fieldset>
               <div class="field full">
                 <label for="f-msg" id="f-msg-label"></label>
-                <textarea id="f-msg" name="message" aria-describedby="f-msg-err"></textarea>
+                <textarea id="f-msg" name="message" aria-required="true" aria-describedby="f-msg-err"></textarea>
                 <p class="err" id="f-msg-err" hidden></p>
               </div>
               <div class="field full">
                 <label for="f-contact" data-i18n="f.contact"></label>
-                <input id="f-contact" name="contact" autocomplete="email" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err">
+                <input id="f-contact" name="contact" autocomplete="email" spellcheck="false" autocapitalize="none" autocorrect="off" aria-required="true" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err">
                 <p class="err" id="f-contact-err" hidden></p>
               </div>
             </div>
             <div class="consent-row">
-              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-describedby="f-consent-err"><span data-i18n="f.consent"></span></label>
+              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-required="true" aria-describedby="f-consent-err"><span data-i18n="f.consent"></span></label>
               <p class="err" id="f-consent-err" hidden></p>
             </div>
             <div class="form-foot">
@@ -1104,9 +1060,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
             <h3 data-i18n="side.contact"></h3>
             <p data-i18n="side.contactBody"></p>
             <ul class="channels">
-              <li>Email <em data-i18n="side.soon"></em></li>
-              <li>WeChat <em data-i18n="side.soon"></em></li>
-              <li>Zalo <em data-i18n="side.soon"></em></li>
+              <li><span data-i18n="ch.email"></span> <em data-i18n="side.soon"></em></li>
+              <li><span translate="no">WeChat</span> <em data-i18n="side.soon"></em></li>
+              <li><span translate="no">Zalo</span> <em data-i18n="side.soon"></em></li>
             </ul>
           </div>
         </aside>
@@ -1117,13 +1073,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 
 <footer class="foot">
   <div class="wrap">
+    <dl class="foot-mv">
+      <div><dt data-i18n="mv.mLabel"></dt><dd data-i18n="mv.m"></dd></div>
+      <div><dt data-i18n="mv.vLabel"></dt><dd data-i18n="mv.v"></dd></div>
+    </dl>
     <div class="foot-grid">
       <div>
         <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
           <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
           <span>Path<b>Forward</b></span>
         </a>
-        <p data-i18n="foot.tag"></p>
         <p data-i18n="foot.np"></p>
         <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
       </div>
@@ -1140,9 +1099,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
       <div>
         <h2 data-i18n="foot.lang"></h2>
         <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
-          <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+          <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
           <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
-          <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+          <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
           <span class="lang-thumb" aria-hidden="true"></span>
         </div>
       </div>
@@ -1157,11 +1116,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary)
 <script>
 var T = window.PF_T = {};
 T.en = {
+"sep":": ","motion.pause":"Pause animation","ch.email":"Email",
 "skip":"Skip to content",
 "nav.home":"PathForward home","nav.primary":"Main","nav.about":"About","nav.roadmap":"Roadmap","nav.resources":"Resources","nav.team":"Team","nav.involved":"Get involved",
 "nav.cta":"Get free guidance","nav.menu":"Open menu","nav.lang":"Language",
 "hero.eyebrow":"Student-run nonprofit · 100% free",
-"hero.title":"Your path abroad shouldn't depend on what you can <span class='em'>afford</span>.",
+"hero.title":"Your path abroad shouldn’t depend on what you can <span class='em'>afford</span>.",
 "hero.sub":"PathForward is a nonprofit run by students. We give students in China and Vietnam free, reliable guidance on studying abroad, from the first English test to the first day on campus.",
 "hero.cta1":"Start your roadmap","hero.cta2":"Ask us a question",
 "hero.f1":"Free for every student","hero.f2":"English · 中文 · Tiếng Việt","hero.f3":"Run by students studying in the U.S.",
@@ -1174,28 +1134,28 @@ T.en = {
 "stats.aria":"PathForward at a glance","stats.c":"$0","stats.cl":"Cost to students","stats.l":"Languages","stats.s":"Steps on the roadmap","stats.f":"Focus countries",
 "gap.eyebrow":"The problem","gap.title":"The <span class='hl'>information gap</span> is the real barrier.",
 "gap.lead":"Every year, capable students in China and Vietnam give up on studying abroad because no one showed them how the process works.",
-"gap.1t":"Agencies charge for the basics","gap.1b":"Many families pay an agency just to learn the steps. Students who can't pay often stop there.",
-"gap.2t":"Advice online is mixed","gap.2b":"Social media posts can be outdated, wrong, or written to sell something. It's hard to know what to trust.",
-"gap.3t":"No one nearby has done it","gap.3b":"If nobody at your school has applied abroad, it's hard to even know which questions to ask.",
+"gap.1t":"Agencies charge for the basics","gap.1b":"Many families pay an agency just to learn the steps. Students who can’t pay often stop there.",
+"gap.2t":"Advice online is mixed","gap.2b":"Social media posts can be outdated, wrong, or written to sell something. It’s hard to know what to trust.",
+"gap.3t":"No one nearby has done it","gap.3b":"If nobody at your school has applied abroad, it’s hard to even know which questions to ask.",
 "ans.eyebrow":"Our answer","ans.title":"Free, checked, and in your language.",
 "ans.body":"We collect the questions students actually ask, check every answer against official sources like EducationUSA, and share it for free in English, Chinese and Vietnamese.",
 "sdg":"Supports UN Sustainable Development Goal 4: Quality Education",
-"mv.eyebrow":"Why we exist","mv.title":"What we're working toward",
+"mv.eyebrow":"Why we exist","mv.title":"What we’re working toward",
 "mv.mLabel":"Mission","mv.m":"Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.",
-"mv.vLabel":"Vision","mv.v":"We envision a future where a student's access to educational opportunities is not limited by location, financial resources, or lack of information.",
+"mv.vLabel":"Vision","mv.v":"We envision a future where a student’s access to educational opportunities is not limited by location, financial resources, or lack of information.",
 "offer.title":"What you get from us",
 "offer.1t":"Step-by-step guides","offer.1b":"Free guides for every stage of applying, checked each year against official sources.",
-"offer.2t":"Advice from students in the U.S.","offer.2b":"Our team studies in the U.S. now. Ask us about classes, campus life and what we wish we'd known.",
+"offer.2t":"Advice from students in the U.S.","offer.2b":"Our team studies in the U.S. now. Ask us about classes, campus life and what we wish we’d known.",
 "offer.3t":"English learning with Co&Learn","offer.3b":"Our partner in China offers English learning resources, so you can keep improving after our guides.",
 "offer.4t":"Checked opportunities","offer.4b":"Scholarships, summer programs and competitions in one place, each one checked before we share it.",
 "rm.eyebrow":"Roadmap","rm.title":"Eight steps from first idea to <span class='hl'>first day on campus</span>.",
 "rm.lead":"Pick your grade to see where you are. Open any step for a checklist and the official source.",
 "rm.pick":"Which grade are you in?","rm.g1":"Grade 9–10","rm.g2":"Grade 11","rm.g3":"Grade 12",
-"rm.hint":"We'll highlight the steps for your grade. Tap again to clear.",
+"rm.hint":"We’ll highlight the steps for your grade. Tap again to clear.",
 "rm.here":"You are here","rm.checklist":"Checklist","rm.source":"Official source",
-"res.eyebrow":"Resources","res.title":"Free resources we've <span class='hl'>checked</span>.",
+"res.eyebrow":"Resources","res.title":"Free resources we’ve <span class='hl'>checked</span>.",
 "res.how":"How we check every resource","res.h1t":"Collect","res.h1b":"We start from real questions students send us.","res.h2t":"Verify","res.h2b":"We confirm each fact with official sources.","res.h3t":"Translate","res.h3b":"We write it in English, Chinese and Vietnamese.","res.h4t":"Update","res.h4b":"We re-check everything once a year.",
-"res.lead":"Guides we write, official sources we trust, and opportunities we've looked into. Filter by where you study now.",
+"res.lead":"Guides we write, official sources we trust, and opportunities we’ve looked into. Filter by where you study now.",
 "res.filter":"Filter resources","f.all":"All","f.china":"China","f.vietnam":"Vietnam","f.english":"English learning",
 "res.count":"{n} resources","type.guide":"Guide","type.official":"Official","type.partner":"Partner","type.opportunity":"Opportunity",
 "res.visit":"Visit site","res.soon":"Coming soon","res.langs":"Languages","res.toast":"This one is coming soon on the live site.",
@@ -1206,9 +1166,9 @@ T.en = {
 "pt.coDesc":"Nonprofit · English learning · China",
 "pt.sources":"Official sources we check against","pt.sourcesNote":"We cite these sources. We are not affiliated with them.",
 "team.eyebrow":"Team","team.title":"Run by students who <span class='hl'>made the move</span>.",
-"team.lead":"We are three seniors at Maharishi School in Iowa, from China and Vietnam. We remember how confusing the process was, so we're writing the guide we wish we'd had.",
+"team.lead":"We are three seniors at Maharishi School in Iowa, from China and Vietnam. We remember how confusing the process was, so we’re writing the guide we wish we’d had.",
 "team.role":"Co-founder","team.schoolL":"School","team.school":"Maharishi School · Class of 2027","team.fromL":"From","team.cn":"China","team.vn":"Vietnam","team.ask":"Ask me in","team.orgL":"Organization",
-"team.mentor":"Mentor","team.legacy":"We'll graduate, and PathForward will keep going. We're training new student volunteers to keep every guide up to date.",
+"team.mentor":"Mentor","team.legacy":"We’ll graduate, and PathForward will keep going. We’re training new student volunteers to keep every guide up to date.",
 "inv.eyebrow":"Get involved","inv.title":"Ask a question or join the team.",
 "inv.lead":"Every question helps us improve the guides. A team member will reply in the language you choose.",
 "inv.modeLabel":"What would you like to do?","inv.modeQ":"I have a question","inv.modeV":"I want to volunteer",
@@ -1217,25 +1177,26 @@ T.en = {
 "f.country":"Where do you study now?","f.cCN":"China","f.cVN":"Vietnam","f.cOther":"Somewhere else",
 "f.reply":"Reply in","f.msgQ":"Your question","f.msgV":"How would you like to help?",
 "f.phQ":"For example: Which English test should I take?","f.phV":"For example: I can translate guides into Vietnamese.",
-"f.contact":"Email, WeChat or Zalo","f.phContact":"So we can reply to you",
-"f.roles":"Roles you're interested in",
-"f.consent":"I'm 13 or older, or a parent or guardian has agreed to this.",
+"f.contact":"Email, WeChat or Zalo","f.phContact":"name@example.com or your WeChat ID",
+"f.roles":"Roles you’re interested in",
+"f.consent":"I’m 13 or older, or a parent or guardian has agreed to this.",
 "f.privacy":"We only use your details to reply. We never sell or share them.",
 "f.sendQ":"Send question","f.sendV":"Send application",
-"f.errMsg":"Please write your question.","f.errMsgV":"Please tell us how you'd like to help.","f.errContact":"Add an email, WeChat or Zalo so we can reply.","f.errConsent":"Please check this box to continue.",
+"f.errMsg":"Please write your question.","f.errMsgV":"Please tell us how you’d like to help.","f.errContact":"Add an email, WeChat or Zalo so we can reply.","f.errConsent":"Please check this box to continue.",
 "f.okTitle":"Got it, thank you!","f.okBody":"This is a preview of the site, so nothing was sent. On the live site, a team member will reply to you.","f.again":"Write another",
-"f.preview":"Preview version: this form doesn't send anything yet.",
+"f.preview":"Preview version: this form doesn’t send anything yet.",
 "r.translate":"Translator","r.translateD":"Turn guides into Chinese or Vietnamese.",
 "r.write":"Guide writer","r.writeD":"Research a topic and explain it clearly.",
 "r.mentor":"Peer mentor","r.mentorD":"Answer questions from younger students.",
 "r.outreach":"Outreach","r.outreachD":"Share PathForward with schools and communities.",
-"side.roles":"Volunteer roles","side.contact":"Other ways to reach us","side.contactBody":"We're setting up these channels now.","side.soon":"coming soon",
+"side.roles":"Volunteer roles","side.contact":"Other ways to reach us","side.contactBody":"We’re setting up these channels now.","side.soon":"coming soon",
 "foot.tag":"Free, reliable study-abroad guidance for students in China and Vietnam.",
 "foot.np":"A student-run nonprofit project. We never charge students and never sell data.",
 "foot.explore":"Explore","foot.lang":"Language","foot.top":"Back to top","foot.copy":"© 2026 PathForward. Free, always.","foot.preview":"Website preview",
 "a11y.lang":"Language changed to English"
 };
 T.zh = {
+"sep":"：","motion.pause":"暂停动画","ch.email":"邮箱",
 "skip":"跳到正文",
 "nav.home":"PathForward 首页","nav.primary":"主导航","nav.about":"关于我们","nav.roadmap":"申请路线","nav.resources":"资源库","nav.team":"团队","nav.involved":"加入我们",
 "nav.cta":"免费咨询","nav.menu":"打开菜单","nav.lang":"语言",
@@ -1296,7 +1257,7 @@ T.zh = {
 "f.country":"你现在在哪里读书？","f.cCN":"中国","f.cVN":"越南","f.cOther":"其他地区",
 "f.reply":"回复语言","f.msgQ":"你的问题","f.msgV":"你想怎样帮忙？",
 "f.phQ":"例如：我应该考托福还是雅思？","f.phV":"例如：我可以把指南翻译成中文。",
-"f.contact":"邮箱或微信号","f.phContact":"方便我们回复你",
+"f.contact":"邮箱或微信号","f.phContact":"例如 name@example.com 或你的微信号",
 "f.roles":"感兴趣的岗位",
 "f.consent":"我已年满 13 岁，或已获得父母/监护人同意。",
 "f.privacy":"你的信息只用于回复你，我们绝不出售或分享。",
@@ -1315,6 +1276,7 @@ T.zh = {
 "a11y.lang":"语言已切换为中文"
 };
 T.vi = {
+"sep":": ","motion.pause":"Tạm dừng chuyển động","ch.email":"Email",
 "skip":"Bỏ qua đến nội dung chính",
 "nav.home":"Trang chủ PathForward","nav.primary":"Điều hướng chính","nav.about":"Giới thiệu","nav.roadmap":"Lộ trình","nav.resources":"Tài nguyên","nav.team":"Đội ngũ","nav.involved":"Tham gia",
 "nav.cta":"Nhận tư vấn miễn phí","nav.menu":"Mở menu","nav.lang":"Ngôn ngữ",
@@ -1375,7 +1337,7 @@ T.vi = {
 "f.country":"Bạn đang học ở đâu?","f.cCN":"Trung Quốc","f.cVN":"Việt Nam","f.cOther":"Nơi khác",
 "f.reply":"Trả lời bằng","f.msgQ":"Câu hỏi của bạn","f.msgV":"Bạn muốn giúp như thế nào?",
 "f.phQ":"Ví dụ: Mình nên thi IELTS hay TOEFL?","f.phV":"Ví dụ: Mình có thể dịch hướng dẫn sang tiếng Việt.",
-"f.contact":"Email hoặc số Zalo","f.phContact":"Để chúng tôi trả lời bạn",
+"f.contact":"Email hoặc số Zalo","f.phContact":"VD: ten@example.com hoặc số Zalo",
 "f.roles":"Vị trí bạn quan tâm",
 "f.consent":"Mình từ 13 tuổi trở lên, hoặc đã được cha mẹ/người giám hộ đồng ý.",
 "f.privacy":"Thông tin của bạn chỉ dùng để trả lời. Chúng tôi không bao giờ bán hay chia sẻ.",
@@ -1640,9 +1602,11 @@ var RES = window.PF_RES = [
   /* ---------- Roadmap ---------- */
   function renderSteps(){
     var ol = $("#steps"); if (!ol) return;
+    var hereAt = -1;
+    if (state.stage) for (var j = 0; j < STEPS.length; j++) if (STEPS[j].stages.indexOf(state.stage) > -1){ hereAt = j; break; }
     ol.innerHTML = STEPS.map(function(s, i){
       var L = s[state.lang] || s.en, open = !!state.open[i];
-      var here = state.stage && s.stages.indexOf(state.stage) > -1;
+      var here = i === hereAt;
       return '<li class="step' + (open ? " open" : "") + (here ? " here" : "") + '" data-i="' + i + '">' +
         '<div class="node" aria-hidden="true"><span>' + (i + 1) + '</span></div>' +
         '<div class="step-card">' +
@@ -1650,11 +1614,11 @@ var RES = window.PF_RES = [
             '<span class="step-meta"><span class="step-when">' + esc(L.when) + '</span>' + (here ? '<span class="here-badge">' + esc(t("rm.here")) + '</span>' : "") + '</span>' +
             '<span class="step-title">' + esc(L.title) + '</span>' + I.chev +
           '</button>' +
-          '<div class="step-panel" id="sp-' + i + '" role="region" aria-labelledby="st-' + i + '"' + (open ? "" : " inert") + '><div><div class="inner">' +
+          '<div class="step-panel" id="sp-' + i + '" aria-labelledby="st-' + i + '"' + (open ? "" : " inert") + '><div><div class="inner">' +
             '<p>' + esc(L.desc) + '</p>' +
             '<p class="checks-h">' + esc(t("rm.checklist")) + '</p>' +
             '<ul class="checks">' + L.checks.map(function(c){ return "<li>" + I.check + "<span>" + esc(c) + "</span></li>"; }).join("") + '</ul>' +
-            '<a class="source" href="' + esc(s.src.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("rm.source")) + ": " + esc(s.src.name) + I.ext + '</a>' +
+            '<a class="source" href="' + esc(s.src.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("rm.source")) + t("sep") + '<span translate="no">' + esc(s.src.name) + '</span>' + I.ext + '</a>' +
           '</div></div></div>' +
         '</div></li>';
     }).join("");
@@ -1677,6 +1641,7 @@ var RES = window.PF_RES = [
       for (var i = 0; i < STEPS.length; i++) if (STEPS[i].stages.indexOf(state.stage) > -1){ state.open[i] = true; break; }
     }
     renderSteps();
+    if (!state.touched.grade){ var g = $("#f-grade"); if (g) g.value = gradeFor(state.stage); }
     if (state.stage){
       var first = $(".step.here");
       if (first){
@@ -1685,17 +1650,18 @@ var RES = window.PF_RES = [
       }
     }
   }
+  function gradeFor(stage){ return stage === 2 ? "11" : stage === 3 ? "12" : ""; }
   var ticking = false;
   function updateProgress(){
     ticking = false;
     var tl = $("#steps"); if (!tl) return;
     var r = tl.getBoundingClientRect(), mark = innerHeight * 0.6;
     var p = Math.min(1, Math.max(0, (mark - r.top) / Math.max(1, r.height)));
-    (tl.parentElement || tl).style.setProperty("--progress", p.toFixed(3));
-    $$(".step", tl).forEach(function(li){
-      var n = $(".node", li).getBoundingClientRect();
-      li.classList.toggle("lit", n.top + n.height / 2 < mark);
-    });
+    var steps = $$(".step", tl), lit = steps.map(function(li){ var n = $(".node", li).getBoundingClientRect(); return n.top + n.height / 2 < mark; });
+    var wrap = tl.parentElement || tl;
+    wrap.style.setProperty("--progress", p.toFixed(3));
+    wrap.style.setProperty("--tl-h", r.height.toFixed(1) + "px");
+    steps.forEach(function(li, k){ li.classList.toggle("lit", lit[k]); });
   }
   function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(updateProgress); } }
 
@@ -1708,11 +1674,13 @@ var RES = window.PF_RES = [
   };
   function renderResources(){
     var grid = $("#res-grid"); if (!grid) return;
-    var list = RES.filter(function(r){ return state.filter === "all" || r.tags.indexOf(state.filter) > -1; });
-    var featured = state.filter === "all" ? [0, 3, 7] : [];
+    var list = RES.filter(function(r){ return state.filter === "all" || r.tags.indexOf(state.filter) > -1; })
+      .map(function(r, i){ return [r, i]; })
+      .sort(function(a, b){ return (a[0].url ? 0 : 1) - (b[0].url ? 0 : 1) || a[1] - b[1]; })
+      .map(function(x){ return x[0]; });
     var ART = window.PF_ART || {};
     grid.innerHTML = list.map(function(r, i){
-      var L = r[state.lang] || r.en, feat = featured.indexOf(i) > -1;
+      var L = r[state.lang] || r.en, feat = state.filter === "all" && !!r.url;
       var tags = r.tags.filter(function(x){ return x !== "english"; }).map(function(x){ return '<span>' + esc(t("f." + x)) + '</span>'; }).join("");
       var act = r.url
         ? '<a class="res-act" href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("res.visit")) + I.ext + '</a>'
@@ -1722,7 +1690,7 @@ var RES = window.PF_RES = [
         '<span class="res-thumb">' + (COVER[r.type] || "") + '</span>' +
         '<div class="res-body"><div class="res-tags"><span class="res-type-m">' + esc(t("type." + r.type)) + '</span>' + tags + '</div>' +
         '<h3>' + esc(L.t) + '</h3><p>' + esc(L.d) + '</p>' +
-        '<div class="res-foot"><span class="langs"><span class="sr">' + esc(t("res.langs")) + ': </span><b>EN</b><b>中文</b><b>VI</b></span>' + act + '</div></div>' +
+        '<div class="res-foot"><span class="langs"><span class="sr">' + esc(t("res.langs")) + t("sep") + '</span><b lang="en">EN</b><b lang="zh-Hans">中文</b><b lang="vi">VI</b></span>' + act + '</div></div>' +
       '</article>';
     }).join("");
     $("#res-count").textContent = t("res.count", {n: list.length});
@@ -1816,6 +1784,7 @@ var RES = window.PF_RES = [
     var langBtn = el.closest(".lang button");
     if (langBtn){ switchTo(langBtn.getAttribute("data-lang")); return; }
     var sc = el.closest("[data-scroll]");
+    if (sc && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button)) return;
     if (sc){
       e.preventDefault();
       var id = sc.getAttribute("data-scroll"), target = document.getElementById(id);
@@ -1848,12 +1817,14 @@ var RES = window.PF_RES = [
     }
     if (el.closest("#f-again")){
       $("#ask").reset(); state.touched = {}; renderForm();
+      $("#f-grade").value = gradeFor(state.stage);
       $("#f-success").hidden = true; $("#form-body").hidden = false; $("#f-msg").focus();
     }
   });
   document.addEventListener("keydown", function(e){ if (e.key === "Escape" && menuBtn.getAttribute("aria-expanded") === "true"){ setMenu(false); menuBtn.focus(); } });
   $("#f-country").addEventListener("change", function(){ state.touched.country = true; });
   $("#f-reply").addEventListener("change", function(){ state.touched.reply = true; });
+  $("#f-grade").addEventListener("change", function(){ state.touched.grade = true; });
   ["#f-msg","#f-contact","#f-consent"].forEach(function(s){
     $(s).addEventListener("input", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
     $(s).addEventListener("change", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
@@ -1864,12 +1835,16 @@ var RES = window.PF_RES = [
     if (bad){ bad.focus(); return; }
     $("#form-body").hidden = true; $("#f-success").hidden = false; $("#f-ok-title").focus();
   });
-  $("#res-grid").addEventListener("pointermove", function(e){
-    var card = e.target.closest(".res"); if (!card) return;
-    var r = card.getBoundingClientRect();
-    card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-    card.style.setProperty("--my", (e.clientY - r.top) + "px");
-  });
+  /* Pause control for everything that loops (WCAG 2.2.2), remembered per visitor */
+  var still = load("pf-still") === "1", motionBtn = $(".motion-btn");
+  function setStill(v){
+    still = v; state.still = v;
+    document.documentElement.classList.toggle("still", v);
+    if (motionBtn) motionBtn.setAttribute("aria-pressed", String(v));
+    $$("svg").forEach(function(g){ try { if (g.pauseAnimations && v !== g.animationsPaused()){ if (v) g.pauseAnimations(); else g.unpauseAnimations(); } } catch(e){} });
+    window.dispatchEvent(new CustomEvent("pf:motion", {detail: v}));
+  }
+  if (motionBtn) motionBtn.addEventListener("click", function(){ setStill(!still); store("pf-still", still ? "1" : "0"); });
   window.addEventListener("scroll", onScroll, {passive:true});
   window.addEventListener("resize", function(){ placeThumbs(); onScroll(); if (innerWidth > 1100) setMenu(false); });
   window.addEventListener("hashchange", function(){
@@ -1913,12 +1888,14 @@ var RES = window.PF_RES = [
     $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === savedStage)); });
   }
   setLang(detect());
+  if (state.stage) $("#f-grade").value = gradeFor(state.stage);
+  if (still) setStill(true);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ placeThumbs(); fitSeal(); });
   window.PF = {setLang: function(l){ setLang(l, {persist:true}); }, switchTo: switchTo, t: t, state: state};
 })();
 </script>
 <script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js";
+const THREE = await import("./three.module.min.js").catch(() => import("https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"));
 // ---------- 3D study scene (three.js): setup, materials, objects ----------
 (function(){
 const stage = document.getElementById("stage3d");
@@ -2279,7 +2256,10 @@ function pick(e){
   for (const h of ray.intersectObjects(tiles.concat([open]), true)){ let o = h.object; while (o && !o.userData.lang && o !== open) o = o.parent; if (o) return o; }
   return null;
 }
-canvas.addEventListener("pointerdown", e => { dragging = true; downX = lastX = e.clientX; downY = e.clientY; });
+canvas.addEventListener("pointerdown", e => { if (e.button !== 0) return; dragging = true; downX = lastX = e.clientX; downY = e.clientY; });
+const endDrag = () => { if (dragging){ dragging = false; requestRender(); } };
+canvas.addEventListener("pointercancel", endDrag);
+window.addEventListener("blur", endDrag);
 canvas.addEventListener("pointermove", e => {
   const r = canvas.getBoundingClientRect();
   tx = ((e.clientX - r.left) / r.width) * 2 - 1; ty = ((e.clientY - r.top) / r.height) * 2 - 1;
@@ -2305,11 +2285,13 @@ mq.addEventListener ? mq.addEventListener("change", onTheme) : mq.addListener(on
 new MutationObserver(onTheme).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
 
 let visible = true, running = false, clock = 0, last = performance.now(), nextFlip = 2.8;
+const still = () => document.documentElement.classList.contains("still");
+window.addEventListener("pf:motion", () => { last = performance.now(); requestRender(); });
 function requestRender(){ if (!running){ running = true; requestAnimationFrame(frame); } }
 function frame(now){
   running = false;
   const dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now;
-  const animate = !reduce && visible && !document.hidden;
+  const animate = !reduce && !still() && visible && !document.hidden;
   if (animate) clock += dt;
 
   // camera-feel: gentle sway, damped pointer parallax, drag that eases back
@@ -2348,7 +2330,7 @@ function frame(now){
 
   // page turn (prepared textures are painted one per frame, never during the turn itself)
   if (jobs.length && flipT < 0) jobs.shift()();
-  if (!reduce && clock > nextFlip) startFlip();
+  if (animate && clock > nextFlip) startFlip();
   if (flipT >= 0){
     flipT += dt / 1.5;
     const k = Math.min(1, flipT), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   // ease-in-out cubic
@@ -2375,7 +2357,7 @@ new ResizeObserver(resize).observe(stage);
 // Use the most recent entry: one callback can carry several changes (scrolling out and back in).
 new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; if (visible){ last = performance.now(); requestRender(); } }, {rootMargin:"120px"}).observe(stage);
 // Watchdog: if the scene should be animating but no frame is queued, start the loop again.
-setInterval(() => { if (!reduce && visible && !document.hidden && !running){ last = performance.now(); requestRender(); } }, 1000);
+setInterval(() => { if (!reduce && !still() && visible && !document.hidden && !running){ last = performance.now(); requestRender(); } }, 1000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden){ last = performance.now(); requestRender(); } });
 canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); stage.classList.remove("ready"); });
 resize(); markActive();
