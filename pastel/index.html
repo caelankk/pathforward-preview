@@ -1,0 +1,2385 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style></head><body>
+<title>PathForward</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PathForward: free, reliable study-abroad guidance for students in China and Vietnam, run by students.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400..600&family=Mali:wght@500;600&family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap">
+<style>
+:root{
+  /* Layout: "morning pastel". Generous white space; a slow four-colour light field (pink, mist blue, mint, cream) behind a floating 3D study scene; ink-black type and buttons anchor the softness. */
+  --bg:#FDFCFD;
+  --surface:#FFFFFF;
+  --surface-2:#F8F5F8;
+  --line:#ECE7EE;
+  --fg:#1D1A26;
+  --muted:#6A6577;
+  --primary:#1D1A26;
+  --primary-ink:#FFFFFF;
+  --primary-press:#000000;
+  --em:#1D1A26;
+  --lav:#F9B2D7;   --lav-soft:#FDEAF4;
+  --peach:#FBCDE4; --peach-soft:#FEF2F8;
+  --mint:#C6F1CD;  --mint-soft:#ECFCEE;
+  --butter:#EEF8C2;--butter-soft:#FAFFE9;
+  --sky:#C2E6F0;   --sky-soft:#E9F6FA;
+  --rose:#F49CC9;
+  --aurora:1;
+  color-scheme:light;
+  --hi-mark:color-mix(in srgb,#F9B2D7 70%,transparent);
+  --grid:color-mix(in srgb,#1D1A26 5%,transparent);
+  --focus:#1D1A26;
+  --danger:#C2364B;
+  --sdg4:#C5192D;
+  --clay:0 0 0 1px rgba(29,26,38,.06),0 22px 44px -30px rgba(150,70,120,.32),0 2px 6px -3px rgba(29,26,38,.06);
+  --shadow:0 30px 70px -36px rgba(80,40,90,.35);
+  --font-sans:"Be Vietnam Pro","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-round:"Be Vietnam Pro","Noto Sans SC","PingFang SC",system-ui,sans-serif;
+  --font-serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-hand:"Mali","ZCOOL KuaiLe","Noto Sans SC","Comic Sans MS",cursive;
+  --radius:22px;
+  --ease:cubic-bezier(.22,.8,.22,1);
+  --spring:cubic-bezier(.34,1.4,.64,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+html:lang(zh) body{line-height:1.8;letter-spacing:.01em}
+html:lang(vi) body{line-height:1.72}
+img,svg{max-width:100%}
+a{color:var(--primary)}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:3px}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-80px;z-index:100;background:var(--surface);color:var(--fg);padding:10px 16px;border-radius:10px;font-weight:600;text-decoration:none}
+.skip:focus{top:calc(12px + env(safe-area-inset-top,0px))}
+main{transition:opacity .16s ease}
+body.switching main,body.switching .nav-links{opacity:.25}
+section[id]{scroll-margin-top:84px}
+.nw{display:inline-block}
+h1,h2,h3{font-family:var(--font-round);color:var(--fg);font-weight:600;letter-spacing:-.03em}
+html:lang(zh) h1,html:lang(zh) h2,html:lang(zh) h3{font-family:var(--font-sans);word-break:keep-all;overflow-wrap:anywhere}
+
+/* Highlighter marks */
+.em,.hl{color:var(--em);padding:0 .12em;margin:0 -.04em;font-family:var(--font-serif);font-style:italic;font-weight:500;letter-spacing:-.01em;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--lav) 85%,transparent),color-mix(in srgb,var(--sky) 90%,transparent) 55%,color-mix(in srgb,var(--mint) 95%,transparent)) no-repeat 0 88%/100% .34em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+.em{animation:mark 1s .6s var(--ease) both}
+@keyframes mark{from{background-size:0% .34em}to{background-size:100% .34em}}
+html:lang(zh) .em,html:lang(zh) .hl{font-family:var(--font-sans);font-style:normal;font-weight:700;letter-spacing:0}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .hl{animation:mark linear both;animation-timeline:view();animation-range:entry 30% cover 40%}
+  }
+}
+
+/* ---------- Nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;color:var(--fg);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.nav-row{display:flex;align-items:center;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:9px;min-height:44px;color:inherit;text-decoration:none;font-family:var(--font-round);font-weight:600;font-size:1.18rem;letter-spacing:-.03em;flex-shrink:0;border-radius:10px;line-height:1}
+.brand .mark{width:32px;height:32px;flex-shrink:0}
+.brand b{font-weight:600;font-family:var(--font-serif);font-style:italic;letter-spacing:-.01em}
+.mark .m-bg{fill:var(--lav)}
+.mark .m-path{stroke:var(--fg)}
+.mark .m-dot{fill:var(--butter);stroke:var(--fg)}
+.nav-links{display:flex;gap:2px;margin-left:auto;transition:opacity .16s}
+.nav-links a{color:var(--muted);text-decoration:none;padding:9px 13px;border-radius:999px;font-size:.93rem;font-weight:500;white-space:nowrap;transition:color .2s,background-color .2s}
+.nav-links a:hover{color:var(--fg);background:var(--lav-soft)}
+.nav-end{display:flex;align-items:center;gap:10px;margin-left:8px}
+.menu-btn{display:none;width:44px;height:44px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;place-items:center;flex-shrink:0}
+.menu-btn svg{width:22px;height:22px}
+.menu-btn .i-x{display:none}
+.menu-btn[aria-expanded="true"] .i-x{display:block}
+.menu-btn[aria-expanded="true"] .i-menu{display:none}
+.menu-panel{position:absolute;top:100%;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px 20px;box-shadow:var(--shadow)}
+.menu-panel .wrap{display:flex;flex-direction:column;gap:2px}
+.menu-panel a{color:var(--fg);text-decoration:none;font-size:1.05rem;font-weight:500;padding:13px 4px;border-bottom:1px solid var(--line)}
+.menu-panel .btn{margin-top:14px;border-bottom:0}
+
+/* Language switcher */
+.lang{--l-bg:var(--surface);--l-border:var(--line);--l-fg:var(--muted);--l-hover:var(--fg);--l-on:var(--primary-ink);--l-thumb:var(--primary);
+  position:relative;display:inline-flex;padding:3px;border-radius:999px;flex-shrink:0;background:var(--l-bg);border:1px solid var(--l-border)}
+.lang button{position:relative;z-index:1;appearance:none;border:0;background:none;color:var(--l-fg);font:inherit;font-size:.86rem;font-weight:600;
+  padding:0 12px;min-height:38px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:color .25s}
+.lang button:hover{color:var(--l-hover)}
+.lang button[aria-pressed="true"]{color:var(--l-on)}
+.lang .short{display:none}
+.lang-thumb{position:absolute;z-index:0;top:3px;bottom:3px;left:0;width:var(--w,0px);transform:translateX(var(--x,0px));border-radius:999px;background:var(--l-thumb)}
+.lang.ready .lang-thumb{transition:transform .5s var(--ease),width .45s var(--ease)}
+.lang:not(.ready) button[aria-pressed="true"]{background:var(--l-thumb)}
+
+/* Buttons (clay) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;font:inherit;font-weight:650;font-size:1rem;
+  text-decoration:none;cursor:pointer;border:0;white-space:nowrap;transition:transform .2s var(--spring),box-shadow .2s,background-color .2s}
+.btn svg{width:18px;height:18px;flex-shrink:0;transition:transform .22s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-primary{background:var(--primary);color:var(--primary-ink);box-shadow:0 14px 30px -16px rgba(29,26,38,.55)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--lav),0 18px 34px -16px rgba(29,26,38,.5)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-ghost{color:var(--fg);background:color-mix(in srgb,var(--surface) 70%,transparent);box-shadow:inset 0 0 0 1px var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.btn-ghost:hover{transform:translateY(-2px)}
+.btn-sm{min-height:40px;padding:0 18px;font-size:.9rem}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero::before{content:"";position:absolute;z-index:-2;inset:-25% -15% -10% -15%;pointer-events:none;opacity:var(--aurora);
+  background:radial-gradient(32% 38% at 22% 28%,var(--lav),transparent 70%),radial-gradient(30% 36% at 78% 22%,var(--sky),transparent 70%),
+    radial-gradient(34% 40% at 64% 82%,var(--mint),transparent 70%),radial-gradient(28% 30% at 14% 86%,var(--butter),transparent 70%);
+  filter:blur(40px) saturate(115%);animation:aurora 26s ease-in-out infinite alternate}
+@keyframes aurora{0%{transform:translate3d(0,0,0) rotate(0deg) scale(1)}50%{transform:translate3d(3%,-2%,0) rotate(5deg) scale(1.06)}100%{transform:translate3d(-3%,2%,0) rotate(-4deg) scale(1.02)}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 25%,transparent),transparent 30%,transparent 70%,var(--bg))}
+.hero-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);align-items:center;gap:24px 40px;padding-block:44px 64px}
+.eyebrow-pill{display:inline-flex;align-items:center;gap:10px;margin:0;padding:7px 15px 7px 12px;border-radius:999px;font-size:.86rem;font-weight:500;color:var(--muted);background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pulse{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--lav),var(--sky));flex-shrink:0;animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--mint) 80%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero h1{font-size:clamp(2.4rem,5vw,4.2rem);font-weight:600;letter-spacing:-.045em;line-height:1.04;margin:22px 0 18px;text-wrap:balance}
+html:lang(vi) .hero h1{font-size:clamp(2.1rem,4.2vw,3.45rem);line-height:1.22;letter-spacing:-.01em}
+html:lang(zh) .hero h1{font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.28;letter-spacing:.01em;font-weight:600}
+.hero .sub{font-size:clamp(1.02rem,1.35vw,1.14rem);color:var(--muted);max-width:33em;margin:0 0 30px}
+html:lang(zh) .hero .sub{max-width:29em}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0;padding:0;list-style:none}
+.hero-facts li{display:inline-flex;align-items:center;gap:7px;padding:6px 13px 6px 9px;border-radius:999px;font-size:.86rem;font-weight:500;color:var(--fg);background:color-mix(in srgb,var(--mint-soft) 80%,transparent);border:1px solid color-mix(in srgb,var(--fg) 6%,transparent)}
+.hero-facts li:nth-child(2){background:var(--lav-soft)}
+.hero-facts li:nth-child(3){background:var(--peach-soft)}
+.hero-facts svg{width:15px;height:15px;color:var(--fg);flex-shrink:0;opacity:.75}
+
+/* 3D stage */
+.stage-wrap{position:relative;min-width:0}
+.stage{position:relative;aspect-ratio:1/1;width:100%;max-width:640px;margin-inline:auto}
+.stage::before{content:"";position:absolute;inset:14% 10% 8%;border-radius:50%;background:radial-gradient(circle at 50% 58%,color-mix(in srgb,var(--surface) 70%,transparent),transparent 66%);filter:blur(6px)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;opacity:0;transition:opacity 1.2s ease;
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 84%,transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 84%,transparent 100%)}
+.stage.ready canvas{opacity:1}
+.stage.hovering canvas{cursor:pointer}
+.stage-fallback{position:absolute;inset:20% 16%;transition:opacity .8s}
+.stage.ready .stage-fallback{opacity:0}
+.stage-fallback span{position:absolute;border-radius:40% 60% 55% 45%/50% 45% 55% 50%;animation:blob 6s ease-in-out infinite}
+.stage-fallback span:nth-child(1){inset:10% 20% 30% 5%;background:var(--lav)}
+.stage-fallback span:nth-child(2){inset:35% 5% 5% 35%;background:var(--peach);animation-delay:-2s}
+.stage-fallback span:nth-child(3){inset:45% 45% 10% 15%;background:var(--mint);animation-delay:-4s}
+@keyframes blob{50%{border-radius:55% 45% 40% 60%/45% 60% 40% 55%;transform:translateY(-6px)}}
+.stage-hint{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;width:max-content;max-width:100%;margin:18px auto 0;transform:rotate(-2deg);text-align:center;
+  font-family:var(--font-hand);font-weight:600;font-size:.98rem;color:var(--primary);pointer-events:none}
+html:lang(zh) .stage-hint{font-weight:400;font-size:1.05rem}
+.stage-hint svg{width:20px;height:20px}
+.seal{position:absolute;left:2%;top:3%;width:clamp(96px,10vw,120px);aspect-ratio:1;filter:drop-shadow(0 14px 22px rgba(150,70,120,.25));z-index:2}
+.seal svg{width:100%;height:100%;display:block}
+.seal-bg{fill:#F6FFDC}
+.seal-ring{fill:none;stroke:#1D1A26;stroke-width:1;stroke-dasharray:2 3;opacity:.5}
+.seal-spin{transform-box:view-box;transform-origin:60px 60px;animation:spin 20s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.seal-text{font-family:var(--font-sans);font-size:10px;font-weight:600;letter-spacing:.06em;fill:#1D1A26}
+.seal-mid{font-family:var(--font-serif);font-style:italic;font-size:26px;font-weight:600;fill:#1D1A26}
+
+/* ---------- Stats ---------- */
+.stats{position:relative;z-index:2}
+.stats-card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0}
+.stat{display:flex;flex-direction:column;gap:2px;padding:20px 22px;min-width:0;border-radius:var(--radius);background:var(--lav-soft);box-shadow:var(--clay)}
+.stat:nth-child(2){background:var(--peach-soft)}
+.stat:nth-child(3){background:var(--mint-soft)}
+.stat:nth-child(4){background:var(--butter-soft)}
+.stat dd{order:-1;margin:0;font-family:var(--font-serif);font-size:clamp(2.1rem,3.4vw,2.9rem);font-weight:500;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--fg)}
+.stat dt{color:var(--muted);font-size:.92rem;font-weight:500}
+</style>
+<style>
+/* ---------- Illustration paint (shared by every inline SVG illustration) ---------- */
+.ill .s-ink{stroke:var(--fg);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+.ill .s-thin{stroke:var(--fg);stroke-width:1.2;stroke-linecap:round;fill:none;opacity:.55}
+.ill .nf{fill:none}
+.ill .f-surface{fill:var(--surface)}.ill .f-white{fill:#FFFFFF}.ill .f-ink{fill:var(--fg)}
+.ill .f-lav{fill:var(--lav)}.ill .f-lav-soft{fill:var(--lav-soft)}
+.ill .f-peach{fill:var(--peach)}.ill .f-peach-soft{fill:var(--peach-soft)}
+.ill .f-mint{fill:var(--mint)}.ill .f-mint-soft{fill:var(--mint-soft)}
+.ill .f-butter{fill:var(--butter)}.ill .f-butter-soft{fill:var(--butter-soft)}
+.ill .f-sky{fill:var(--sky)}.ill .f-sky-soft{fill:var(--sky-soft)}
+.ill .f-rose{fill:var(--rose)}.ill .f-primary{fill:var(--primary)}
+.ill .shade{fill:var(--fg);opacity:.08}
+.ill .shine{fill:#FFFFFF;opacity:.7}
+.ill .t{font-family:var(--font-round);font-weight:800;fill:var(--fg)}
+.ill .float{transform-box:fill-box;transform-origin:center;animation:float 4.2s ease-in-out infinite;animation-delay:var(--d,0s)}
+.ill .sway{transform-box:fill-box;transform-origin:50% 100%;animation:sway 3.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+.ill .twinkle{transform-box:fill-box;transform-origin:center;animation:twinkle 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes sway{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes twinkle{0%,100%{transform:scale(.6);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+
+/* ---------- Sections ---------- */
+.band{padding-block:clamp(72px,9vw,116px)}
+.band.tint{background:var(--surface-2)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0;padding:5px 13px 5px 10px;border-radius:999px;background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);
+  font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lav);box-shadow:10px 0 0 var(--sky),20px 0 0 var(--mint);margin-right:20px}
+html:lang(zh) .eyebrow{letter-spacing:.16em;font-size:.82rem}
+h2{font-size:clamp(1.95rem,3.8vw,3.05rem);line-height:1.1;letter-spacing:-.04em;font-weight:600;margin:16px 0 14px;text-wrap:balance}
+html:lang(vi) h2{line-height:1.28}
+html:lang(zh) h2{line-height:1.35;letter-spacing:.02em}
+h3{text-wrap:balance}
+.lead{font-size:clamp(1.02rem,1.3vw,1.13rem);color:var(--muted);max-width:60ch;margin:0}
+html:lang(zh) .lead{max-width:34em}
+.ico{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex-shrink:0}
+.ico svg{width:22px;height:22px}
+
+/* Gap */
+.gap-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 64px;align-items:end}
+.gap-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:48px}
+.gap-item{position:relative;padding:22px 24px 26px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
+.gap-item:hover{transform:translateY(-5px)}
+.spot{height:128px;margin:-4px 0 14px;border-radius:16px;display:grid;place-items:center;background:var(--peach-soft)}
+.gap-item:nth-child(2) .spot{background:var(--sky-soft)}
+.gap-item:nth-child(3) .spot{background:var(--mint-soft)}
+.spot svg{height:118px;width:auto;overflow:visible}
+.gap-item h3{font-size:1.2rem;line-height:1.35;margin:0 0 8px}
+.gap-item p{margin:0;color:var(--muted)}
+.answer{position:relative;overflow:hidden;margin-top:28px;border-radius:28px;background:var(--lav-soft);box-shadow:var(--clay);
+  padding:clamp(26px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:20px 40px;align-items:center}
+.answer h3{font-size:clamp(1.55rem,2.8vw,2.2rem);line-height:1.2;margin:14px 0 12px}
+html:lang(vi) .answer h3{line-height:1.32}
+.answer p{color:var(--muted);margin:0}
+.answer-ill{width:100%;max-width:300px;justify-self:center}
+.sdg{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:5px 14px 5px 5px;border-radius:999px;font-size:.84rem;color:var(--fg);background:var(--surface);box-shadow:var(--clay)}
+.sdg b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--sdg4);color:#fff;font-size:.82rem;flex-shrink:0}
+
+/* Mission / vision / offers */
+.mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:40px}
+.mv-item{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:16px;align-items:start;padding:clamp(24px,3vw,34px);border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0}
+.mv-item svg{width:112px;height:auto}
+.mv-label{display:inline-block;margin:0;padding:3px 12px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);background:var(--butter-soft)}
+.mv-item:nth-child(2) .mv-label{background:var(--sky-soft)}
+.mv-text{margin:14px 0 0;font-size:clamp(1.08rem,1.5vw,1.28rem);line-height:1.55;font-weight:500;text-wrap:pretty}
+html:lang(zh) .mv-text{line-height:1.8}
+.offers-title{font-size:clamp(1.35rem,2vw,1.65rem);margin:64px 0 18px}
+.offers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.offer{padding:22px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
+.offer:hover{transform:translateY(-5px) rotate(-.6deg)}
+.offer .ico{background:var(--lav-soft);color:var(--primary)}
+.offer:nth-child(2) .ico{background:var(--peach-soft)}
+.offer:nth-child(3) .ico{background:var(--mint-soft)}
+.offer:nth-child(4) .ico{background:var(--butter-soft)}
+.offer h3{font-size:1.08rem;line-height:1.35;margin:16px 0 6px}
+.offer p{font-size:.93rem;color:var(--muted);margin:0}
+
+/* ---------- Roadmap ---------- */
+.rm-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px 64px;align-items:start}
+.rm-side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px)}
+.grade-pick{margin-top:26px}
+.grade-pick .pick-q{margin:0 0 12px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--surface);color:var(--fg);font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;box-shadow:var(--clay),inset 0 0 0 1px var(--line);
+  transition:background-color .2s,color .2s,transform .25s var(--spring)}
+.chip:hover{transform:translateY(-2px)}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--primary);color:var(--primary-ink);box-shadow:inset 0 -3px 0 var(--primary-press)}
+.pick-hint{margin:12px 0 0;font-size:.88rem;color:var(--muted)}
+.rm-ill{position:relative;margin-top:26px;border-radius:24px;background:var(--surface);box-shadow:var(--clay);overflow:hidden}
+.rm-ill svg{display:block;width:100%;height:auto}
+.route{fill:none;stroke:var(--primary);stroke-width:3;stroke-linecap:round;stroke-dasharray:2 10}
+.route-mask{stroke-dasharray:1000;stroke-dashoffset:1000;animation:drawRoute 2.6s .4s var(--ease) forwards}
+@keyframes drawRoute{to{stroke-dashoffset:0}}
+.stk-label{font-family:var(--font-sans);font-weight:700;font-size:14px;fill:var(--fg);text-anchor:middle;paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round}
+html:lang(vi) .stk-label{font-size:13px}
+.note{position:absolute;font-family:var(--font-hand);font-weight:600;font-size:clamp(.82rem,1.2vw,1rem);line-height:1.2;color:var(--primary);white-space:nowrap;pointer-events:none;transform:rotate(var(--r,-4deg))}
+html:lang(zh) .note{font-weight:400;font-size:clamp(.9rem,1.3vw,1.08rem)}
+.note-start{left:4%;top:61%;--r:-6deg}
+.note-end{left:31%;top:4.5%;--r:-3deg}
+.plane-body{fill:var(--surface);stroke:var(--fg);stroke-width:1.8;stroke-linejoin:round}
+.plane-fold{stroke:var(--fg);stroke-width:1.4;fill:none}
+.tl-wrap{position:relative;--progress:1}
+.timeline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:12px}
+.tl-wrap::before,.tl-wrap::after{content:"";position:absolute;left:21px;top:22px;bottom:22px;width:3px;border-radius:3px}
+.tl-wrap::before{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 12px)}
+.tl-wrap::after{background:linear-gradient(180deg,var(--peach),var(--lav) 50%,var(--mint));transform-origin:top;transform:scaleY(var(--progress))}
+.rm-plane{position:absolute;z-index:2;left:22.5px;top:calc(22px + (100% - 44px) * var(--progress));width:30px;height:30px;transform:translate(-50%,-50%) rotate(90deg);pointer-events:none;transition:top .12s linear}
+.rm-plane svg{width:100%;height:100%;display:block}
+.step{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px}
+.node{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);box-shadow:var(--clay),inset 0 0 0 1.5px var(--line);
+  font-family:var(--font-round);font-weight:800;font-variant-numeric:tabular-nums;color:var(--muted);transition:background .4s,color .4s,box-shadow .4s}
+.step.lit .node{background:var(--lav);color:#1D1A26;box-shadow:var(--clay)}
+.step.here .node{box-shadow:0 0 0 6px var(--hi-mark)}
+.step-card{background:var(--surface);border-radius:18px;overflow:hidden;min-width:0;box-shadow:var(--clay);transition:box-shadow .25s}
+.step.here .step-card{box-shadow:var(--clay),inset 0 0 0 2px var(--lav)}
+.step-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 12px;width:100%;padding:14px 18px;min-height:58px;cursor:pointer}
+.step-head:focus-visible{outline:2.5px solid var(--focus);outline-offset:-2px;border-radius:18px}
+.step-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;grid-column:1}
+.step-when{font-size:.78rem;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.here-badge{font-family:var(--font-hand);font-size:.8rem;font-weight:600;padding:1px 10px;border-radius:999px;color:#1D1A26;background:var(--butter);transform:rotate(-3deg)}
+.step-title{grid-column:1;font-family:var(--font-round);font-size:1.12rem;font-weight:700;line-height:1.35}
+html:lang(zh) .step-title{font-family:var(--font-sans)}
+.step-head .chev{grid-column:2;grid-row:1/span 2;width:20px;height:20px;color:var(--muted);transition:transform .3s var(--ease)}
+.step-head[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.step-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--ease)}
+.step.open .step-panel{grid-template-rows:1fr}
+.step-panel>div{overflow:hidden;min-height:0}
+.step-panel .inner{padding:0 18px 18px}
+.step-panel p{margin:0;color:var(--muted)}
+.checks-h{margin:16px 0 8px!important;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)!important}
+.checks{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:8px}
+.checks li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start}
+.checks svg{width:20px;height:20px;margin-top:2px;padding:3px;border-radius:50%;background:var(--mint-soft);color:var(--fg)}
+.source{display:inline-flex;align-items:center;gap:6px;min-height:40px;font-size:.88rem;font-weight:600;color:var(--primary);text-decoration:none;border-radius:6px}
+.source svg{width:15px;height:15px}
+.source:hover{text-decoration:underline}
+
+/* ---------- Resources ---------- */
+#resources{position:relative;overflow:hidden;isolation:isolate}
+#resources::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(34% 40% at 92% 8%,var(--peach-soft),transparent 70%),radial-gradient(30% 36% at 4% 60%,var(--mint-soft),transparent 70%)}
+.res-head{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:20px 48px;align-items:end}
+.res-head .lead{margin-top:2px}
+.res-head-ill{width:250px;height:auto;display:block}
+.res-how-title{margin:34px 0 0;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:8px}
+.res-how-title::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--primary);opacity:.5}
+.res-how{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:12px 0 0;padding:0;list-style:none}
+.res-how li{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 12px;align-items:start;padding:14px 16px;border-radius:20px;background:var(--surface);box-shadow:var(--clay);min-width:0}
+.res-how li:not(:last-child)::after{content:"";position:absolute;right:-13px;top:50%;width:12px;border-top:2px dashed color-mix(in srgb,var(--primary) 35%,transparent)}
+.res-how .ico{grid-row:span 2;width:44px;height:44px;border-radius:14px;color:var(--fg);background:var(--lav-soft)}
+.res-how li:nth-child(2) .ico{background:var(--mint-soft)}
+.res-how li:nth-child(3) .ico{background:var(--peach-soft)}
+.res-how li:nth-child(4) .ico{background:var(--butter-soft)}
+.res-how strong{font-family:var(--font-round);font-size:1.02rem;line-height:1.3}
+html:lang(zh) .res-how strong{font-family:var(--font-sans)}
+.res-how span{font-size:.86rem;line-height:1.45;color:var(--muted)}
+.res-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:36px}
+.res-count{margin:0;color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.res-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense;gap:20px;margin-top:22px}
+.res{--tone:var(--lav-soft);--dot:var(--lav);position:relative;display:flex;flex-direction:column;border-radius:28px;background:var(--surface);box-shadow:var(--clay);min-width:0;overflow:hidden;transition:transform .35s var(--spring),box-shadow .3s}
+.res[data-tone="mint"]{--tone:var(--mint-soft);--dot:var(--mint)}
+.res[data-tone="peach"]{--tone:var(--peach-soft);--dot:var(--peach)}
+.res[data-tone="sky"]{--tone:var(--sky-soft);--dot:var(--sky)}
+.res[data-tone="butter"]{--tone:var(--butter-soft);--dot:var(--butter)}
+.res:hover{transform:translateY(-6px)}
+.res-cover{position:relative;margin:10px 10px 0;height:178px;border-radius:20px;background:var(--tone);overflow:hidden}
+.res-cover::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(color-mix(in srgb,var(--fg) 7%,transparent) 1.2px,transparent 1.4px);background-size:16px 16px;opacity:.6}
+.res-art{position:relative;z-index:1;display:block;width:100%;height:100%;transition:transform .5s var(--spring)}
+.res:hover .res-art{transform:scale(1.05) rotate(-.6deg)}
+.badge{position:absolute;z-index:2;left:12px;top:12px;display:inline-flex;align-items:center;gap:7px;font-size:.76rem;font-weight:700;letter-spacing:.03em;padding:5px 12px 5px 9px;border-radius:999px;color:var(--fg);background:var(--surface);box-shadow:0 4px 10px -6px rgba(46,42,71,.35)}
+.badge i{width:9px;height:9px;border-radius:50%;background:var(--dot);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--fg) 25%,transparent)}
+.res-thumb{display:none}
+.res-body{display:flex;flex-direction:column;gap:8px;padding:16px 20px 18px;flex:1;min-width:0}
+.res-tags{display:flex;flex-wrap:wrap;gap:6px}
+.res-tags span{font-size:.74rem;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.res-tags .res-type-m{display:none}
+.res h3{margin:2px 0 0;font-size:1.15rem;line-height:1.35}
+.res p{margin:0;color:var(--muted);font-size:.94rem}
+.res-foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed var(--line)}
+.langs{display:inline-flex;gap:4px;flex-wrap:wrap}
+.langs b{font-size:.7rem;font-weight:700;padding:3px 7px;border-radius:8px;background:var(--surface-2);color:var(--muted)}
+.res-act{display:inline-flex;align-items:center;gap:6px;min-height:42px;padding:0 14px;font:inherit;font-size:.86rem;font-weight:650;color:var(--primary);text-decoration:none;background:var(--lav-soft);border:0;cursor:pointer;border-radius:999px;white-space:nowrap;transition:transform .25s var(--spring)}
+.res-act:hover{transform:translateY(-2px)}
+.res-act svg{width:15px;height:15px}
+.res-act.soon{color:var(--muted);background:var(--surface-2)}
+/* Featured: a wide card with the illustration beside the text */
+.res.feat{grid-column:span 2;flex-direction:row}
+.res.feat .res-cover{flex:1.2;height:auto;min-height:260px;margin:10px 0 10px 10px}
+.res.feat .res-body{flex:1;justify-content:center;padding:26px 28px 24px;gap:10px}
+.res.feat h3{font-size:1.5rem;line-height:1.25}
+.res.feat p{font-size:1rem}
+@media (max-width:960px){
+  .res-head{grid-template-columns:minmax(0,1fr) 190px}
+  .res-head-ill{width:190px}
+  .res-how{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .res-how li::after{display:none}
+  .res.feat .res-cover{min-height:220px}
+}
+@media (max-width:680px){
+  .res-head{grid-template-columns:minmax(0,1fr)}
+  .res-head-ill{display:none}
+  .res-how{gap:10px;margin-top:24px}
+  .res-how li{grid-template-columns:minmax(0,1fr);padding:12px 14px;gap:6px}
+  .res-how .ico{grid-row:auto;width:36px;height:36px;border-radius:12px}
+  .res-how .ico svg{width:18px;height:18px}
+  .res-how span{font-size:.82rem}
+  .res-bar .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding:4px 16px 8px;width:calc(100% + 32px)}
+  .res-bar .chips::-webkit-scrollbar{display:none}
+  .res-bar .chip{flex-shrink:0}
+  .res-grid{gap:12px}
+  .res,.res.feat{grid-column:auto;display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 14px;padding:16px;border-radius:22px}
+  .res-cover{display:none}
+  .res-thumb{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;background:var(--tone)}
+  .res-thumb svg{width:38px;height:38px}
+  .res-body,.res.feat .res-body{padding:0;gap:6px}
+  .res-tags .res-type-m{display:inline-flex;background:var(--tone);color:var(--fg)}
+  .res h3,.res.feat h3{font-size:1.05rem}
+  .res p,.res.feat p{font-size:.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .res-foot{padding-top:10px;margin-top:6px}
+  .res-foot .langs{display:none}
+  .res-foot{justify-content:flex-start;border-top:0;padding-top:4px;margin-top:2px}
+  .res,.res.feat{padding:14px 14px 12px}
+  .res-act{min-height:40px;padding:0 12px}
+  .res:hover{transform:none}
+}
+
+/* ---------- Partner ---------- */
+.partner{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px 64px;align-items:center}
+.src-h{margin:28px 0 10px;font-weight:700;font-size:.95rem}
+.src-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.src-chips a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 15px;border-radius:999px;color:var(--fg);text-decoration:none;font-size:.88rem;font-weight:600;background:var(--surface);box-shadow:var(--clay);transition:transform .25s var(--spring)}
+.src-chips a:hover{transform:translateY(-2px)}
+.src-chips svg{width:13px;height:13px;color:var(--muted)}
+.src-note{margin:10px 0 0;font-size:.84rem;color:var(--muted)}
+.mentor-card{position:relative;overflow:hidden;border-radius:28px;padding:clamp(24px,3.4vw,38px);background:var(--peach-soft);box-shadow:var(--clay)}
+.mentor-card .tag{margin:0;font-family:var(--font-hand);font-size:1.08rem;font-weight:600;color:var(--primary);transform:rotate(-2deg);display:inline-block}
+html:lang(zh) .mentor-card .tag{font-weight:400}
+.mentor-ill{position:absolute;right:14px;top:10px;width:132px;height:auto}
+.mentor-top{display:flex;align-items:center;gap:16px;margin-top:20px}
+.mentor-card h3{margin:0;font-size:1.5rem}
+.mentor-card .role{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+.mentor-card .body{margin:20px 0 0;font-size:1.04rem;line-height:1.65}
+.co-logo{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:20px;padding-top:16px;border-top:1px dashed color-mix(in srgb,var(--fg) 18%,transparent);color:var(--muted);font-size:.88rem}
+.co-logo b{color:var(--fg);font-family:var(--font-round);font-size:1.1rem}
+
+/* ---------- Team ---------- */
+.team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:44px}
+.member{display:flex;flex-direction:column;gap:14px;padding:24px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0;transition:transform .3s var(--spring)}
+.member:hover{transform:translateY(-5px) rotate(-.5deg)}
+.member.is-mentor{background:transparent;box-shadow:none;border:2px dashed var(--line)}
+.avatar{width:68px;height:68px;display:grid;place-items:center;font-family:var(--font-round);font-weight:800;font-size:1.2rem;color:#1D1A26;
+  border-radius:58% 42% 52% 48%/48% 56% 44% 52%;background:#F9B2D7;box-shadow:inset 0 -4px 0 rgba(46,42,71,.1),inset 0 3px 0 rgba(255,255,255,.6)}
+.member:nth-child(2) .avatar{background:#C6F1CD;border-radius:44% 56% 46% 54%/56% 44% 56% 44%}
+.member:nth-child(3) .avatar{background:#C2E6F0;border-radius:52% 48% 60% 40%/42% 58% 42% 58%}
+.member:nth-child(4) .avatar,.mentor-card .avatar{background:#EEF8C2}
+.member h3{margin:0;font-size:1.2rem}
+.member .role{margin:2px 0 0;color:var(--primary);font-weight:600;font-size:.9rem}
+.member dl{margin:0;display:grid;gap:8px;font-size:.88rem}
+.member dl div{display:grid;gap:1px}
+.member dt{color:var(--muted);font-size:.76rem;font-weight:600;letter-spacing:.04em}
+.member dd{margin:0;font-weight:500}
+.legacy{display:flex;gap:14px;align-items:center;margin-top:22px;padding:16px 20px;border-radius:18px;background:var(--mint-soft);color:var(--fg)}
+.legacy svg{width:56px;height:auto;flex-shrink:0}
+.legacy p{margin:0}
+
+/* ---------- Get involved ---------- */
+.inv-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end}
+.inv-ill{width:180px;height:auto}
+.inv-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:24px;margin-top:36px;align-items:start}
+.form-card{padding:clamp(22px,3vw,36px);border-radius:28px;background:var(--surface);box-shadow:var(--clay);min-width:0}
+.mode{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:999px;background:var(--surface-2)}
+.mode button{min-height:40px;padding:0 16px;border-radius:999px;border:0;background:none;font:inherit;font-weight:600;font-size:.92rem;color:var(--muted);cursor:pointer;transition:background-color .2s,color .2s}
+.mode button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:var(--clay)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0;margin:0;padding:0;border:0}
+.field.full{grid-column:1/-1}
+.field label,.field legend{font-weight:600;font-size:.9rem;padding:0}
+.field legend{margin-bottom:7px}
+.opt{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;font-size:1rem;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:11px 14px;min-height:48px;width:100%;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:120px;resize:vertical;line-height:1.5}
+select{appearance:none;-webkit-appearance:none;padding-right:40px;cursor:pointer;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 21px) 52%,calc(100% - 16px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent)}
+[aria-invalid="true"]{border-color:var(--danger)}
+.err{margin:0;color:var(--danger);font-size:.85rem;font-weight:500}
+.roles-pick{display:flex;flex-wrap:wrap;gap:8px}
+.chk{position:relative;display:inline-flex}
+.chk input{position:absolute;opacity:0;width:100%;height:100%;min-height:0;margin:0;cursor:pointer}
+.chk span{display:inline-flex;align-items:center;min-height:40px;padding:0 15px;border-radius:999px;background:var(--surface-2);font-size:.9rem;font-weight:600;transition:all .2s}
+.chk input:checked+span{background:var(--lav);color:#1D1A26}
+.chk input:focus-visible+span{outline:2.5px solid var(--focus);outline-offset:2px}
+.form-card[data-mode="question"] .vol-only{display:none}
+.consent-row{margin-top:18px;display:grid;gap:6px}
+.consent{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;font-size:.92rem;cursor:pointer}
+.consent input{width:20px;height:20px;min-height:0;margin:2px 0 0;padding:0;accent-color:var(--primary)}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:22px}
+.privacy{display:flex;gap:8px;align-items:flex-start;margin:0;color:var(--muted);font-size:.85rem;max-width:34em}
+.privacy svg{width:17px;height:17px;flex-shrink:0;color:var(--primary);margin-top:2px}
+.preview-note{margin:16px 0 0;font-size:.8rem;color:var(--muted)}
+.success{text-align:center;padding:28px 8px}
+.success .ok{width:68px;height:68px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:var(--mint);color:#1D1A26;box-shadow:var(--clay)}
+.success .ok svg{width:30px;height:30px}
+.success h3{margin:0 0 8px;font-size:1.45rem}
+.success p{margin:0 auto 20px;color:var(--muted);max-width:30em}
+.inv-side{display:grid;gap:16px;min-width:0}
+.side-card{padding:24px;border-radius:var(--radius);background:var(--surface-2);min-width:0}
+.side-card h3{margin:0;font-size:1.12rem}
+.roles-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:14px}
+.roles-list li{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:start}
+.roles-list .ico{width:38px;height:38px;border-radius:12px;background:var(--surface);color:var(--primary);box-shadow:var(--clay)}
+.roles-list .ico svg{width:18px;height:18px}
+.roles-list strong{display:block;font-size:.95rem}
+.roles-list span{font-size:.88rem;color:var(--muted)}
+.side-card>p{margin:8px 0 0;color:var(--muted);font-size:.9rem}
+.channels{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;padding:0;list-style:none}
+.channels li{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 13px;border-radius:999px;background:var(--surface);font-size:.86rem;font-weight:600}
+.channels em{font-style:normal;font-weight:500;color:var(--muted);font-size:.78rem}
+
+/* ---------- Footer ---------- */
+.foot{position:relative;background:var(--lav-soft);color:var(--muted);padding-block:72px 28px}
+.foot::before{content:"";position:absolute;left:0;right:0;top:-1px;height:28px;background:var(--bg);
+  -webkit-mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x;mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:32px}
+.foot p{margin:14px 0 0;max-width:30em;font-size:.94rem}
+.foot h2{font-family:var(--font-sans);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin:6px 0 14px;font-weight:700}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.foot a{color:var(--muted);text-decoration:none;display:inline-block;padding:4px 0}
+.foot a:hover{color:var(--fg)}
+.foot .brand{color:var(--fg)}
+.foot .sdg{margin-top:20px}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;margin-top:44px;padding-top:20px;border-top:1px dashed color-mix(in srgb,var(--fg) 16%,transparent);font-size:.84rem}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,16px);opacity:0;pointer-events:none;
+  max-width:calc(100% - 32px);padding:12px 18px;border-radius:14px;background:var(--fg);color:var(--bg);font-weight:600;font-size:.92rem;box-shadow:var(--shadow);transition:opacity .25s,transform .25s var(--ease)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Scroll reveal: scroll-driven where supported; elsewhere everything is simply visible */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+  }
+}
+@keyframes rise{from{opacity:0;translate:0 28px;scale:.97}to{opacity:1;translate:0 0;scale:1}}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .nav-links{display:none}
+  .menu-btn{display:grid}
+  .nav-end{margin-left:auto}
+}
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:minmax(0,1fr);padding-block:32px 48px;gap:8px}
+  .stage{max-width:520px}
+  .gap-head,.answer,.partner,.inv-grid{grid-template-columns:minmax(0,1fr)}
+  .answer-ill{max-width:240px}
+  .offers{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rm-grid{grid-template-columns:minmax(0,1fr)}
+  .rm-side{position:static}
+  .rm-ill{display:none}
+  .res-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats-card{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .foot-grid>div:first-child{grid-column:1/-1}
+}
+@media (max-width:680px){
+  .nav-cta{display:none}
+  .lang .full{display:none}
+  .lang .short{display:inline}
+  .lang button{padding:0 10px}
+  .gap-cols,.mv{grid-template-columns:minmax(0,1fr)}
+  .mv-item{grid-template-columns:minmax(0,1fr) 84px}
+  .mv-item svg{width:84px}
+  .res-grid{grid-template-columns:minmax(0,1fr)}
+  .fields{grid-template-columns:minmax(0,1fr)}
+  .inv-head{grid-template-columns:minmax(0,1fr)}
+  .inv-ill{display:none}
+  .mentor-ill{width:96px;right:8px;top:8px}
+  .stat{padding:16px 18px}
+}
+@media (max-width:520px){
+  .offers,.team-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-ctas .btn{width:100%;white-space:normal;text-align:center}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .seal{width:84px;left:0;top:0}
+  .stage-hint{font-size:.9rem}
+}
+@media (max-width:400px){
+  .nav-row{gap:8px}
+  .nav-end{gap:6px;margin-left:auto}
+  .brand{font-size:1.12rem;gap:7px}
+  .brand .mark{width:28px;height:28px}
+  .lang button{padding:0 8px;font-size:.8rem}
+}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<div class="sr" id="live" aria-live="polite"></div>
+
+<header class="nav" id="top">
+  <div class="wrap nav-row">
+    <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
+      <span>Path<b>Forward</b></span>
+    </a>
+    <nav class="nav-links" data-i18n-attr="aria-label:nav.primary">
+      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
+    </nav>
+    <div class="nav-end">
+      <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+        <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+        <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+        <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+        <span class="lang-thumb" aria-hidden="true"></span>
+      </div>
+      <a class="btn btn-primary btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu">
+        <svg class="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="menu-panel" id="menu" hidden>
+    <div class="wrap">
+      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
+      <a class="btn btn-primary" href="#involved" data-scroll="involved" data-i18n="nav.cta"></a>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow-pill"><span class="pulse" aria-hidden="true"></span><span data-i18n="hero.eyebrow"></span></p>
+        <h1 id="hero-title" data-i18n-html="hero.title"></h1>
+        <p class="sub" data-i18n="hero.sub"></p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#roadmap" data-scroll="roadmap"><span data-i18n="hero.cta1"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
+        </div>
+        <ul class="hero-facts">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f1"></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f2"></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f3"></span></li>
+        </ul>
+      </div>
+      <div class="stage-wrap">
+        <div class="stage" id="stage3d" role="img" data-i18n-attr="aria-label:scene.aria">
+          <div class="stage-fallback" aria-hidden="true"><span></span><span></span><span></span></div>
+          <canvas aria-hidden="true"></canvas>
+        </div>
+        <p class="stage-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5V4.5a1.5 1.5 0 0 1 3 0V10m0-1a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 15a1.6 1.6 0 0 1 2.6-1.8L9 16"/></svg><span data-i18n="scene.hint"></span></p>
+        <div class="seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="sealCircle" d="M60 60 m-43 0 a43 43 0 1 1 86 0 a43 43 0 1 1 -86 0"/></defs>
+            <circle class="seal-bg" cx="60" cy="60" r="57"/>
+            <circle class="seal-ring" cx="60" cy="60" r="31"/>
+            <g class="seal-spin"><text class="seal-text"><textPath href="#sealCircle" textLength="266" lengthAdjust="spacing" data-i18n="ill.seal"></textPath></text></g>
+            <text class="seal-mid" x="60" y="69" text-anchor="middle" data-i18n="stats.c"></text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="wrap">
+      <dl class="stats-card" data-i18n-attr="aria-label:stats.aria">
+        <div class="stat reveal"><dt data-i18n="stats.cl"></dt><dd data-i18n="stats.c"></dd></div>
+        <div class="stat reveal"><dt data-i18n="stats.l"></dt><dd>3</dd></div>
+        <div class="stat reveal"><dt data-i18n="stats.s"></dt><dd>8</dd></div>
+        <div class="stat reveal"><dt data-i18n="stats.f"></dt><dd>2</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <!-- The gap -->
+  <section class="band" id="about" aria-labelledby="gap-title">
+    <div class="wrap">
+      <div class="gap-head">
+        <div>
+          <p class="eyebrow" data-i18n="gap.eyebrow"></p>
+          <h2 id="gap-title" data-i18n-html="gap.title"></h2>
+        </div>
+        <p class="lead" data-i18n="gap.lead"></p>
+      </div>
+      <div class="gap-cols">
+        <div class="gap-item reveal">
+          <div class="spot"><svg class="ill" viewBox="0 0 160 120" aria-hidden="true">
+            <ellipse class="shade" cx="84" cy="110" rx="48" ry="6"/>
+            <g class="float" style="--d:-1.4s"><circle class="f-butter s-ink" cx="28" cy="34" r="11"/><text class="t" x="23.5" y="39.5" font-size="14">$</text></g>
+            <g class="float" style="--d:-.4s"><circle class="f-butter s-ink" cx="142" cy="26" r="8"/><path class="s-ink nf" d="M142 22v8"/></g>
+            <g class="float">
+              <rect class="f-rose s-ink" x="56" y="86" width="12" height="16" rx="4"/><rect class="f-rose s-ink" x="100" y="86" width="12" height="16" rx="4"/>
+              <path class="f-rose s-ink" d="M68 40 L72 22 L86 34 Z"/>
+              <path class="f-rose s-ink" d="M44 66 C 44 42, 66 32, 86 32 C 108 32, 124 46, 124 64 C 124 82, 110 94, 88 94 L 62 94 C 52 94, 44 82, 44 66 Z"/>
+              <path class="s-ink nf" d="M45 60 c -9 -2 -10 -11 -4 -12 c 5 -1 4 6 -1 6"/>
+              <ellipse class="f-peach s-ink" cx="125" cy="66" rx="8" ry="10"/><circle class="f-ink" cx="123" cy="63" r="1.4"/><circle class="f-ink" cx="127" cy="69" r="1.4"/>
+              <circle class="f-ink" cx="108" cy="54" r="2.4"/><ellipse class="f-peach" cx="110" cy="66" rx="5" ry="3" opacity=".9"/>
+              <path class="s-ink nf" d="M74 40 h18"/>
+              <path class="shine" d="M56 54 c 3 -8 10 -13 18 -14 c -6 4 -10 9 -12 15 z"/>
+              <g transform="translate(80 72)"><path class="s-ink nf" d="M-7 0 v-6 a7 7 0 0 1 14 0 v6"/><rect class="f-butter s-ink" x="-10" y="0" width="20" height="16" rx="4"/><circle class="f-ink" cx="0" cy="7" r="2"/><path class="s-ink nf" d="M0 8v4"/></g>
+            </g>
+            <g transform="translate(18 84)"><path class="twinkle f-lav s-ink" style="--d:.6s" stroke-width="1.2" d="M0 -7 C1 -2 2 -1 7 0 C2 1 1 2 0 7 C-1 2 -2 1 -7 0 C-2 -1 -1 -2 0 -7Z"/></g>
+          </svg></div>
+          <h3 data-i18n="gap.1t"></h3><p data-i18n="gap.1b"></p>
+        </div>
+        <div class="gap-item reveal">
+          <div class="spot"><svg class="ill" viewBox="0 0 160 120" aria-hidden="true">
+            <ellipse class="shade" cx="80" cy="112" rx="40" ry="5"/>
+            <rect class="f-sky s-ink" x="52" y="12" width="56" height="96" rx="13"/>
+            <rect class="f-white s-ink" x="58" y="22" width="44" height="74" rx="7"/>
+            <rect class="f-lav-soft" x="62" y="28" width="28" height="9" rx="4.5"/><rect class="f-peach-soft" x="70" y="42" width="28" height="9" rx="4.5"/>
+            <rect class="f-lav-soft" x="62" y="56" width="22" height="9" rx="4.5"/><rect class="f-mint-soft" x="74" y="70" width="24" height="9" rx="4.5"/>
+            <path class="s-ink nf" d="M74 102 h12"/>
+            <g class="float"><path class="f-peach s-ink" d="M10 26 h40 a8 8 0 0 1 8 8 v16 a8 8 0 0 1 -8 8 h-24 l-10 8 v-8 h-6 a8 8 0 0 1 -8 -8 v-16 a8 8 0 0 1 8 -8z"/><text class="t" x="25" y="50" font-size="19">?</text></g>
+            <g class="float" style="--d:-2s"><path class="f-mint s-ink" d="M104 54 h40 a8 8 0 0 1 8 8 v16 a8 8 0 0 1 -8 8 h-6 v8 l-10 -8 h-24 a8 8 0 0 1 -8 -8 v-16 a8 8 0 0 1 8 -8z"/><text class="t" x="115" y="78" font-size="17">!?</text></g>
+            <path class="s-thin" d="M30 96 c 10 -14 22 6 12 10 s -6 -18 8 -14 s 4 14 -6 8"/>
+            <g transform="translate(140 22)"><path class="twinkle f-butter s-ink" style="--d:1s" stroke-width="1.2" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
+          </svg></div>
+          <h3 data-i18n="gap.2t"></h3><p data-i18n="gap.2b"></p>
+        </div>
+        <div class="gap-item reveal">
+          <div class="spot"><svg class="ill" viewBox="0 0 160 120" aria-hidden="true">
+            <path class="f-mint s-ink" d="M10 112 C 30 86, 130 86, 150 112 Z"/>
+            <path class="s-thin" d="M40 100 l3 -6 l3 6 M114 102 l3 -6 l3 6 M60 106 l2 -4 l2 4"/>
+            <g class="sway"><rect class="f-peach-soft s-ink" x="76" y="28" width="8" height="70" rx="3"/>
+              <path class="f-lav s-ink" d="M84 34 H124 L134 44 L124 54 H84 Z"/><path class="s-thin" d="M92 44 h22"/>
+              <path class="f-butter s-ink" d="M76 60 H38 L28 70 L38 80 H76 Z"/><path class="s-thin" d="M44 70 h22"/></g>
+            <g class="float" style="--d:-1s"><path class="f-white s-ink" d="M14 34 a10 10 0 0 1 14 -12 a12 12 0 0 1 22 4 a9 9 0 0 1 -2 18 h-30 a9 9 0 0 1 -4 -10z"/><text class="t" x="27" y="40" font-size="16">?</text></g>
+            <g class="float" style="--d:-2.4s"><path class="f-white s-ink" d="M118 14 a7 7 0 0 1 10 -8 a8 8 0 0 1 15 3 a6 6 0 0 1 -1 12 h-21 a6 6 0 0 1 -3 -7z"/><text class="t" x="127" y="20" font-size="11">?</text></g>
+          </svg></div>
+          <h3 data-i18n="gap.3t"></h3><p data-i18n="gap.3b"></p>
+        </div>
+      </div>
+      <div class="answer reveal">
+        <div>
+          <p class="eyebrow" data-i18n="ans.eyebrow"></p>
+          <h3 data-i18n="ans.title"></h3>
+          <p data-i18n="ans.body"></p>
+          <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
+        </div>
+        <svg class="ill answer-ill" viewBox="0 0 260 200" aria-hidden="true">
+          <ellipse class="shade" cx="130" cy="186" rx="96" ry="8"/>
+          <path class="f-lav s-ink" d="M30 72 V170 C 70 162, 108 162, 130 174 C 152 162, 190 162, 230 170 V72 Z"/>
+          <path class="f-white s-ink" d="M130 74 C 105 62, 72 62, 40 70 V162 C 72 154, 105 154, 130 166 Z"/>
+          <path class="f-white s-ink" d="M130 74 C 155 62, 188 62, 220 70 V162 C 188 154, 155 154, 130 166 Z"/>
+          <path class="s-thin" d="M54 88 C 78 82, 102 84, 118 90 M54 104 C 78 98, 102 100, 118 106 M54 120 C 74 115, 92 116, 104 120 M142 90 C 158 84, 182 82, 206 88 M142 106 C 158 100, 182 98, 206 104 M142 122 C 158 116, 182 114, 196 118"/>
+          <path class="f-butter" opacity=".7" d="M142 132 C 158 127, 182 125, 206 130 v6 C 182 131, 158 133, 142 138 Z"/>
+          <g class="float"><path class="s-ink nf" d="M130 6 v-0 M104 18 l-6 -5 M156 18 l6 -5 M98 40 h-8 M162 40 h8"/>
+            <circle class="f-butter s-ink" cx="130" cy="38" r="21"/><path class="shine" d="M118 32 a13 13 0 0 1 9 -9 a9 9 0 0 0 -9 9z"/>
+            <rect class="f-lav-soft s-ink" x="121" y="57" width="18" height="11" rx="3"/><path class="s-thin" d="M124 46 l6 6 l6 -6"/></g>
+          <g class="float" style="--d:-1s"><rect class="f-peach s-ink" x="10" y="94" width="28" height="28" rx="8"/><text class="t" x="17" y="114" font-size="17">A</text></g>
+          <g class="float" style="--d:-2s"><rect class="f-mint s-ink" x="222" y="88" width="28" height="28" rx="8"/><text class="t" x="227" y="108" font-size="16">文</text></g>
+          <g class="float" style="--d:-3s"><rect class="f-butter s-ink" x="196" y="20" width="26" height="26" rx="8"/><text class="t" x="202" y="39" font-size="16">Ơ</text></g>
+          <g transform="translate(62 30)"><path class="twinkle f-lav s-ink" style="--d:.4s" stroke-width="1.2" d="M0 -9 C1 -2 2 -1 9 0 C2 1 1 2 0 9 C-1 2 -2 1 -9 0 C-2 -1 -1 -2 0 -9Z"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & vision, what we offer -->
+  <section class="band tint" id="mission" aria-labelledby="mv-title">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="mv.eyebrow"></p>
+      <h2 id="mv-title" data-i18n-html="mv.title"></h2>
+      <div class="mv">
+        <div class="mv-item reveal">
+          <div><p class="mv-label" data-i18n="mv.mLabel"></p><p class="mv-text" data-i18n="mv.m"></p></div>
+          <svg class="ill" viewBox="0 0 112 90" aria-hidden="true">
+            <path class="f-mint s-ink" d="M2 88 V54 C 10 47, 22 47, 30 54 V88 Z"/>
+            <path class="f-lav s-ink" d="M82 88 V44 C 90 37, 102 37, 110 44 V88 Z"/>
+            <path class="s-ink nf" d="M28 56 C 48 32, 64 30, 84 46"/>
+            <path class="s-ink nf" d="M28 64 C 48 50, 64 48, 84 54"/>
+            <path class="s-thin" d="M38 50 v10 M48 44 v12 M58 41 v13 M68 41 v12 M76 43 v10"/>
+            <rect class="f-peach s-ink" x="9" y="40" width="13" height="10" rx="2"/>
+            <path class="s-ink nf" d="M100 40 v-16"/><path class="f-butter s-ink" d="M100 24 l11 4 l-11 4 z"/>
+            <g transform="translate(56 14)"><path class="twinkle f-butter s-ink" stroke-width="1.1" d="M0 -7 C1 -2 2 -1 7 0 C2 1 1 2 0 7 C-1 2 -2 1 -7 0 C-2 -1 -1 -2 0 -7Z"/></g>
+          </svg>
+        </div>
+        <div class="mv-item reveal">
+          <div><p class="mv-label" data-i18n="mv.vLabel"></p><p class="mv-text" data-i18n="mv.v"></p></div>
+          <svg class="ill" viewBox="0 0 112 90" aria-hidden="true">
+            <path class="s-ink nf" d="M40 88 L54 58 L68 88 M54 58 V88"/>
+            <g transform="rotate(-28 54 52)"><rect class="f-sky s-ink" x="22" y="44" width="60" height="16" rx="7"/><rect class="f-lav s-ink" x="78" y="40" width="13" height="24" rx="5"/><rect class="f-peach s-ink" x="15" y="47" width="9" height="10" rx="3"/><path class="shine" d="M30 48 h30 v3 h-30z"/></g>
+            <g transform="translate(98 14)"><path class="twinkle f-butter s-ink" stroke-width="1.3" d="M0 -11 C1 -3 3 -1 11 0 C3 1 1 3 0 11 C-1 3 -3 1 -11 0 C-3 -1 -1 -3 0 -11Z"/></g>
+            <circle class="f-lav" cx="78" cy="10" r="2.4"/><circle class="f-rose" cx="106" cy="38" r="2"/>
+          </svg>
+        </div>
+      </div>
+      <h3 class="offers-title" data-i18n="offer.title"></h3>
+      <div class="offers">
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
+          <h3 data-i18n="offer.1t"></h3><p data-i18n="offer.1b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+          <h3 data-i18n="offer.2t"></h3><p data-i18n="offer.2b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
+          <h3 data-i18n="offer.3t"></h3><p data-i18n="offer.3b"></p>
+        </div>
+        <div class="offer reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
+          <h3 data-i18n="offer.4t"></h3><p data-i18n="offer.4b"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Roadmap -->
+  <section class="band" id="roadmap" aria-labelledby="rm-title">
+    <div class="wrap rm-grid">
+      <div class="rm-side">
+        <p class="eyebrow" data-i18n="rm.eyebrow"></p>
+        <h2 id="rm-title" data-i18n-html="rm.title"></h2>
+        <p class="lead" data-i18n="rm.lead"></p>
+        <div class="grade-pick">
+          <p class="pick-q" id="pick-q" data-i18n="rm.pick"></p>
+          <div class="chips" role="group" aria-labelledby="pick-q">
+            <button class="chip" type="button" data-stage="1" aria-pressed="false" data-i18n="rm.g1"></button>
+            <button class="chip" type="button" data-stage="2" aria-pressed="false" data-i18n="rm.g2"></button>
+            <button class="chip" type="button" data-stage="3" aria-pressed="false" data-i18n="rm.g3"></button>
+          </div>
+          <p class="pick-hint" data-i18n="rm.hint"></p>
+        </div>
+        <div class="rm-ill" id="scene">
+          <svg class="ill scene" viewBox="0 0 600 540" role="img" data-i18n-attr="aria-label:ill.aria">
+            <defs>
+              <path id="route" d="M84 452 C 130 470, 160 440, 190 420 S 250 360, 290 350 S 380 300, 360 260 S 400 196, 430 190 S 480 160, 496 136"/>
+              <mask id="routeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="540"><use href="#route" class="route-mask" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/></mask>
+            </defs>
+            <rect class="f-lav-soft" x="0" y="0" width="600" height="540" opacity=".35"/>
+            <g class="layer" data-depth="5">
+              <path class="f-mint-soft" d="M-10 540 L-10 470 C 70 420, 170 470, 260 440 C 360 405, 420 450, 610 380 L 610 540 Z"/>
+              <path class="f-mint" opacity=".55" d="M-10 540 L-10 505 C 90 470, 200 510, 330 485 C 430 466, 520 490, 610 460 L 610 540 Z"/>
+              <circle class="f-sky-soft" cx="500" cy="96" r="100"/>
+              <g class="float" style="--d:-1s"><path class="f-white" d="M60 120 a14 14 0 0 1 20 -16 a18 18 0 0 1 32 6 a12 12 0 0 1 -2 24 h-42 a12 12 0 0 1 -8 -14z"/></g>
+              <g class="float" style="--d:-3s"><path class="f-white" d="M250 70 a10 10 0 0 1 14 -11 a13 13 0 0 1 23 4 a9 9 0 0 1 -1 17 h-30 a9 9 0 0 1 -6 -10z"/></g>
+            </g>
+            <g class="layer" data-depth="11">
+              <use href="#route" class="route" mask="url(#routeMask)"/>
+              <path class="s-ink nf" d="M78 358 C 84 372, 70 384, 58 394 M58 394 l10 -1 M58 394 l2 -9"/>
+              <path class="s-ink nf" d="M384 38 C 404 30, 428 40, 440 58 M440 58 l-1 -10 M440 58 l-9 -3"/>
+              <g transform="translate(20 398)">
+                <rect class="f-white s-ink" x="4" y="24" width="56" height="44" rx="3"/>
+                <path class="f-peach s-ink" d="M-3 26 L32 0 L67 26 Z"/>
+                <rect class="f-butter s-ink" x="26" y="44" width="13" height="24" rx="2"/>
+                <rect class="f-sky s-ink" x="11" y="33" width="10" height="10" rx="2"/>
+                <rect class="f-sky s-ink" x="44" y="33" width="10" height="10" rx="2"/>
+              </g>
+              <g transform="translate(446 44)">
+                <path class="s-ink nf" d="M50 4 V-14"/><path class="f-rose s-ink" d="M50 -14 l16 5 l-16 5 z"/>
+                <path class="f-white s-ink" d="M0 28 L50 4 L100 28 Z"/><circle class="f-butter s-ink" cx="50" cy="19" r="5"/>
+                <rect class="f-white s-ink" x="4" y="28" width="92" height="8"/>
+                <rect class="f-lav s-ink" x="12" y="36" width="10" height="34"/><rect class="f-lav s-ink" x="34" y="36" width="10" height="34"/>
+                <rect class="f-lav s-ink" x="56" y="36" width="10" height="34"/><rect class="f-lav s-ink" x="78" y="36" width="10" height="34"/>
+                <rect class="f-white s-ink" x="2" y="70" width="96" height="8"/><rect class="f-white s-ink" x="-6" y="78" width="112" height="8"/>
+              </g>
+              <g transform="translate(190 420)"><g class="float" style="--d:-.2s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-mint s-ink" r="26"/>
+                <path class="s-ink nf" d="M0 -8 C-4 -11 -10 -11 -13 -9 V9 C-10 7 -4 7 0 10 C4 7 10 7 13 9 V-9 C10 -11 4 -11 0 -8 Z M0 -8 V10"/>
+                <text class="stk-label" y="48" data-i18n="ill.s1"></text></g></g>
+              <g transform="translate(290 350)"><g class="float" style="--d:-1.1s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-butter s-ink" r="26"/>
+                <path class="s-ink nf" d="M-11 11 L-8 2 L5 -11 L11 -5 L-2 8 Z M2 -8 L8 -2 M-8 2 L-2 8"/>
+                <text class="stk-label" y="48" data-i18n="ill.s2"></text></g></g>
+              <g transform="translate(360 260)"><g class="float" style="--d:-2s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-lav s-ink" r="26"/>
+                <rect class="s-ink nf" x="-13" y="-9" width="26" height="18" rx="2"/><path class="s-ink nf" d="M-13 -7 L0 2 L13 -7"/>
+                <text class="stk-label" y="48" data-i18n="ill.s3"></text></g></g>
+              <g transform="translate(430 190)"><g class="float" style="--d:-2.9s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-peach s-ink" r="26"/>
+                <rect class="s-ink nf" x="-10" y="-13" width="20" height="26" rx="2"/><circle class="s-ink nf" cy="-2" r="5"/><path class="s-ink nf" d="M-6 8 H6"/>
+                <text class="stk-label" y="48" data-i18n="ill.s4"></text></g></g>
+            </g>
+            <g class="layer" data-depth="18">
+              <g transform="translate(560 30)"><g class="float"><path class="f-primary" d="M-26 0 L0 -11 L26 0 L0 11 Z"/><path class="f-primary" d="M-14 5 V14 Q0 22 14 14 V5 L0 11 Z"/><path class="s-ink nf" d="M18 3 V17"/><circle class="f-butter s-ink" cx="18" cy="19" r="3"/></g></g>
+              <g transform="translate(560 250)"><path class="twinkle f-butter s-ink" style="--d:0s" stroke-width="1.5" d="M0 -11 C1 -3 3 -1 11 0 C3 1 1 3 0 11 C-1 3 -3 1 -11 0 C-3 -1 -1 -3 0 -11Z"/></g>
+              <g transform="translate(250 200)"><path class="twinkle f-rose s-ink" style="--d:.8s" stroke-width="1.5" d="M0 -9 C1 -2 2 -1 9 0 C2 1 1 2 0 9 C-1 2 -2 1 -9 0 C-2 -1 -1 -2 0 -9Z"/></g>
+              <g transform="translate(150 300)"><path class="twinkle f-lav s-ink" style="--d:1.5s" stroke-width="1.5" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
+              <g id="plane"><path class="plane-body" d="M-15 -9 L17 0 L-15 9 L-9 0 Z"/><path class="plane-fold" d="M-9 0 L17 0"/>
+                <animateMotion dur="11s" repeatCount="indefinite" rotate="auto" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".45 0 .25 1"><mpath href="#route"/></animateMotion></g>
+            </g>
+          </svg>
+          <span class="note note-start" aria-hidden="true" data-i18n="ill.start"></span>
+          <span class="note note-end" aria-hidden="true" data-i18n="ill.end"></span>
+        </div>
+      </div>
+      <div class="tl-wrap" id="tl">
+        <ol class="timeline" id="steps"></ol>
+        <span class="rm-plane" aria-hidden="true"><svg viewBox="-18 -12 36 24"><path class="plane-body" d="M-15 -9 L17 0 L-15 9 L-9 0 Z"/><path class="plane-fold" d="M-9 0 L17 0"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="band tint" id="resources" aria-labelledby="res-title">
+    <div class="wrap">
+      <div class="res-head">
+        <div>
+          <p class="eyebrow" data-i18n="res.eyebrow"></p>
+          <h2 id="res-title" data-i18n-html="res.title"></h2>
+          <p class="lead" data-i18n="res.lead"></p>
+        </div>
+        <div id="res-head-ill" aria-hidden="true"></div>
+      </div>
+      <p class="res-how-title" id="res-how-title" data-i18n="res.how"></p>
+      <ol class="res-how" aria-labelledby="res-how-title">
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><strong data-i18n="res.h1t"></strong><span data-i18n="res.h1b"></span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg></span><strong data-i18n="res.h2t"></strong><span data-i18n="res.h2b"></span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></span><strong data-i18n="res.h3t"></strong><span data-i18n="res.h3b"></span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg></span><strong data-i18n="res.h4t"></strong><span data-i18n="res.h4b"></span></li>
+      </ol>
+      <div class="res-bar">
+        <div class="chips" role="group" data-i18n-attr="aria-label:res.filter">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true" data-i18n="f.all"></button>
+          <button class="chip" type="button" data-filter="china" aria-pressed="false" data-i18n="f.china"></button>
+          <button class="chip" type="button" data-filter="vietnam" aria-pressed="false" data-i18n="f.vietnam"></button>
+          <button class="chip" type="button" data-filter="english" aria-pressed="false" data-i18n="f.english"></button>
+        </div>
+        <p class="res-count" id="res-count" aria-live="polite"></p>
+      </div>
+      <div class="res-grid" id="res-grid"></div>
+    </div>
+  </section>
+
+  <!-- Partner -->
+  <section class="band" id="partner" aria-labelledby="pt-title">
+    <div class="wrap partner">
+      <div>
+        <p class="eyebrow" data-i18n="pt.eyebrow"></p>
+        <h2 id="pt-title" data-i18n="pt.title"></h2>
+        <p class="lead" data-i18n="pt.body"></p>
+        <p class="src-h" data-i18n="pt.sources"></p>
+        <ul class="src-chips">
+          <li><a href="https://educationusa.state.gov/" target="_blank" rel="noopener noreferrer">EducationUSA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://www.commonapp.org/" target="_blank" rel="noopener noreferrer">Common App<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://www.collegeboard.org/" target="_blank" rel="noopener noreferrer">College Board<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://studyinthestates.dhs.gov/" target="_blank" rel="noopener noreferrer">Study in the States<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+          <li><a href="https://travel.state.gov/" target="_blank" rel="noopener noreferrer">travel.state.gov<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+        </ul>
+        <p class="src-note" data-i18n="pt.sourcesNote"></p>
+      </div>
+      <div class="mentor-card reveal">
+        <svg class="ill mentor-ill" viewBox="0 0 132 100" aria-hidden="true">
+          <ellipse class="shade" cx="68" cy="92" rx="46" ry="5"/>
+          <g class="float" style="--d:-1.5s"><rect class="f-mint s-ink" x="68" y="34" width="46" height="46" rx="9"/><circle class="f-mint s-ink" cx="91" cy="34" r="8"/><path class="f-mint" d="M84 35 h14 v6 h-14z"/></g>
+          <g class="float"><rect class="f-lav s-ink" x="18" y="34" width="46" height="46" rx="9"/><circle class="f-lav s-ink" cx="66" cy="57" r="8"/><path class="f-lav" d="M60 50 h4 v14 h-4z"/><path class="shine" d="M24 40 h14 v4 h-14z" opacity=".5"/></g>
+          <g class="float" style="--d:-.8s"><path class="f-rose s-ink" d="M66 22 c -6 -9 -18 -3 -11 6 l11 10 l11 -10 c 7 -9 -5 -15 -11 -6z"/></g>
+          <g transform="translate(116 18)"><path class="twinkle f-butter s-ink" stroke-width="1.2" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
+        </svg>
+        <p class="tag" data-i18n="pt.mentor"></p>
+        <div class="mentor-top">
+          <div class="avatar" aria-hidden="true">S</div>
+          <div><h3>Sophia</h3><p class="role"><span data-i18n="pt.mentorRole"></span> · <span data-i18n="pt.mentorBase"></span></p></div>
+        </div>
+        <p class="body" data-i18n="pt.mentorBody"></p>
+        <div class="co-logo"><b>Co&amp;Learn</b><span data-i18n="pt.coDesc"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="band tint" id="team" aria-labelledby="team-title">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="team.eyebrow"></p>
+      <h2 id="team-title" data-i18n-html="team.title"></h2>
+      <p class="lead" data-i18n="team.lead"></p>
+      <div class="team-grid">
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">CL</div>
+          <div><h3>Cici Liu</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
+          </dl>
+        </article>
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">LD</div>
+          <div><h3>Lam Do</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.vn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>Tiếng Việt · English</dd></div>
+          </dl>
+        </article>
+        <article class="member reveal">
+          <div class="avatar" aria-hidden="true">NG</div>
+          <div><h3>Nicki Gong</h3><p class="role" data-i18n="team.role"></p></div>
+          <dl>
+            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+            <div><dt data-i18n="team.ask"></dt><dd>中文 · English</dd></div>
+          </dl>
+        </article>
+        <article class="member is-mentor reveal">
+          <div class="avatar" aria-hidden="true">S</div>
+          <div><h3>Sophia</h3><p class="role" data-i18n="team.mentor"></p></div>
+          <dl>
+            <div><dt data-i18n="team.orgL"></dt><dd data-i18n="pt.mentorRole"></dd></div>
+            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
+          </dl>
+        </article>
+      </div>
+      <div class="legacy">
+        <svg class="ill" viewBox="0 0 56 56" aria-hidden="true">
+          <path class="f-peach s-ink" d="M14 34 h28 l-3 18 h-22 z"/><path class="f-peach s-ink" d="M12 30 h32 v6 h-32 z"/>
+          <g class="sway"><path class="s-ink nf" d="M28 30 V16"/><path class="f-mint s-ink" d="M28 20 C 20 20, 14 14, 14 8 C 22 8, 28 12, 28 20 Z"/><path class="f-mint s-ink" d="M28 16 C 34 16, 42 12, 42 4 C 34 4, 28 8, 28 16 Z"/></g>
+        </svg>
+        <p data-i18n="team.legacy"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get involved -->
+  <section class="band" id="involved" aria-labelledby="inv-title">
+    <div class="wrap">
+      <div class="inv-head">
+        <div>
+          <p class="eyebrow" data-i18n="inv.eyebrow"></p>
+          <h2 id="inv-title" data-i18n-html="inv.title"></h2>
+          <p class="lead" data-i18n="inv.lead"></p>
+        </div>
+        <svg class="ill inv-ill" viewBox="0 0 180 130" aria-hidden="true">
+          <ellipse class="shade" cx="90" cy="122" rx="62" ry="6"/>
+          <path class="s-thin" stroke-dasharray="3 5" d="M96 22 C 112 8, 126 24, 140 18"/>
+          <g class="float"><path class="f-lav-soft s-ink" d="M140 18 L172 6 L160 36 L152 26 Z"/><path class="s-ink nf" d="M152 26 L172 6"/></g>
+          <rect class="f-butter-soft s-ink" x="46" y="26" width="88" height="44" rx="6"/>
+          <path class="s-thin" d="M58 38 h52 M58 48 h40"/>
+          <rect class="f-white s-ink" x="34" y="44" width="112" height="72" rx="9"/>
+          <path class="f-lav-soft s-ink" d="M34 52 L90 90 L146 52 V44 a9 9 0 0 0 -9 -9 h0"/>
+          <path class="s-thin" d="M34 112 L76 80 M146 112 L104 80"/>
+          <path class="f-rose s-ink" d="M90 84 c -6 -8 -16 -2 -10 6 l10 9 l10 -9 c 6 -8 -4 -14 -10 -6z"/>
+          <g transform="translate(22 30)"><path class="twinkle f-butter s-ink" stroke-width="1.2" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
+        </svg>
+      </div>
+      <div class="inv-grid">
+        <form class="form-card" id="ask" novalidate data-mode="question">
+          <div class="mode" role="group" data-i18n-attr="aria-label:inv.modeLabel">
+            <button type="button" data-mode="question" aria-pressed="true" data-i18n="inv.modeQ"></button>
+            <button type="button" data-mode="volunteer" aria-pressed="false" data-i18n="inv.modeV"></button>
+          </div>
+          <div class="form-body" id="form-body">
+            <div class="fields">
+              <div class="field"><label for="f-name"><span data-i18n="f.name"></span> <span class="opt" data-i18n="f.opt"></span></label><input id="f-name" name="name" autocomplete="given-name"></div>
+              <div class="field"><label for="f-grade" data-i18n="f.grade"></label><select id="f-grade" name="grade"></select></div>
+              <div class="field"><label for="f-country" data-i18n="f.country"></label><select id="f-country" name="country"></select></div>
+              <div class="field"><label for="f-reply" data-i18n="f.reply"></label><select id="f-reply" name="reply"></select></div>
+              <fieldset class="field full vol-only">
+                <legend data-i18n="f.roles"></legend>
+                <div class="roles-pick">
+                  <label class="chk"><input type="checkbox" id="r-translate" name="roles" value="translate"><span data-i18n="r.translate"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-write" name="roles" value="write"><span data-i18n="r.write"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-mentor" name="roles" value="mentor"><span data-i18n="r.mentor"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-outreach" name="roles" value="outreach"><span data-i18n="r.outreach"></span></label>
+                </div>
+              </fieldset>
+              <div class="field full">
+                <label for="f-msg" id="f-msg-label"></label>
+                <textarea id="f-msg" name="message" aria-describedby="f-msg-err"></textarea>
+                <p class="err" id="f-msg-err" hidden></p>
+              </div>
+              <div class="field full">
+                <label for="f-contact" data-i18n="f.contact"></label>
+                <input id="f-contact" name="contact" autocomplete="email" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err">
+                <p class="err" id="f-contact-err" hidden></p>
+              </div>
+            </div>
+            <div class="consent-row">
+              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-describedby="f-consent-err"><span data-i18n="f.consent"></span></label>
+              <p class="err" id="f-consent-err" hidden></p>
+            </div>
+            <div class="form-foot">
+              <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="f.privacy"></span></p>
+              <button class="btn btn-primary" type="submit"><span id="f-submit-label"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            </div>
+            <p class="preview-note" data-i18n="f.preview"></p>
+          </div>
+          <div class="success" id="f-success" hidden>
+            <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h3 id="f-ok-title" tabindex="-1" data-i18n="f.okTitle"></h3>
+            <p data-i18n="f.okBody"></p>
+            <button class="btn btn-primary btn-sm" type="button" id="f-again" data-i18n="f.again"></button>
+          </div>
+        </form>
+        <aside class="inv-side">
+          <div class="side-card">
+            <h3 data-i18n="side.roles"></h3>
+            <ul class="roles-list">
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div><div><strong data-i18n="r.translate"></strong><span data-i18n="r.translateD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div><strong data-i18n="r.write"></strong><span data-i18n="r.writeD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div><div><strong data-i18n="r.mentor"></strong><span data-i18n="r.mentorD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><div><strong data-i18n="r.outreach"></strong><span data-i18n="r.outreachD"></span></div></li>
+            </ul>
+          </div>
+          <div class="side-card">
+            <h3 data-i18n="side.contact"></h3>
+            <p data-i18n="side.contactBody"></p>
+            <ul class="channels">
+              <li>Email <em data-i18n="side.soon"></em></li>
+              <li>WeChat <em data-i18n="side.soon"></em></li>
+              <li>Zalo <em data-i18n="side.soon"></em></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+          <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
+          <span>Path<b>Forward</b></span>
+        </a>
+        <p data-i18n="foot.tag"></p>
+        <p data-i18n="foot.np"></p>
+        <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
+      </div>
+      <div>
+        <h2 data-i18n="foot.explore"></h2>
+        <ul>
+          <li><a href="#about" data-scroll="about" data-i18n="nav.about"></a></li>
+          <li><a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a></li>
+          <li><a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a></li>
+          <li><a href="#team" data-scroll="team" data-i18n="nav.team"></a></li>
+          <li><a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 data-i18n="foot.lang"></h2>
+        <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+          <button type="button" data-lang="en" lang="en" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
+          <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+          <button type="button" data-lang="vi" lang="vi" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
+          <span class="lang-thumb" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot.copy"></span>
+      <span><span data-i18n="foot.preview"></span> · <a href="#top" data-scroll="top" data-i18n="foot.top"></a></span>
+    </div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+var T = window.PF_T = {};
+T.en = {
+"skip":"Skip to content",
+"nav.home":"PathForward home","nav.primary":"Main","nav.about":"About","nav.roadmap":"Roadmap","nav.resources":"Resources","nav.team":"Team","nav.involved":"Get involved",
+"nav.cta":"Get free guidance","nav.menu":"Open menu","nav.lang":"Language",
+"hero.eyebrow":"Student-run nonprofit · 100% free",
+"hero.title":"Your path abroad shouldn't depend on what you can <span class='em'>afford</span>.",
+"hero.sub":"PathForward is a nonprofit run by students. We give students in China and Vietnam free, reliable guidance on studying abroad, from the first English test to the first day on campus.",
+"hero.cta1":"Start your roadmap","hero.cta2":"Ask us a question",
+"hero.f1":"Free for every student","hero.f2":"English · 中文 · Tiếng Việt","hero.f3":"Run by students studying in the U.S.",
+"ill.aria":"Illustration: a dotted path from home, past English tests, essays, applications and a visa, to a college campus",
+"ill.start":"you are here","ill.end":"first day on campus!",
+"ill.s1":"English","ill.s2":"Essays","ill.s3":"Apply","ill.s4":"Visa",
+"ill.seal":"FREE GUIDANCE • STUDENT-RUN • NONPROFIT • ",
+"scene.aria":"3D study island with stacked books, an apple, a graduation cap, an open book, a pencil, a plant, a paper plane and three letter tiles: A, 文 and Ơ",
+"scene.hint":"Tap a letter tile to switch language",
+"stats.aria":"PathForward at a glance","stats.c":"$0","stats.cl":"Cost to students","stats.l":"Languages","stats.s":"Steps on the roadmap","stats.f":"Focus countries",
+"gap.eyebrow":"The problem","gap.title":"The <span class='hl'>information gap</span> is the real barrier.",
+"gap.lead":"Every year, capable students in China and Vietnam give up on studying abroad because no one showed them how the process works.",
+"gap.1t":"Agencies charge for the basics","gap.1b":"Many families pay an agency just to learn the steps. Students who can't pay often stop there.",
+"gap.2t":"Advice online is mixed","gap.2b":"Social media posts can be outdated, wrong, or written to sell something. It's hard to know what to trust.",
+"gap.3t":"No one nearby has done it","gap.3b":"If nobody at your school has applied abroad, it's hard to even know which questions to ask.",
+"ans.eyebrow":"Our answer","ans.title":"Free, checked, and in your language.",
+"ans.body":"We collect the questions students actually ask, check every answer against official sources like EducationUSA, and share it for free in English, Chinese and Vietnamese.",
+"sdg":"Supports UN Sustainable Development Goal 4: Quality Education",
+"mv.eyebrow":"Why we exist","mv.title":"What we're working toward",
+"mv.mLabel":"Mission","mv.m":"Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.",
+"mv.vLabel":"Vision","mv.v":"We envision a future where a student's access to educational opportunities is not limited by location, financial resources, or lack of information.",
+"offer.title":"What you get from us",
+"offer.1t":"Step-by-step guides","offer.1b":"Free guides for every stage of applying, checked each year against official sources.",
+"offer.2t":"Advice from students in the U.S.","offer.2b":"Our team studies in the U.S. now. Ask us about classes, campus life and what we wish we'd known.",
+"offer.3t":"English learning with Co&Learn","offer.3b":"Our partner in China offers English learning resources, so you can keep improving after our guides.",
+"offer.4t":"Checked opportunities","offer.4b":"Scholarships, summer programs and competitions in one place, each one checked before we share it.",
+"rm.eyebrow":"Roadmap","rm.title":"Eight steps from first idea to <span class='hl'>first day on campus</span>.",
+"rm.lead":"Pick your grade to see where you are. Open any step for a checklist and the official source.",
+"rm.pick":"Which grade are you in?","rm.g1":"Grade 9–10","rm.g2":"Grade 11","rm.g3":"Grade 12",
+"rm.hint":"We'll highlight the steps for your grade. Tap again to clear.",
+"rm.here":"You are here","rm.checklist":"Checklist","rm.source":"Official source",
+"res.eyebrow":"Resources","res.title":"Free resources we've <span class='hl'>checked</span>.",
+"res.how":"How we check every resource","res.h1t":"Collect","res.h1b":"We start from real questions students send us.","res.h2t":"Verify","res.h2b":"We confirm each fact with official sources.","res.h3t":"Translate","res.h3b":"We write it in English, Chinese and Vietnamese.","res.h4t":"Update","res.h4b":"We re-check everything once a year.",
+"res.lead":"Guides we write, official sources we trust, and opportunities we've looked into. Filter by where you study now.",
+"res.filter":"Filter resources","f.all":"All","f.china":"China","f.vietnam":"Vietnam","f.english":"English learning",
+"res.count":"{n} resources","type.guide":"Guide","type.official":"Official","type.partner":"Partner","type.opportunity":"Opportunity",
+"res.visit":"Visit site","res.soon":"Coming soon","res.langs":"Languages","res.toast":"This one is coming soon on the live site.",
+"pt.eyebrow":"Partner","pt.title":"We work with Co&Learn",
+"pt.body":"Co&Learn is a nonprofit in China that offers English learning resources. We help students understand the path abroad, and Co&Learn gives them a place to keep building their English.",
+"pt.mentor":"Our mentor","pt.mentorRole":"Co-Founder, Co&Learn","pt.mentorBase":"China",
+"pt.mentorBody":"Sophia helps us organize information and explain each topic clearly, so every guide is easy to follow.",
+"pt.coDesc":"Nonprofit · English learning · China",
+"pt.sources":"Official sources we check against","pt.sourcesNote":"We cite these sources. We are not affiliated with them.",
+"team.eyebrow":"Team","team.title":"Run by students who <span class='hl'>made the move</span>.",
+"team.lead":"We are three seniors at Maharishi School in Iowa, from China and Vietnam. We remember how confusing the process was, so we're writing the guide we wish we'd had.",
+"team.role":"Co-founder","team.schoolL":"School","team.school":"Maharishi School · Class of 2027","team.fromL":"From","team.cn":"China","team.vn":"Vietnam","team.ask":"Ask me in","team.orgL":"Organization",
+"team.mentor":"Mentor","team.legacy":"We'll graduate, and PathForward will keep going. We're training new student volunteers to keep every guide up to date.",
+"inv.eyebrow":"Get involved","inv.title":"Ask a question or join the team.",
+"inv.lead":"Every question helps us improve the guides. A team member will reply in the language you choose.",
+"inv.modeLabel":"What would you like to do?","inv.modeQ":"I have a question","inv.modeV":"I want to volunteer",
+"f.name":"First name","f.opt":"(optional)","f.grade":"Grade","f.choose":"Choose…",
+"f.g9":"Grade 9","f.g10":"Grade 10","f.g11":"Grade 11","f.g12":"Grade 12","f.gOther":"Other",
+"f.country":"Where do you study now?","f.cCN":"China","f.cVN":"Vietnam","f.cOther":"Somewhere else",
+"f.reply":"Reply in","f.msgQ":"Your question","f.msgV":"How would you like to help?",
+"f.phQ":"For example: Which English test should I take?","f.phV":"For example: I can translate guides into Vietnamese.",
+"f.contact":"Email, WeChat or Zalo","f.phContact":"So we can reply to you",
+"f.roles":"Roles you're interested in",
+"f.consent":"I'm 13 or older, or a parent or guardian has agreed to this.",
+"f.privacy":"We only use your details to reply. We never sell or share them.",
+"f.sendQ":"Send question","f.sendV":"Send application",
+"f.errMsg":"Please write your question.","f.errMsgV":"Please tell us how you'd like to help.","f.errContact":"Add an email, WeChat or Zalo so we can reply.","f.errConsent":"Please check this box to continue.",
+"f.okTitle":"Got it, thank you!","f.okBody":"This is a preview of the site, so nothing was sent. On the live site, a team member will reply to you.","f.again":"Write another",
+"f.preview":"Preview version: this form doesn't send anything yet.",
+"r.translate":"Translator","r.translateD":"Turn guides into Chinese or Vietnamese.",
+"r.write":"Guide writer","r.writeD":"Research a topic and explain it clearly.",
+"r.mentor":"Peer mentor","r.mentorD":"Answer questions from younger students.",
+"r.outreach":"Outreach","r.outreachD":"Share PathForward with schools and communities.",
+"side.roles":"Volunteer roles","side.contact":"Other ways to reach us","side.contactBody":"We're setting up these channels now.","side.soon":"coming soon",
+"foot.tag":"Free, reliable study-abroad guidance for students in China and Vietnam.",
+"foot.np":"A student-run nonprofit project. We never charge students and never sell data.",
+"foot.explore":"Explore","foot.lang":"Language","foot.top":"Back to top","foot.copy":"© 2026 PathForward. Free, always.","foot.preview":"Website preview",
+"a11y.lang":"Language changed to English"
+};
+T.zh = {
+"skip":"跳到正文",
+"nav.home":"PathForward 首页","nav.primary":"主导航","nav.about":"关于我们","nav.roadmap":"申请路线","nav.resources":"资源库","nav.team":"团队","nav.involved":"加入我们",
+"nav.cta":"免费咨询","nav.menu":"打开菜单","nav.lang":"语言",
+"hero.eyebrow":"学生运营 · 非营利 · 完全免费",
+"hero.title":"<span class='nw'>出国留学这条路，</span><span class='nw'>不该取决于你</span><span class='nw'><span class='em'>付得起多少</span>。</span>",
+"hero.sub":"PathForward 是一个由学生运营的非营利教育组织。我们为中国和越南的学生提供免费、可靠的留学指导，从第一次英语考试，一直到走进大学校园的第一天。",
+"hero.cta1":"查看申请路线","hero.cta2":"向我们提问",
+"hero.f1":"对每位学生免费","hero.f2":"中文 · English · Tiếng Việt","hero.f3":"由在美留学生运营",
+"ill.aria":"插画：一条虚线小路从家出发，经过英语考试、文书、申请和签证，通往大学校园",
+"ill.start":"你在这里","ill.end":"开学第一天！",
+"ill.s1":"英语","ill.s2":"文书","ill.s3":"申请","ill.s4":"签证",
+"ill.seal":"免费指导 • 学生运营 • 非营利组织 • ",
+"scene.aria":"3D 学习小岛：一摞书、苹果、学士帽、翻开的书、铅笔、盆栽、纸飞机，以及 A、文、Ơ 三块字母方块",
+"scene.hint":"点一下字母方块，切换语言",
+"stats.aria":"PathForward 概览","stats.c":"¥0","stats.cl":"学生需支付的费用","stats.l":"种语言","stats.s":"步申请路线","stats.f":"个重点国家",
+"gap.eyebrow":"问题所在","gap.title":"真正的门槛，是<span class='nw'><span class='hl'>信息差</span>。</span>",
+"gap.lead":"每年都有许多有能力的中国和越南学生放弃留学，只因为没有人告诉他们申请流程是怎样的。",
+"gap.1t":"基础信息也要花钱买","gap.1b":"很多家庭花高价请中介，只为弄清申请步骤。付不起的学生，往往就此止步。",
+"gap.2t":"网上信息真假难辨","gap.2b":"社交媒体上的帖子可能过时、出错，或者只是广告。很难判断该相信什么。",
+"gap.3t":"身边没人走过这条路","gap.3b":"如果你的学校里没人申请过国外大学，你甚至不知道该问什么问题。",
+"ans.eyebrow":"我们的做法","ans.title":"免费、经过核实、用你的语言。",
+"ans.body":"我们收集学生真正关心的问题，对照 EducationUSA 等官方来源逐一核实，再用中文、英文和越南语免费分享。",
+"sdg":"支持联合国可持续发展目标 4：优质教育",
+"mv.eyebrow":"我们为何存在","mv.title":"我们努力的方向",
+"mv.mLabel":"使命","mv.m":"我们的使命是缩小教育信息差，为学生连接免费、可靠的指导、国际教育资源，以及跨越国界的学习机会。",
+"mv.vLabel":"愿景","mv.v":"我们希望在未来，学生获得教育机会，不再受所在地区、经济条件或信息匮乏的限制。",
+"offer.title":"我们能为你做什么",
+"offer.1t":"分步指南","offer.1b":"覆盖申请每个阶段的免费指南，每年对照官方来源更新。",
+"offer.2t":"在美学生的真实建议","offer.2b":"我们的团队正在美国读书。课程、校园生活、我们希望早点知道的事，都可以问我们。",
+"offer.3t":"与 Co&Learn 一起学英语","offer.3b":"我们在中国的合作伙伴提供英语学习资源，看完指南后你可以继续提升。",
+"offer.4t":"核实过的机会","offer.4b":"奖学金、夏校和竞赛信息集中在一处，每一条都在分享前核实过。",
+"rm.eyebrow":"申请路线图","rm.title":"从萌生想法到<span class='nw'><span class='hl'>走进校园</span>，</span>一共八步。",
+"rm.lead":"选择你的年级，看看自己处在哪一步。点开任意步骤，查看清单和官方来源。",
+"rm.pick":"你现在读几年级？","rm.g1":"初三–高一","rm.g2":"高二","rm.g3":"高三",
+"rm.hint":"我们会标出你这个年级该做的步骤。再点一次可取消。",
+"rm.here":"你在这里","rm.checklist":"清单","rm.source":"官方来源",
+"res.eyebrow":"资源库","res.title":"经过<span class='hl'>核实</span>的免费资源。",
+"res.how":"我们如何核实每一项资源","res.h1t":"收集","res.h1b":"从学生真实提出的问题出发。","res.h2t":"核实","res.h2b":"每条信息都对照官方来源确认。","res.h3t":"翻译","res.h3b":"用中文、英文和越南语写清楚。","res.h4t":"更新","res.h4b":"每年重新检查一遍。",
+"res.lead":"我们自己写的指南、值得信赖的官方来源，以及我们核实过的机会。可以按你所在的国家筛选。",
+"res.filter":"筛选资源","f.all":"全部","f.china":"中国","f.vietnam":"越南","f.english":"英语学习",
+"res.count":"共 {n} 项","type.guide":"指南","type.official":"官方","type.partner":"合作伙伴","type.opportunity":"机会",
+"res.visit":"访问官网","res.soon":"即将上线","res.langs":"语言","res.toast":"这项内容将在正式版网站上线。",
+"pt.eyebrow":"合作伙伴","pt.title":"我们与 Co&Learn 合作",
+"pt.body":"Co&Learn 是一家位于中国的非营利组织，提供英语学习资源。我们帮助学生看清留学之路，Co&Learn 则让他们有地方继续提升英语。",
+"pt.mentor":"我们的导师","pt.mentorRole":"Co&Learn 联合创始人","pt.mentorBase":"中国",
+"pt.mentorBody":"Sophia 帮助我们梳理信息，把每个主题讲清楚，让每一份指南都容易看懂。",
+"pt.coDesc":"非营利组织 · 英语学习 · 中国",
+"pt.sources":"我们对照核实的官方来源","pt.sourcesNote":"我们引用这些来源，但与它们没有隶属关系。",
+"team.eyebrow":"团队","team.title":"由<span class='hl'>走过这条路</span>的学生运营。",
+"team.lead":"我们是美国爱荷华州 Maharishi School 的三名高三学生，来自中国和越南。我们还记得申请过程有多让人迷茫，所以想写一份自己当初最需要的指南。",
+"team.role":"联合创始人","team.schoolL":"学校","team.school":"Maharishi School · 2027 届","team.fromL":"来自","team.cn":"中国","team.vn":"越南","team.ask":"可以用这些语言问我","team.orgL":"机构",
+"team.mentor":"导师","team.legacy":"我们终将毕业，但 PathForward 会继续走下去。我们正在培训新一批学生志愿者，持续更新每一份指南。",
+"inv.eyebrow":"参与进来","inv.title":"提个问题，或者加入我们。",
+"inv.lead":"每个问题都会帮助我们改进指南。团队成员会用你选择的语言回复。",
+"inv.modeLabel":"你想做什么？","inv.modeQ":"我有问题","inv.modeV":"我想做志愿者",
+"f.name":"名字","f.opt":"（选填）","f.grade":"年级","f.choose":"请选择",
+"f.g9":"初三","f.g10":"高一","f.g11":"高二","f.g12":"高三","f.gOther":"其他",
+"f.country":"你现在在哪里读书？","f.cCN":"中国","f.cVN":"越南","f.cOther":"其他地区",
+"f.reply":"回复语言","f.msgQ":"你的问题","f.msgV":"你想怎样帮忙？",
+"f.phQ":"例如：我应该考托福还是雅思？","f.phV":"例如：我可以把指南翻译成中文。",
+"f.contact":"邮箱或微信号","f.phContact":"方便我们回复你",
+"f.roles":"感兴趣的岗位",
+"f.consent":"我已年满 13 岁，或已获得父母/监护人同意。",
+"f.privacy":"你的信息只用于回复你，我们绝不出售或分享。",
+"f.sendQ":"发送问题","f.sendV":"提交申请",
+"f.errMsg":"请填写你的问题。","f.errMsgV":"请告诉我们你想怎样帮忙。","f.errContact":"请留下邮箱或微信号，方便我们回复。","f.errConsent":"请勾选此项后继续。",
+"f.okTitle":"收到了，谢谢你！","f.okBody":"这是网站预览版，所以内容没有真正发送。正式上线后，团队成员会回复你。","f.again":"再写一条",
+"f.preview":"预览版：此表单暂不会发送任何内容。",
+"r.translate":"翻译","r.translateD":"把指南翻译成中文或越南语。",
+"r.write":"指南撰写","r.writeD":"研究一个主题，并把它讲清楚。",
+"r.mentor":"朋辈导师","r.mentorD":"解答低年级同学的问题。",
+"r.outreach":"推广","r.outreachD":"把 PathForward 介绍给学校和社区。",
+"side.roles":"志愿者岗位","side.contact":"其他联系方式","side.contactBody":"这些渠道正在筹备中。","side.soon":"即将公布",
+"foot.tag":"为中国和越南学生提供免费、可靠的留学指导。",
+"foot.np":"学生运营的非营利项目。我们从不向学生收费，也绝不出售数据。",
+"foot.explore":"浏览","foot.lang":"语言","foot.top":"回到顶部","foot.copy":"© 2026 PathForward · 永远免费","foot.preview":"网站预览版",
+"a11y.lang":"语言已切换为中文"
+};
+T.vi = {
+"skip":"Bỏ qua đến nội dung chính",
+"nav.home":"Trang chủ PathForward","nav.primary":"Điều hướng chính","nav.about":"Giới thiệu","nav.roadmap":"Lộ trình","nav.resources":"Tài nguyên","nav.team":"Đội ngũ","nav.involved":"Tham gia",
+"nav.cta":"Nhận tư vấn miễn phí","nav.menu":"Mở menu","nav.lang":"Ngôn ngữ",
+"hero.eyebrow":"Phi lợi nhuận · Do học sinh điều hành · Miễn phí 100%",
+"hero.title":"Con đường du học không nên phụ thuộc vào việc bạn có <span class='em'>đủ tiền</span> hay không.",
+"hero.sub":"PathForward là tổ chức giáo dục phi lợi nhuận do học sinh điều hành. Chúng tôi mang đến cho học sinh Việt Nam và Trung Quốc những hướng dẫn du học miễn phí, đáng tin cậy, từ bài thi tiếng Anh đầu tiên đến ngày đầu tiên đặt chân vào trường.",
+"hero.cta1":"Bắt đầu lộ trình","hero.cta2":"Đặt câu hỏi",
+"hero.f1":"Miễn phí cho mọi học sinh","hero.f2":"Tiếng Việt · English · 中文","hero.f3":"Do du học sinh tại Mỹ điều hành",
+"ill.aria":"Hình minh họa: con đường nét đứt từ nhà, qua thi tiếng Anh, bài luận, nộp hồ sơ và visa, đến khuôn viên đại học",
+"ill.start":"bạn đang ở đây","ill.end":"ngày đầu đến trường!",
+"ill.s1":"Tiếng Anh","ill.s2":"Bài luận","ill.s3":"Nộp hồ sơ","ill.s4":"Visa",
+"ill.seal":"MIỄN PHÍ • DO HỌC SINH ĐIỀU HÀNH • PHI LỢI NHUẬN • ",
+"scene.aria":"Hòn đảo học tập 3D với chồng sách, quả táo, mũ tốt nghiệp, cuốn sách đang mở, bút chì, chậu cây, máy bay giấy và ba ô chữ: A, 文 và Ơ",
+"scene.hint":"Chạm vào ô chữ để đổi ngôn ngữ",
+"stats.aria":"PathForward qua vài con số","stats.c":"0₫","stats.cl":"Chi phí cho học sinh","stats.l":"Ngôn ngữ","stats.s":"Bước trong lộ trình","stats.f":"Quốc gia trọng tâm",
+"gap.eyebrow":"Vấn đề","gap.title":"Rào cản thật sự là <span class='hl'>khoảng cách thông tin</span>.",
+"gap.lead":"Mỗi năm, nhiều học sinh giỏi ở Việt Nam và Trung Quốc từ bỏ giấc mơ du học chỉ vì không ai chỉ cho các bạn quy trình diễn ra như thế nào.",
+"gap.1t":"Phải trả tiền cho cả thông tin cơ bản","gap.1b":"Nhiều gia đình trả phí cao cho trung tâm tư vấn chỉ để biết các bước cần làm. Học sinh không đủ khả năng chi trả thường dừng lại ở đó.",
+"gap.2t":"Thông tin trên mạng lẫn lộn","gap.2b":"Bài đăng trên mạng xã hội có thể đã cũ, sai hoặc chỉ nhằm quảng cáo. Thật khó biết nên tin vào đâu.",
+"gap.3t":"Không ai xung quanh từng trải qua","gap.3b":"Nếu chưa ai ở trường bạn từng nộp hồ sơ du học, bạn thậm chí không biết nên hỏi gì.",
+"ans.eyebrow":"Cách chúng tôi giải quyết","ans.title":"Miễn phí, được kiểm chứng và bằng ngôn ngữ của bạn.",
+"ans.body":"Chúng tôi tổng hợp những câu hỏi học sinh thực sự quan tâm, đối chiếu từng câu trả lời với các nguồn chính thức như EducationUSA và chia sẻ miễn phí bằng tiếng Việt, tiếng Anh và tiếng Trung.",
+"sdg":"Góp phần vào Mục tiêu Phát triển Bền vững số 4 của Liên Hợp Quốc: Giáo dục chất lượng",
+"mv.eyebrow":"Vì sao có PathForward","mv.title":"Điều chúng tôi hướng tới",
+"mv.mLabel":"Sứ mệnh","mv.m":"Sứ mệnh của chúng tôi là thu hẹp khoảng cách thông tin giáo dục bằng cách kết nối học sinh với những hướng dẫn miễn phí, đáng tin cậy, các nguồn tài nguyên giáo dục quốc tế và cơ hội học tập xuyên quốc gia.",
+"mv.vLabel":"Tầm nhìn","mv.v":"Chúng tôi hướng tới một tương lai nơi cơ hội học tập của mỗi học sinh không bị giới hạn bởi nơi sinh sống, điều kiện tài chính hay sự thiếu hụt thông tin.",
+"offer.title":"Những gì bạn nhận được",
+"offer.1t":"Hướng dẫn từng bước","offer.1b":"Hướng dẫn miễn phí cho mọi giai đoạn nộp hồ sơ, được cập nhật hằng năm theo nguồn chính thức.",
+"offer.2t":"Lời khuyên từ học sinh đang học tại Mỹ","offer.2b":"Đội ngũ của chúng tôi đang học tập tại Mỹ. Hãy hỏi về lớp học, cuộc sống ở trường và những điều chúng tôi ước mình biết sớm hơn.",
+"offer.3t":"Học tiếng Anh cùng Co&Learn","offer.3b":"Đối tác của chúng tôi tại Trung Quốc cung cấp tài nguyên học tiếng Anh để bạn tiếp tục tiến bộ sau khi đọc hướng dẫn.",
+"offer.4t":"Cơ hội đã được kiểm chứng","offer.4b":"Học bổng, chương trình hè và các cuộc thi được tổng hợp tại một nơi, mỗi cơ hội đều được kiểm tra trước khi chia sẻ.",
+"rm.eyebrow":"Lộ trình","rm.title":"Tám bước từ ý tưởng đầu tiên đến <span class='hl'>ngày đầu tiên ở trường</span>.",
+"rm.lead":"Chọn lớp của bạn để biết mình đang ở đâu. Mở từng bước để xem danh sách việc cần làm và nguồn chính thức.",
+"rm.pick":"Bạn đang học lớp mấy?","rm.g1":"Lớp 9–10","rm.g2":"Lớp 11","rm.g3":"Lớp 12",
+"rm.hint":"Chúng tôi sẽ đánh dấu các bước dành cho lớp của bạn. Chạm lần nữa để bỏ chọn.",
+"rm.here":"Bạn đang ở đây","rm.checklist":"Việc cần làm","rm.source":"Nguồn chính thức",
+"res.eyebrow":"Tài nguyên","res.title":"Tài nguyên miễn phí đã được <span class='hl'>kiểm chứng</span>.",
+"res.how":"Cách chúng tôi kiểm chứng từng tài nguyên","res.h1t":"Thu thập","res.h1b":"Bắt đầu từ những câu hỏi thật của học sinh.","res.h2t":"Xác minh","res.h2b":"Đối chiếu từng thông tin với nguồn chính thức.","res.h3t":"Dịch","res.h3b":"Viết bằng tiếng Việt, tiếng Anh và tiếng Trung.","res.h4t":"Cập nhật","res.h4b":"Kiểm tra lại mọi thứ mỗi năm một lần.",
+"res.lead":"Hướng dẫn do chúng tôi biên soạn, nguồn chính thức đáng tin cậy và những cơ hội đã được tìm hiểu kỹ. Lọc theo nơi bạn đang học.",
+"res.filter":"Lọc tài nguyên","f.all":"Tất cả","f.china":"Trung Quốc","f.vietnam":"Việt Nam","f.english":"Học tiếng Anh",
+"res.count":"{n} tài nguyên","type.guide":"Hướng dẫn","type.official":"Chính thức","type.partner":"Đối tác","type.opportunity":"Cơ hội",
+"res.visit":"Truy cập trang","res.soon":"Sắp ra mắt","res.langs":"Ngôn ngữ","res.toast":"Nội dung này sẽ có trên trang chính thức.",
+"pt.eyebrow":"Đối tác","pt.title":"Chúng tôi đồng hành cùng Co&Learn",
+"pt.body":"Co&Learn là một tổ chức phi lợi nhuận tại Trung Quốc, cung cấp tài nguyên học tiếng Anh. Chúng tôi giúp học sinh hiểu rõ con đường du học, còn Co&Learn giúp các bạn tiếp tục nâng cao tiếng Anh.",
+"pt.mentor":"Người hướng dẫn","pt.mentorRole":"Đồng sáng lập Co&Learn","pt.mentorBase":"Trung Quốc",
+"pt.mentorBody":"Sophia giúp chúng tôi sắp xếp thông tin và giải thích từng chủ đề thật rõ ràng, để mọi hướng dẫn đều dễ hiểu.",
+"pt.coDesc":"Phi lợi nhuận · Học tiếng Anh · Trung Quốc",
+"pt.sources":"Các nguồn chính thức chúng tôi đối chiếu","pt.sourcesNote":"Chúng tôi trích dẫn các nguồn này nhưng không liên kết với họ.",
+"team.eyebrow":"Đội ngũ","team.title":"Được điều hành bởi những học sinh <span class='hl'>đã đi trên con đường này</span>.",
+"team.lead":"Chúng tôi là ba học sinh lớp 12 tại Maharishi School (bang Iowa, Mỹ), đến từ Việt Nam và Trung Quốc. Chúng tôi vẫn nhớ quá trình này từng rối rắm thế nào, nên muốn viết cuốn cẩm nang mà chính mình từng ước có.",
+"team.role":"Đồng sáng lập","team.schoolL":"Trường","team.school":"Maharishi School · Khóa 2027","team.fromL":"Đến từ","team.cn":"Trung Quốc","team.vn":"Việt Nam","team.ask":"Có thể hỏi bằng","team.orgL":"Tổ chức",
+"team.mentor":"Người hướng dẫn","team.legacy":"Chúng tôi rồi sẽ tốt nghiệp, nhưng PathForward sẽ tiếp tục. Chúng tôi đang đào tạo các tình nguyện viên mới để mọi hướng dẫn luôn được cập nhật.",
+"inv.eyebrow":"Tham gia","inv.title":"Đặt câu hỏi hoặc tham gia cùng chúng tôi.",
+"inv.lead":"Mỗi câu hỏi đều giúp chúng tôi hoàn thiện hướng dẫn. Thành viên trong nhóm sẽ trả lời bằng ngôn ngữ bạn chọn.",
+"inv.modeLabel":"Bạn muốn làm gì?","inv.modeQ":"Mình có câu hỏi","inv.modeV":"Mình muốn làm tình nguyện viên",
+"f.name":"Tên","f.opt":"(không bắt buộc)","f.grade":"Lớp","f.choose":"Chọn…",
+"f.g9":"Lớp 9","f.g10":"Lớp 10","f.g11":"Lớp 11","f.g12":"Lớp 12","f.gOther":"Khác",
+"f.country":"Bạn đang học ở đâu?","f.cCN":"Trung Quốc","f.cVN":"Việt Nam","f.cOther":"Nơi khác",
+"f.reply":"Trả lời bằng","f.msgQ":"Câu hỏi của bạn","f.msgV":"Bạn muốn giúp như thế nào?",
+"f.phQ":"Ví dụ: Mình nên thi IELTS hay TOEFL?","f.phV":"Ví dụ: Mình có thể dịch hướng dẫn sang tiếng Việt.",
+"f.contact":"Email hoặc số Zalo","f.phContact":"Để chúng tôi trả lời bạn",
+"f.roles":"Vị trí bạn quan tâm",
+"f.consent":"Mình từ 13 tuổi trở lên, hoặc đã được cha mẹ/người giám hộ đồng ý.",
+"f.privacy":"Thông tin của bạn chỉ dùng để trả lời. Chúng tôi không bao giờ bán hay chia sẻ.",
+"f.sendQ":"Gửi câu hỏi","f.sendV":"Gửi đăng ký",
+"f.errMsg":"Vui lòng nhập câu hỏi của bạn.","f.errMsgV":"Vui lòng cho chúng tôi biết bạn muốn giúp như thế nào.","f.errContact":"Vui lòng để lại email hoặc số Zalo để chúng tôi trả lời.","f.errConsent":"Vui lòng đánh dấu ô này để tiếp tục.",
+"f.okTitle":"Đã nhận, cảm ơn bạn!","f.okBody":"Đây là bản xem trước của trang web nên chưa có gì được gửi đi. Khi trang chính thức hoạt động, thành viên trong nhóm sẽ trả lời bạn.","f.again":"Viết câu khác",
+"f.preview":"Bản xem trước: biểu mẫu này chưa gửi đi bất kỳ thông tin nào.",
+"r.translate":"Dịch thuật","r.translateD":"Dịch hướng dẫn sang tiếng Việt hoặc tiếng Trung.",
+"r.write":"Viết hướng dẫn","r.writeD":"Tìm hiểu một chủ đề và giải thích thật dễ hiểu.",
+"r.mentor":"Cố vấn đồng trang lứa","r.mentorD":"Giải đáp thắc mắc cho các bạn nhỏ tuổi hơn.",
+"r.outreach":"Lan tỏa","r.outreachD":"Giới thiệu PathForward đến trường học và cộng đồng.",
+"side.roles":"Vị trí tình nguyện","side.contact":"Cách liên hệ khác","side.contactBody":"Chúng tôi đang thiết lập các kênh này.","side.soon":"sắp cập nhật",
+"foot.tag":"Hướng dẫn du học miễn phí, đáng tin cậy cho học sinh Việt Nam và Trung Quốc.",
+"foot.np":"Dự án phi lợi nhuận do học sinh điều hành. Chúng tôi không bao giờ thu phí học sinh và không bao giờ bán dữ liệu.",
+"foot.explore":"Khám phá","foot.lang":"Ngôn ngữ","foot.top":"Lên đầu trang","foot.copy":"© 2026 PathForward. Luôn miễn phí.","foot.preview":"Bản xem trước",
+"a11y.lang":"Đã chuyển sang tiếng Việt"
+};
+var EDUSA = {name:"EducationUSA", url:"https://educationusa.state.gov/"};
+var STEPS = window.PF_STEPS = [
+{stages:[1], src:EDUSA,
+ en:{when:"Grade 9–10", title:"Explore your options", desc:"Learn how U.S. colleges differ: research universities, liberal arts colleges and community colleges. Think about what you want to study and what kind of place fits you.", checks:["Compare the main types of U.S. colleges","Talk with your family about goals and budget","Write down subjects and activities you enjoy"]},
+ zh:{when:"初三–高一", title:"了解你的选择", desc:"了解美国大学的不同类型：研究型大学、文理学院和社区学院。想清楚你想学什么、适合什么样的环境。", checks:["比较美国大学的主要类型","和家人聊聊目标与预算","记下你喜欢的学科和活动"]},
+ vi:{when:"Lớp 9–10", title:"Tìm hiểu các lựa chọn", desc:"Tìm hiểu sự khác nhau giữa các trường ở Mỹ: đại học nghiên cứu, trường khai phóng (liberal arts) và cao đẳng cộng đồng. Suy nghĩ xem bạn muốn học ngành gì và môi trường nào phù hợp với mình.", checks:["So sánh các loại trường đại học chính ở Mỹ","Trao đổi với gia đình về mục tiêu và ngân sách","Ghi lại các môn học và hoạt động bạn yêu thích"]}},
+{stages:[1,2], src:{name:"TOEFL (ETS)", url:"https://www.ets.org/toefl.html"},
+ en:{when:"Grade 10–11", title:"Prove your English", desc:"Most U.S. colleges ask international students for an English test score. Common choices are TOEFL iBT, IELTS Academic and the Duolingo English Test.", checks:["Take a free practice test to find your level","Check which tests your target schools accept","Keep practicing with Co&Learn's English resources"]},
+ zh:{when:"高一–高二", title:"证明你的英语水平", desc:"大多数美国大学要求国际学生提交英语成绩。常见考试有托福（TOEFL iBT）、雅思学术类（IELTS Academic）和多邻国英语测试（Duolingo English Test）。", checks:["做一次免费模考，了解自己的水平","查清目标学校接受哪些考试","用 Co&Learn 的英语资源持续练习"]},
+ vi:{when:"Lớp 10–11", title:"Chứng minh trình độ tiếng Anh", desc:"Hầu hết các trường đại học Mỹ yêu cầu học sinh quốc tế nộp điểm thi tiếng Anh. Các bài thi phổ biến gồm TOEFL iBT, IELTS Academic và Duolingo English Test.", checks:["Làm một bài thi thử miễn phí để biết trình độ","Kiểm tra trường bạn nhắm tới chấp nhận bài thi nào","Luyện tập đều đặn với tài nguyên tiếng Anh của Co&Learn"]}},
+{stages:[1,2], src:EDUSA,
+ en:{when:"Grade 9–11", title:"Build your profile", desc:"Grades matter most. Then go deep in a few activities you care about, such as clubs, projects, volunteering or competitions.", checks:["Keep your grades steady every year","Commit to two or three activities","Record awards and hours as you go"]},
+ zh:{when:"初三–高二", title:"打造个人背景", desc:"成绩最重要。在此基础上，深入投入几项你真正在乎的活动，比如社团、项目、志愿服务或竞赛。", checks:["每一年都保持稳定的成绩","专注投入两到三项活动","随时记录奖项和服务时长"]},
+ vi:{when:"Lớp 9–11", title:"Xây dựng hồ sơ cá nhân", desc:"Điểm số là quan trọng nhất. Sau đó, hãy đầu tư sâu vào một vài hoạt động bạn thật sự yêu thích như câu lạc bộ, dự án, tình nguyện hoặc các cuộc thi.", checks:["Giữ điểm số ổn định qua các năm","Tập trung vào hai đến ba hoạt động","Ghi lại giải thưởng và số giờ hoạt động"]}},
+{stages:[2], src:{name:"SAT (College Board)", url:"https://satsuite.collegeboard.org/sat"},
+ en:{when:"Grade 11", title:"Plan for the SAT or ACT", desc:"Some colleges require the SAT or ACT, and many are test-optional. Policies change, so check each school's website.", checks:["Check the testing policy of each school","Register early, since seats fill up","Plan for one or two attempts"]},
+ zh:{when:"高二", title:"规划 SAT 或 ACT", desc:"部分大学要求 SAT 或 ACT，也有很多学校可以不提交成绩（test-optional）。政策常有变化，请以各校官网为准。", checks:["查清每所学校的考试政策","尽早报名，考位很快就满","计划考一到两次"]},
+ vi:{when:"Lớp 11", title:"Lên kế hoạch thi SAT hoặc ACT", desc:"Một số trường yêu cầu SAT hoặc ACT, nhiều trường khác không bắt buộc (test-optional). Chính sách thay đổi thường xuyên, hãy kiểm tra trên website của từng trường.", checks:["Kiểm tra chính sách thi của từng trường","Đăng ký sớm vì chỗ thi nhanh hết","Dự tính thi một hoặc hai lần"]}},
+{stages:[2], src:EDUSA,
+ en:{when:"Grade 11", title:"Build your college list", desc:"Choose about 8 to 12 schools across reach, match and likely. As an international student, check which schools offer financial aid to you.", checks:["Research schools on their official websites","Compare the full cost of attendance","Write down every deadline"]},
+ zh:{when:"高二", title:"确定选校名单", desc:"选择大约 8 到 12 所学校，涵盖冲刺、匹配和保底三档。作为国际学生，要特别确认哪些学校会给你提供经济资助。", checks:["在学校官网上做调研","比较总就读费用（cost of attendance）","记下每一个截止日期"]},
+ vi:{when:"Lớp 11", title:"Lập danh sách trường", desc:"Chọn khoảng 8 đến 12 trường, chia thành nhóm mơ ước, vừa sức và an toàn. Là học sinh quốc tế, hãy kiểm tra trường nào có hỗ trợ tài chính cho bạn.", checks:["Tìm hiểu trường qua website chính thức","So sánh tổng chi phí học tập (cost of attendance)","Ghi lại tất cả các hạn nộp"]}},
+{stages:[3], src:{name:"Common App", url:"https://www.commonapp.org/"},
+ en:{when:"Grade 12 · Aug–Jan", title:"Submit your applications", desc:"Most schools accept the Common App. You'll need a personal essay, transcripts, teacher recommendations and your test scores. Early deadlines are usually November 1 or 15, and regular deadlines are usually in January.", checks:["Draft and revise your personal essay","Ask teachers for recommendations early","Submit a few days before each deadline"]},
+ zh:{when:"高三 · 8月–次年1月", title:"提交申请", desc:"大多数学校接受 Common App。你需要准备个人文书、成绩单、老师推荐信和考试成绩。早申截止日期通常是 11 月 1 日或 15 日，常规申请通常在 1 月截止。", checks:["撰写并反复修改个人文书","尽早请老师写推荐信","在每个截止日期前几天提交"]},
+ vi:{when:"Lớp 12 · Tháng 8–1", title:"Nộp hồ sơ", desc:"Hầu hết các trường chấp nhận Common App. Bạn cần bài luận cá nhân, bảng điểm, thư giới thiệu của giáo viên và điểm thi. Hạn nộp sớm thường là ngày 1 hoặc 15 tháng 11, hạn nộp thường kỳ thường vào tháng 1.", checks:["Viết và chỉnh sửa bài luận cá nhân","Nhờ giáo viên viết thư giới thiệu sớm","Nộp hồ sơ trước hạn vài ngày"]}},
+{stages:[3], src:{name:"CSS Profile", url:"https://cssprofile.collegeboard.org/"},
+ en:{when:"Grade 12 · Oct–Feb", title:"Apply for financial aid", desc:"Aid for international students is limited but real. Many schools ask for the CSS Profile, and some offer merit scholarships you apply for separately.", checks:["Confirm which schools give aid to international students","Complete the CSS Profile if a school requires it","Prepare your family's financial documents"]},
+ zh:{when:"高三 · 10月–次年2月", title:"申请奖学金与助学金", desc:"面向国际学生的资助名额有限，但确实存在。很多学校要求提交 CSS Profile，也有学校提供需要单独申请的奖学金。", checks:["确认哪些学校为国际学生提供资助","按学校要求填写 CSS Profile","准备好家庭财务证明材料"]},
+ vi:{when:"Lớp 12 · Tháng 10–2", title:"Xin hỗ trợ tài chính", desc:"Hỗ trợ tài chính cho học sinh quốc tế có hạn nhưng vẫn có thật. Nhiều trường yêu cầu nộp CSS Profile, một số trường có học bổng dựa trên thành tích cần nộp đơn riêng.", checks:["Xác nhận trường nào hỗ trợ tài chính cho học sinh quốc tế","Hoàn thành CSS Profile nếu trường yêu cầu","Chuẩn bị giấy tờ tài chính của gia đình"]}},
+{stages:[3], src:{name:"Study in the States", url:"https://studyinthestates.dhs.gov/"},
+ en:{when:"Grade 12 · Apr–Aug", title:"Get your visa and go", desc:"After you accept an offer, your school sends you a Form I-20. Pay the SEVIS fee, book your F-1 visa interview, and get ready for life in the U.S.", checks:["Receive your Form I-20 from your school","Pay the SEVIS fee and book your visa interview","Prepare for the interview and your arrival"]},
+ zh:{when:"高三 · 4月–8月", title:"办理签证，准备出发", desc:"接受录取后，学校会寄给你 I-20 表格。缴纳 SEVIS 费用，预约 F-1 签证面试，然后为在美国的生活做准备。", checks:["从学校拿到 I-20 表格","缴纳 SEVIS 费并预约签证面试","准备面试和抵达后的生活"]},
+ vi:{when:"Lớp 12 · Tháng 4–8", title:"Xin visa và lên đường", desc:"Sau khi nhận lời mời nhập học, trường sẽ gửi cho bạn mẫu I-20. Đóng phí SEVIS, đặt lịch phỏng vấn visa F-1 và chuẩn bị cho cuộc sống tại Mỹ.", checks:["Nhận mẫu I-20 từ trường","Đóng phí SEVIS và đặt lịch phỏng vấn visa","Chuẩn bị cho buổi phỏng vấn và ngày đến Mỹ"]}}
+];
+
+var RES = window.PF_RES = [
+{type:"guide", tags:["china","vietnam"],
+ en:{t:"Month-by-month application timeline", d:"What to do each month of Grade 11 and 12, from test dates to decision day."},
+ zh:{t:"逐月申请时间表", d:"高二、高三每个月该做什么，从考试日期到放榜日。"},
+ vi:{t:"Lịch nộp hồ sơ theo từng tháng", d:"Việc cần làm mỗi tháng trong lớp 11 và 12, từ ngày thi đến ngày nhận kết quả."}},
+{type:"official", tags:["china","vietnam"], url:"https://educationusa.state.gov/",
+ en:{t:"Find an EducationUSA adviser", d:"Free, official advising supported by the U.S. Department of State, with advisers in both China and Vietnam."},
+ zh:{t:"查找 EducationUSA 顾问", d:"由美国国务院支持的免费官方咨询，在中国和越南都设有顾问。"},
+ vi:{t:"Tìm cố vấn EducationUSA", d:"Tư vấn chính thức, miễn phí do Bộ Ngoại giao Hoa Kỳ hỗ trợ, có cố vấn ở cả Việt Nam và Trung Quốc."}},
+{type:"partner", tags:["china","english"],
+ en:{t:"English learning with Co&Learn", d:"Lessons and practice materials from our partner nonprofit in China."},
+ zh:{t:"Co&Learn 英语学习资源", d:"来自我们在中国的非营利合作伙伴的课程与练习材料。"},
+ vi:{t:"Học tiếng Anh cùng Co&Learn", d:"Bài học và tài liệu luyện tập từ tổ chức phi lợi nhuận đối tác của chúng tôi tại Trung Quốc."}},
+{type:"guide", tags:["china"],
+ en:{t:"Applying from a Chinese high school", d:"Transcripts, school reports and translations: what public and international schools in China need to prepare."},
+ zh:{t:"从中国高中申请美国大学", d:"成绩单、学校报告和翻译件：普通高中和国际学校分别需要准备什么。"},
+ vi:{t:"Nộp hồ sơ từ trường THPT ở Trung Quốc", d:"Bảng điểm, báo cáo của trường và bản dịch: trường công lập và trường quốc tế ở Trung Quốc cần chuẩn bị gì."}},
+{type:"guide", tags:["vietnam"],
+ en:{t:"Applying from a Vietnamese high school", d:"Translating your học bạ, getting school documents ready, and preparing for the visa interview in Hanoi or Ho Chi Minh City."},
+ zh:{t:"从越南高中申请美国大学", d:"翻译成绩册（học bạ）、准备学校文件，以及在河内或胡志明市参加签证面试。"},
+ vi:{t:"Nộp hồ sơ từ trường THPT ở Việt Nam", d:"Dịch học bạ, chuẩn bị giấy tờ của trường và chuẩn bị phỏng vấn visa tại Hà Nội hoặc TP. Hồ Chí Minh."}},
+{type:"guide", tags:["english","china","vietnam"],
+ en:{t:"English tests compared", d:"Format, scoring and cost of TOEFL, IELTS and Duolingo, with links to free official practice."},
+ zh:{t:"三大英语考试对比", d:"托福、雅思、多邻国的题型、计分和费用对比，附官方免费练习链接。"},
+ vi:{t:"So sánh các bài thi tiếng Anh", d:"Định dạng, cách tính điểm và chi phí của TOEFL, IELTS và Duolingo, kèm đường dẫn luyện tập miễn phí chính thức."}},
+{type:"opportunity", tags:["china","vietnam"],
+ en:{t:"Colleges that give aid to international students", d:"A list we check every year, with each school's aid policy and deadline."},
+ zh:{t:"为国际学生提供资助的大学", d:"我们每年核对一次的名单，包含各校的资助政策和截止日期。"},
+ vi:{t:"Các trường hỗ trợ tài chính cho học sinh quốc tế", d:"Danh sách được chúng tôi kiểm tra mỗi năm, kèm chính sách hỗ trợ và hạn nộp của từng trường."}},
+{type:"official", tags:["china","vietnam"], url:"https://studyinthestates.dhs.gov/",
+ en:{t:"Study in the States: I-20 and F-1", d:"The U.S. government's guide to student visas, the SEVIS fee and arriving on campus."},
+ zh:{t:"Study in the States：I-20 与 F-1", d:"美国政府关于学生签证、SEVIS 费用和入学报到的官方指南。"},
+ vi:{t:"Study in the States: I-20 và F-1", d:"Hướng dẫn chính thức của chính phủ Mỹ về visa du học, phí SEVIS và ngày nhập học."}},
+{type:"opportunity", tags:["china","vietnam","english"],
+ en:{t:"Summer programs and competitions", d:"Free and low-cost programs we've checked that accept students from China and Vietnam."},
+ zh:{t:"夏校与竞赛", d:"我们核实过的免费或低价项目，接受中国和越南学生申请。"},
+ vi:{t:"Chương trình hè và cuộc thi", d:"Các chương trình miễn phí hoặc chi phí thấp đã được kiểm chứng, nhận học sinh Việt Nam và Trung Quốc."}}
+];
+
+/* Cover art + tint per resource, then order the list so the wide "featured" cards (positions 0, 3, 7) fill full rows. */
+(function(){
+  var meta = [["timeline","lav"],["edusa","sky"],["colearn","mint"],["cn","peach"],["vn","mint"],["tests","butter"],["aid","butter"],["sits","lav"],["summer","peach"]];
+  RES.forEach(function(r, i){ r.art = meta[i][0]; r.tone = meta[i][1]; });
+  var order = [0, 2, 5, 1, 3, 4, 7, 6, 8].map(function(i){ return RES[i]; });
+  RES.length = 0; Array.prototype.push.apply(RES, order);
+})();
+/* Resource cover illustrations: one hand-drawn pastel scene per resource (viewBox 240x150). */
+(function(){
+  function star(x, y, s, c, d){ return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path class="twinkle ' + c + ' s-ink" stroke-width="1.3" style="--d:' + (d || 0) + 's" d="M0 -9 C1 -2 2 -1 9 0 C2 1 1 2 0 9 C-1 2 -2 1 -9 0 C-2 -1 -1 -2 0 -9Z"/></g>'; }
+  function svg(inner){ return '<svg class="ill res-art" viewBox="0 0 240 150" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+    '<circle class="f-surface" opacity=".5" cx="206" cy="26" r="46"/><circle class="f-surface" opacity=".35" cx="22" cy="136" r="34"/>' + inner + '</svg>'; }
+  function shade(cx, w){ return '<ellipse class="shade" cx="' + cx + '" cy="136" rx="' + w + '" ry="6"/>'; }
+  function enDoc(x, y, r, head, label){
+    return '<g transform="translate(' + x + ' ' + y + ') rotate(' + r + ')"><rect class="f-white s-ink" x="-34" y="-46" width="68" height="92" rx="7"/>' +
+      '<path class="' + head + '" opacity=".75" d="M-34 -39a7 7 0 0 1 7-7h54a7 7 0 0 1 7 7v8h-68z"/><text class="t" x="-22" y="-23" font-size="12">' + label + '</text>' +
+      '<path class="s-thin" d="M-24 -10h48M-24 0h48M-24 10h36M-24 20h42"/><path class="s-ink nf" d="M8 32l6 6 12-12"/></g>';
+  }
+  function arrow(x, y, d){ return '<g class="float" style="--d:' + d + 's"><path class="f-butter s-ink" d="M' + x + ' ' + y + 'h16v-8l15 13-15 13v-8h-16z"/></g>'; }
+  function cells(){
+    var s = '';
+    for (var r = 0; r < 3; r++) for (var c = 0; c < 4; c++){
+      var x = 80 + c * 22, y = 60 + r * 20, done = r === 0 || (r === 1 && c < 2), now = r === 1 && c === 2;
+      s += '<rect class="' + (done ? 'f-mint' : now ? 'f-butter' : 'f-lav-soft') + (now ? ' s-ink' : '') + '" x="' + x + '" y="' + y + '" width="16" height="13" rx="4"/>';
+      if (done) s += '<path class="s-ink nf" stroke-width="1.5" d="M' + (x + 4) + ' ' + (y + 7) + 'l3 3 6-6"/>';
+    }
+    return s;
+  }
+  var ART = {
+    timeline: svg(shade(122, 66) +
+      '<g class="float" style="--d:-.5s"><rect class="f-white s-ink" x="70" y="30" width="104" height="94" rx="10"/>' +
+      '<path class="f-lav s-ink" d="M70 40a10 10 0 0 1 10-10h84a10 10 0 0 1 10 10v12H70z"/>' +
+      '<rect class="f-white s-ink" x="88" y="22" width="6" height="16" rx="3"/><rect class="f-white s-ink" x="150" y="22" width="6" height="16" rx="3"/>' + cells() + '</g>' +
+      '<g transform="translate(190 50) rotate(28)"><rect class="f-butter s-ink" x="-5" y="0" width="10" height="56" rx="2"/><path class="f-peach-soft s-ink" d="M-5 56l5 11 5-11z"/><rect class="f-rose s-ink" x="-5" y="-8" width="10" height="9" rx="3"/></g>' +
+      '<g transform="translate(44 88) rotate(-8)"><g class="float" style="--d:-2s"><rect class="f-peach s-ink" x="-18" y="-18" width="36" height="36" rx="4"/><path class="s-thin" d="M-11 -7h22M-11 1h16M-11 9h10"/></g></g>' +
+      star(212, 112, 1, 'f-butter', .3) + star(52, 40, .8, 'f-lav', 1.1)),
+    colearn: svg(shade(120, 64) +
+      '<path class="s-ink nf" d="M86 112l-10 24M154 112l10 24"/>' +
+      '<rect class="f-mint s-ink" x="58" y="22" width="124" height="88" rx="10"/><rect class="f-mint-soft" x="66" y="30" width="108" height="72" rx="6"/>' +
+      '<text class="t" x="78" y="60" font-size="24">ABC</text><path class="s-thin" d="M78 70c14-6 28 6 46 0"/><text class="t" x="80" y="92" font-size="13" opacity=".7">Hello!</text>' +
+      '<rect class="f-peach-soft s-ink" x="66" y="106" width="108" height="7" rx="3"/><rect class="f-white s-ink" x="142" y="100" width="18" height="6" rx="2"/>' +
+      '<g class="float" style="--d:-1s"><path class="f-lav s-ink" d="M178 16h40a8 8 0 0 1 8 8v14a8 8 0 0 1-8 8h-24l-10 8v-8h-6a8 8 0 0 1-8-8V24a8 8 0 0 1 8-8z"/><text class="t" x="188" y="37" font-size="13">Hi!</text></g>' +
+      '<g transform="translate(38 112)"><circle class="f-rose s-ink" r="12"/><path class="s-ink nf" d="M0 -12v-6"/><path class="f-mint s-ink" d="M1 -16c4-5 10-3 10-3-3 5-7 5-10 3z"/><path class="shine" d="M-7 -4a7 7 0 0 1 4-5 5 5 0 0 0-4 5z"/></g>' +
+      star(34, 40, .9, 'f-butter', .5)),
+    tests: svg(shade(128, 62) +
+      '<g transform="translate(100 78) rotate(-12)"><rect class="f-peach s-ink" x="-34" y="-44" width="68" height="88" rx="8"/><text class="t" x="-24" y="-22" font-size="11">IELTS</text></g>' +
+      '<g transform="translate(124 74) rotate(3)"><rect class="f-sky s-ink" x="-34" y="-44" width="68" height="88" rx="8"/><text class="t" x="-24" y="-22" font-size="11">TOEFL</text></g>' +
+      '<g transform="translate(146 80) rotate(13)"><rect class="f-white s-ink" x="-34" y="-44" width="68" height="88" rx="8"/><text class="t" x="-24" y="-24" font-size="10">Duolingo</text><path class="s-thin" d="M-24 -12h40M-24 -2h48M-24 8h34"/><circle class="f-butter s-ink" cx="14" cy="26" r="13"/><text class="t" x="5" y="31" font-size="13">A+</text></g>' +
+      '<g class="float" style="--d:-1.5s"><path class="s-ink nf" stroke-width="3" d="M26 72a22 22 0 0 1 44 0"/><rect class="f-lav s-ink" x="20" y="68" width="12" height="20" rx="5"/><rect class="f-lav s-ink" x="64" y="68" width="12" height="20" rx="5"/></g>' +
+      star(204, 26, 1, 'f-butter', 0) + star(214, 108, .7, 'f-rose', 1)),
+    edusa: svg(shade(120, 78) +
+      '<rect class="f-white s-ink" x="64" y="24" width="112" height="78" rx="8"/><rect class="f-sky-soft" x="72" y="32" width="96" height="62" rx="4"/>' +
+      '<circle class="f-peach s-ink" cx="120" cy="56" r="11"/><path class="f-lav s-ink" d="M100 94c0-16 9-24 20-24s20 8 20 24z"/><circle class="f-mint" cx="160" cy="40" r="3.5"/>' +
+      '<path class="f-lav-soft s-ink" d="M52 102h136l-8 12H60z"/>' +
+      '<g class="float"><path class="f-butter s-ink" d="M14 30h34a7 7 0 0 1 7 7v12a7 7 0 0 1-7 7H28l-9 7v-7h-5a7 7 0 0 1-7-7V37a7 7 0 0 1 7-7z"/><text class="t" x="26" y="50" font-size="15">?</text></g>' +
+      '<g class="float" style="--d:-2s"><path class="f-mint s-ink" d="M186 50h36a7 7 0 0 1 7 7v12a7 7 0 0 1-7 7h-5v7l-9-7h-22a7 7 0 0 1-7-7V57a7 7 0 0 1 7-7z"/><path class="s-ink nf" d="M197 63l5 5 10-10"/></g>' +
+      '<g transform="translate(206 112)"><rect class="f-peach-soft s-ink" x="-10" y="-14" width="20" height="22" rx="4"/><path class="s-ink nf" d="M10 -8a5 5 0 0 1 0 10"/><path class="s-thin" d="M-3 -20c-3-4 3-6 0-10M4 -20c-3-4 3-6 0-10"/></g>' +
+      star(34, 110, .9, 'f-lav', .6)),
+    cn: svg(shade(126, 76) +
+      '<g transform="translate(76 78) rotate(-6)"><rect class="f-white s-ink" x="-36" y="-48" width="72" height="96" rx="7"/>' +
+      '<path class="f-rose" opacity=".6" d="M-36 -41a7 7 0 0 1 7-7h58a7 7 0 0 1 7 7v8h-72z"/><text class="t" x="-13" y="-25" font-size="12">成绩单</text>' +
+      '<path class="s-thin" d="M-26 -10h52M-26 0h52M-26 10h40M-26 20h46"/><circle class="f-rose" opacity=".8" cx="18" cy="33" r="11"/><text class="t" x="12" y="37" font-size="10" opacity=".8">章</text></g>' +
+      arrow(114, 64, -1) + enDoc(178, 80, 5, 'f-sky', 'EN') + star(214, 22, .9, 'f-butter', 0) + star(26, 30, .7, 'f-lav', .8)),
+    vn: svg(shade(126, 76) +
+      '<g transform="translate(78 78) rotate(-5)"><rect class="f-sky s-ink" x="-36" y="-48" width="72" height="96" rx="6"/><rect class="f-white" opacity=".35" x="-28" y="-42" width="58" height="84" rx="4"/>' +
+      '<rect class="f-lav" opacity=".7" x="-36" y="-48" width="9" height="96"/><circle class="f-butter s-ink" cx="2" cy="-14" r="13"/>' +
+      '<path class="f-rose" d="M2 -22l2.4 5 5.4.6-4 3.6 1.1 5.3-4.9-2.7-4.9 2.7 1.1-5.3-4-3.6 5.4-.6z"/><text class="t" x="-18" y="20" font-size="10">HỌC BẠ</text><path class="s-thin" d="M-16 30h36"/></g>' +
+      arrow(116, 64, -1.4) + enDoc(178, 80, 6, 'f-mint', 'EN') + star(212, 24, .9, 'f-butter', .2) + star(26, 112, .7, 'f-peach', 1)),
+    sits: svg(shade(126, 74) +
+      '<g transform="translate(86 80) rotate(-8)"><rect class="f-lav s-ink" x="-30" y="-42" width="60" height="84" rx="7"/><circle class="s-ink nf" cx="0" cy="-8" r="13"/>' +
+      '<path class="s-ink nf" d="M-13 -8h26M0 -21c-6 6-6 20 0 26 6-6 6-20 0-26"/><path class="s-thin" d="M-16 18h32M-12 26h24"/></g>' +
+      '<g transform="translate(160 74) rotate(6)"><rect class="f-white s-ink" x="-36" y="-46" width="72" height="92" rx="7"/><text class="t" x="-26" y="-24" font-size="14">I-20</text>' +
+      '<path class="s-thin" d="M-26 -12h52M-26 -2h52M-26 8h34"/><path class="s-ink nf" stroke-width="1.4" d="M-26 22v14M-22 22v14M-17 22v14M-14 22v14M-9 22v14M-5 22v14M0 22v14"/></g>' +
+      '<g class="float" style="--d:-1.2s"><g transform="translate(200 118) rotate(-12)"><rect class="f-mint s-ink" x="-22" y="-12" width="44" height="24" rx="6"/><text class="t" x="-12" y="5" font-size="12">F-1</text></g></g>' +
+      star(34, 30, .9, 'f-butter', .4) + star(214, 30, .7, 'f-rose', 1.2)),
+    aid: svg(shade(120, 80) +
+      '<g class="float" style="--d:-.6s"><rect class="f-white s-ink" x="56" y="22" width="116" height="82" rx="6"/><rect class="f-butter-soft" x="64" y="30" width="100" height="66" rx="4"/>' +
+      '<text class="t" x="76" y="52" font-size="10" letter-spacing="1">SCHOLARSHIP</text><path class="s-thin" d="M78 64h70M78 74h48"/>' +
+      '<g transform="translate(150 92)"><path class="f-rose s-ink" d="M-7 6l-4 15 7-4 3 6 3-15z"/><circle class="f-rose s-ink" r="11"/><circle class="f-white" opacity=".6" r="5"/></g></g>' +
+      '<g transform="translate(200 122)"><ellipse class="f-butter s-ink" rx="18" ry="6"/><ellipse class="f-butter s-ink" cy="-8" rx="18" ry="6"/><ellipse class="f-butter s-ink" cy="-16" rx="18" ry="6"/><text class="t" x="-3.5" y="-12.5" font-size="9">$</text></g>' +
+      '<g class="float" style="--d:-1.8s"><circle class="f-butter s-ink" cx="208" cy="44" r="9"/><path class="s-ink nf" d="M208 40v8"/></g>' +
+      '<g transform="translate(36 104)"><g class="float" style="--d:-2.4s"><path class="f-primary" d="M-20 0L0 -9 20 0 0 9z"/><path class="f-primary" d="M-11 4v8q11 6 22 0V4L0 9z"/><path class="s-ink nf" d="M14 2v11"/><circle class="f-butter s-ink" cx="14" cy="14" r="2.5"/></g></g>' +
+      star(30, 30, 1, 'f-lav', .2)),
+    summer: svg(shade(120, 60) +
+      '<path class="s-ink nf" d="M92 42H80a14 14 0 0 0 16 20M148 42h12a14 14 0 0 1-16 20"/>' +
+      '<path class="f-butter s-ink" d="M92 30h56v26a28 28 0 0 1-56 0z"/><path class="shine" d="M100 36h6v20a14 14 0 0 1-6-10z"/>' +
+      '<path class="f-white s-ink" stroke-width="1" d="M120 40l3 6 6.6.8-4.9 4.4 1.3 6.5-6-3.3-6 3.3 1.3-6.5-4.9-4.4 6.6-.8z"/>' +
+      '<rect class="f-lav s-ink" x="114" y="84" width="12" height="14"/><rect class="f-peach s-ink" x="98" y="98" width="44" height="14" rx="4"/><rect class="f-lav-soft s-ink" x="92" y="112" width="56" height="10" rx="3"/>' +
+      '<g class="float" style="--d:-1s"><path class="f-sky s-ink" d="M182 28l8 22h12l8-22z"/><circle class="f-butter s-ink" cx="196" cy="64" r="14"/><text class="t" x="192" y="69" font-size="13">1</text></g>' +
+      '<rect class="f-rose" x="54" y="34" width="9" height="4" rx="1.5" transform="rotate(30 58 36)"/><rect class="f-mint" x="66" y="64" width="9" height="4" rx="1.5" transform="rotate(-25 70 66)"/>' +
+      '<rect class="f-sky" x="44" y="92" width="9" height="4" rx="1.5" transform="rotate(60 48 94)"/><rect class="f-peach" x="168" y="96" width="9" height="4" rx="1.5" transform="rotate(-40 172 98)"/>' +
+      star(40, 60, .8, 'f-butter', .3) + star(214, 112, .8, 'f-lav', 1))
+  };
+  ART.head = '<svg class="ill res-head-ill" viewBox="0 0 230 150" aria-hidden="true">' +
+    '<ellipse class="shade" cx="112" cy="138" rx="96" ry="6"/>' +
+    '<rect class="f-lav s-ink" x="36" y="50" width="16" height="66" rx="3"/><rect class="f-mint s-ink" x="54" y="60" width="14" height="56" rx="3"/>' +
+    '<rect class="f-peach s-ink" x="70" y="44" width="18" height="72" rx="3"/><path class="s-thin" d="M74 56h10M74 102h10"/>' +
+    '<rect class="f-butter s-ink" x="90" y="58" width="13" height="58" rx="3"/><rect class="f-sky s-ink" x="105" y="50" width="16" height="66" rx="3"/>' +
+    '<g transform="rotate(16 128 116)"><rect class="f-rose s-ink" x="124" y="62" width="14" height="54" rx="3"/></g>' +
+    '<rect class="f-peach-soft s-ink" x="22" y="116" width="186" height="11" rx="4"/>' +
+    '<g transform="translate(186 116)"><path class="f-lav-soft s-ink" d="M-12 0h24l-3-16h-18z"/><g class="sway"><path class="f-mint s-ink" d="M0 -16c-8 0-12-8-10-14 8 1 11 7 10 14z"/><path class="f-mint s-ink" d="M0 -16c7 0 11-9 9-16-7 2-10 9-9 16z"/></g></g>' +
+    '<g class="float"><path class="s-ink nf" stroke-width="5" d="M168 72l18 18"/><circle class="f-white s-ink" cx="152" cy="56" r="24"/><circle class="f-sky-soft" cx="152" cy="56" r="18"/><path class="s-ink nf" stroke-width="2.4" d="M143 56l6 6 12-12"/><path class="shine" d="M138 46a16 16 0 0 1 8-6 12 12 0 0 0-8 6z"/></g>' +
+    star(30, 30, 1, 'f-butter', 0) + star(206, 30, .8, 'f-lav', .9) + '</svg>';
+  window.PF_ART = ART;
+})();
+(function(){
+  var LANGS = ["en","zh","vi"];
+  var HTML_LANG = {en:"en", zh:"zh-Hans", vi:"vi"};
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var state = {lang:"en", stage:null, open:{0:true}, filter:"all", mode:"question", touched:{}};
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  function store(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function t(key, vars){
+    var d = T[state.lang] || T.en;
+    var s = d[key] != null ? d[key] : (T.en[key] != null ? T.en[key] : key);
+    if (vars) for (var k in vars) s = s.replace("{"+k+"}", vars[k]);
+    return s;
+  }
+  var I = {
+    chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
+    check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+    ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg>',
+    clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+  };
+
+  /* ---------- Language detection ---------- */
+  function detect(){
+    var h = (location.hash || "").slice(1).toLowerCase();
+    if (LANGS.indexOf(h) > -1) return h;
+    var s = load("pf-lang"); if (LANGS.indexOf(s) > -1) return s;
+    var list = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < list.length; i++){
+      var x = String(list[i] || "").toLowerCase();
+      if (x.indexOf("zh") === 0) return "zh";
+      if (x.indexOf("vi") === 0) return "vi";
+      if (x.indexOf("en") === 0) return "en";
+    }
+    return "en";
+  }
+
+  /* ---------- Static strings ---------- */
+  function applyStatic(){
+    $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+    $$("[data-i18n-html]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+    $$("[data-i18n-attr]").forEach(function(el){
+      el.getAttribute("data-i18n-attr").split(";").forEach(function(pair){
+        var p = pair.split(":"); if (p.length === 2) el.setAttribute(p[0].trim(), t(p[1].trim()));
+      });
+    });
+  }
+
+  /* ---------- Language switcher thumbs ---------- */
+  function placeThumbs(){
+    $$(".lang").forEach(function(g){
+      var b = $('button[aria-pressed="true"]', g), th = $(".lang-thumb", g);
+      if (!b || !th || !b.offsetWidth) return;
+      g.style.setProperty("--x", b.offsetLeft + "px");
+      g.style.setProperty("--w", b.offsetWidth + "px");
+      if (!g.classList.contains("ready")) requestAnimationFrame(function(){ g.classList.add("ready"); });
+    });
+  }
+  function updateLangButtons(){
+    $$(".lang button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === state.lang)); });
+    placeThumbs();
+  }
+
+  /* ---------- Roadmap ---------- */
+  function renderSteps(){
+    var ol = $("#steps"); if (!ol) return;
+    ol.innerHTML = STEPS.map(function(s, i){
+      var L = s[state.lang] || s.en, open = !!state.open[i];
+      var here = state.stage && s.stages.indexOf(state.stage) > -1;
+      return '<li class="step' + (open ? " open" : "") + (here ? " here" : "") + '" data-i="' + i + '">' +
+        '<div class="node" aria-hidden="true"><span>' + (i + 1) + '</span></div>' +
+        '<div class="step-card">' +
+          '<button class="step-head" type="button" id="st-' + i + '" aria-expanded="' + open + '" aria-controls="sp-' + i + '">' +
+            '<span class="step-meta"><span class="step-when">' + esc(L.when) + '</span>' + (here ? '<span class="here-badge">' + esc(t("rm.here")) + '</span>' : "") + '</span>' +
+            '<span class="step-title">' + esc(L.title) + '</span>' + I.chev +
+          '</button>' +
+          '<div class="step-panel" id="sp-' + i + '" role="region" aria-labelledby="st-' + i + '"' + (open ? "" : " inert") + '><div><div class="inner">' +
+            '<p>' + esc(L.desc) + '</p>' +
+            '<p class="checks-h">' + esc(t("rm.checklist")) + '</p>' +
+            '<ul class="checks">' + L.checks.map(function(c){ return "<li>" + I.check + "<span>" + esc(c) + "</span></li>"; }).join("") + '</ul>' +
+            '<a class="source" href="' + esc(s.src.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("rm.source")) + ": " + esc(s.src.name) + I.ext + '</a>' +
+          '</div></div></div>' +
+        '</div></li>';
+    }).join("");
+    updateProgress();
+  }
+  function toggleStep(i){
+    state.open[i] = !state.open[i];
+    var li = $('.step[data-i="' + i + '"]'); if (!li) return;
+    li.classList.toggle("open", state.open[i]);
+    $(".step-head", li).setAttribute("aria-expanded", String(state.open[i]));
+    var panel = $(".step-panel", li);
+    if (state.open[i]) panel.removeAttribute("inert"); else panel.setAttribute("inert", "");
+  }
+  function setStage(stage){
+    state.stage = state.stage === stage ? null : stage;
+    store("pf-stage", state.stage ? String(state.stage) : "");
+    $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === state.stage)); });
+    if (state.stage){
+      state.open = {};
+      for (var i = 0; i < STEPS.length; i++) if (STEPS[i].stages.indexOf(state.stage) > -1){ state.open[i] = true; break; }
+    }
+    renderSteps();
+    if (state.stage){
+      var first = $(".step.here");
+      if (first){
+        var r = first.getBoundingClientRect();
+        if (r.top < 80 || r.bottom > innerHeight) first.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "center"});
+      }
+    }
+  }
+  var ticking = false;
+  function updateProgress(){
+    ticking = false;
+    var tl = $("#steps"); if (!tl) return;
+    var r = tl.getBoundingClientRect(), mark = innerHeight * 0.6;
+    var p = Math.min(1, Math.max(0, (mark - r.top) / Math.max(1, r.height)));
+    (tl.parentElement || tl).style.setProperty("--progress", p.toFixed(3));
+    $$(".step", tl).forEach(function(li){
+      var n = $(".node", li).getBoundingClientRect();
+      li.classList.toggle("lit", n.top + n.height / 2 < mark);
+    });
+  }
+  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(updateProgress); } }
+
+  /* ---------- Resources ---------- */
+  var COVER = {
+    guide:'<svg class="ill" viewBox="0 0 64 64" aria-hidden="true"><rect class="f-white s-ink" x="10" y="10" width="34" height="44" rx="4"/><path class="f-lav s-ink" d="M10 14a4 4 0 0 1 4-4h4v44h-4a4 4 0 0 1-4-4z"/><path class="s-thin" d="M24 22h14M24 30h14M24 38h9"/><g transform="rotate(32 48 34)"><rect class="f-butter s-ink" x="44" y="14" width="8" height="28" rx="2"/><path class="f-peach s-ink" d="M44 42l4 8 4-8z"/><rect class="f-rose s-ink" x="44" y="10" width="8" height="5" rx="2"/></g></svg>',
+    official:'<svg class="ill" viewBox="0 0 64 64" aria-hidden="true"><path class="s-ink nf" d="M32 10V2"/><path class="f-rose s-ink" d="M32 2l9 3-9 3z"/><path class="f-white s-ink" d="M7 24L32 11l25 13z"/><rect class="f-white s-ink" x="9" y="24" width="46" height="5"/><rect class="f-sky s-ink" x="13" y="29" width="6" height="18"/><rect class="f-sky s-ink" x="23.5" y="29" width="6" height="18"/><rect class="f-sky s-ink" x="34.5" y="29" width="6" height="18"/><rect class="f-sky s-ink" x="45" y="29" width="6" height="18"/><rect class="f-white s-ink" x="6" y="47" width="52" height="7" rx="2"/></svg>',
+    partner:'<svg class="ill" viewBox="0 0 64 64" aria-hidden="true"><path class="f-peach s-ink" d="M8 10h28a6 6 0 0 1 6 6v12a6 6 0 0 1-6 6H20l-8 7v-7H8a6 6 0 0 1-6-6V16a6 6 0 0 1 6-6z"/><text class="t" x="9" y="27" font-size="11">ABC</text><path class="f-mint s-ink" d="M30 28h24a6 6 0 0 1 6 6v10a6 6 0 0 1-6 6h-2v7l-8-7H30a6 6 0 0 1-6-6V34a6 6 0 0 1 6-6z"/><text class="t" x="36" y="45" font-size="12">文</text></svg>',
+    opportunity:'<svg class="ill" viewBox="0 0 64 64" aria-hidden="true"><path class="s-ink nf" d="M20 15h-6a7 7 0 0 0 7 11M44 15h6a7 7 0 0 1-7 11"/><path class="f-butter s-ink" d="M20 9h24v15a12 12 0 0 1-24 0z"/><path class="shine" d="M24 13h4v10a6 6 0 0 1-4-4z"/><rect class="f-lav s-ink" x="28" y="36" width="8" height="8"/><rect class="f-peach s-ink" x="19" y="44" width="26" height="9" rx="3"/><path class="f-white s-ink" stroke-width="1" d="M32 14l1.6 3.4 3.6.4-2.7 2.4.8 3.6L32 22l-3.3 1.8.8-3.6-2.7-2.4 3.6-.4z"/></svg>'
+  };
+  function renderResources(){
+    var grid = $("#res-grid"); if (!grid) return;
+    var list = RES.filter(function(r){ return state.filter === "all" || r.tags.indexOf(state.filter) > -1; });
+    var featured = state.filter === "all" ? [0, 3, 7] : [];
+    var ART = window.PF_ART || {};
+    grid.innerHTML = list.map(function(r, i){
+      var L = r[state.lang] || r.en, feat = featured.indexOf(i) > -1;
+      var tags = r.tags.filter(function(x){ return x !== "english"; }).map(function(x){ return '<span>' + esc(t("f." + x)) + '</span>'; }).join("");
+      var act = r.url
+        ? '<a class="res-act" href="' + esc(r.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("res.visit")) + I.ext + '</a>'
+        : '<button type="button" class="res-act soon" data-soon>' + I.clock + esc(t("res.soon")) + '</button>';
+      return '<article class="res reveal' + (feat ? ' feat' : '') + '" data-type="' + r.type + '" data-tone="' + (r.tone || "lav") + '">' +
+        '<div class="res-cover">' + (ART[r.art] || "") + '<span class="badge"><i></i>' + esc(t("type." + r.type)) + '</span></div>' +
+        '<span class="res-thumb">' + (COVER[r.type] || "") + '</span>' +
+        '<div class="res-body"><div class="res-tags"><span class="res-type-m">' + esc(t("type." + r.type)) + '</span>' + tags + '</div>' +
+        '<h3>' + esc(L.t) + '</h3><p>' + esc(L.d) + '</p>' +
+        '<div class="res-foot"><span class="langs"><span class="sr">' + esc(t("res.langs")) + ': </span><b>EN</b><b>中文</b><b>VI</b></span>' + act + '</div></div>' +
+      '</article>';
+    }).join("");
+    $("#res-count").textContent = t("res.count", {n: list.length});
+  }
+
+  /* ---------- Form ---------- */
+  function fillSelect(sel, opts, fallback){
+    var cur = sel.value;
+    sel.innerHTML = opts.map(function(o){ return '<option value="' + o[0] + '"' + (o[2] ? ' lang="' + o[2] + '"' : "") + '>' + esc(o[1]) + '</option>'; }).join("");
+    sel.value = cur !== "" && opts.some(function(o){ return o[0] === cur; }) ? cur : fallback;
+  }
+  function renderForm(){
+    var g = $("#f-grade"), c = $("#f-country"), r = $("#f-reply");
+    fillSelect(g, [["", t("f.choose")],["9", t("f.g9")],["10", t("f.g10")],["11", t("f.g11")],["12", t("f.g12")],["other", t("f.gOther")]], "");
+    fillSelect(c, [["", t("f.choose")],["cn", t("f.cCN")],["vn", t("f.cVN")],["other", t("f.cOther")]], "");
+    fillSelect(r, [["en","English","en"],["zh","中文","zh-Hans"],["vi","Tiếng Việt","vi"]], state.lang);
+    if (!state.touched.country) c.value = state.lang === "zh" ? "cn" : state.lang === "vi" ? "vn" : "";
+    if (!state.touched.reply) r.value = state.lang;
+    var q = state.mode === "question";
+    $("#f-msg-label").textContent = t(q ? "f.msgQ" : "f.msgV");
+    $("#f-msg").setAttribute("placeholder", t(q ? "f.phQ" : "f.phV"));
+    $("#f-submit-label").textContent = t(q ? "f.sendQ" : "f.sendV");
+    $$(".err").forEach(function(e){ if (!e.hidden && e.dataset.key) e.textContent = t(e.dataset.key); });
+  }
+  function setErr(input, errEl, key){
+    if (key){ input.setAttribute("aria-invalid", "true"); errEl.dataset.key = key; errEl.textContent = t(key); errEl.hidden = false; }
+    else { input.removeAttribute("aria-invalid"); errEl.hidden = true; errEl.textContent = ""; delete errEl.dataset.key; }
+  }
+  function validate(){
+    var msg = $("#f-msg"), contact = $("#f-contact"), consent = $("#f-consent"), first = null;
+    var m = msg.value.trim() ? null : (state.mode === "question" ? "f.errMsg" : "f.errMsgV");
+    setErr(msg, $("#f-msg-err"), m); if (m) first = first || msg;
+    var c = contact.value.trim() ? null : "f.errContact";
+    setErr(contact, $("#f-contact-err"), c); if (c) first = first || contact;
+    var k = consent.checked ? null : "f.errConsent";
+    setErr(consent, $("#f-consent-err"), k); if (k) first = first || consent;
+    return first;
+  }
+
+  /* ---------- Toast ---------- */
+  var toastTimer;
+  function toast(msg){
+    var el = $("#toast"); el.textContent = msg; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 2600);
+  }
+
+  /* ---------- Rotating seal: pick a font size so the text fills the circle without stretching the glyphs ---------- */
+  function fitSeal(){
+    var tp = $(".seal textPath"); if (!tp || !tp.getComputedTextLength) return;
+    var text = tp.parentNode, target = 262;
+    tp.removeAttribute("textLength"); text.style.fontSize = "10px";
+    var len = 0; try { len = tp.getComputedTextLength(); } catch(e){}
+    if (len > 0) text.style.fontSize = Math.max(7, Math.min(13.5, 10 * target / len)).toFixed(2) + "px";
+    tp.setAttribute("textLength", "266"); tp.setAttribute("lengthAdjust", "spacing");
+  }
+
+  /* ---------- Set language ---------- */
+  function setLang(lang, opts){
+    opts = opts || {};
+    if (LANGS.indexOf(lang) < 0) lang = "en";
+    state.lang = lang;
+    document.documentElement.lang = HTML_LANG[lang];
+    applyStatic(); renderSteps(); renderResources(); renderForm(); updateLangButtons(); fitSeal();
+    if (opts.persist){
+      store("pf-lang", lang);
+      try { history.replaceState(null, "", "#" + lang); } catch(e){}
+    }
+    if (opts.announce) $("#live").textContent = t("a11y.lang");
+    window.dispatchEvent(new CustomEvent("pf:lang", {detail: lang}));
+  }
+  function switchTo(lang){
+    if (lang === state.lang) return;
+    if (reduce){ setLang(lang, {persist:true, announce:true}); return; }
+    document.body.classList.add("switching");
+    setTimeout(function(){
+      setLang(lang, {persist:true, announce:true});
+      requestAnimationFrame(function(){ document.body.classList.remove("switching"); });
+    }, 150);
+  }
+
+  /* ---------- Menu ---------- */
+  var menuBtn = $(".menu-btn"), menu = $("#menu");
+  function setMenu(open){
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menu.hidden = !open;
+  }
+
+  /* ---------- Events ---------- */
+  document.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    var langBtn = el.closest(".lang button");
+    if (langBtn){ switchTo(langBtn.getAttribute("data-lang")); return; }
+    var sc = el.closest("[data-scroll]");
+    if (sc){
+      e.preventDefault();
+      var id = sc.getAttribute("data-scroll"), target = document.getElementById(id);
+      setMenu(false);
+      if (target){
+        target.scrollIntoView({behavior: reduce ? "auto" : "smooth", block: "start"});
+        if (id !== "top"){ target.setAttribute("tabindex", "-1"); target.focus({preventScroll:true}); }
+      }
+      return;
+    }
+    if (el.closest(".menu-btn")){ setMenu(menuBtn.getAttribute("aria-expanded") !== "true"); return; }
+    var head = el.closest(".step-head");
+    if (head){ toggleStep(Number(head.closest(".step").getAttribute("data-i"))); return; }
+    var chip = el.closest(".chip[data-stage]");
+    if (chip){ setStage(Number(chip.getAttribute("data-stage"))); return; }
+    var f = el.closest(".chip[data-filter]");
+    if (f){
+      state.filter = f.getAttribute("data-filter");
+      $$(".chip[data-filter]").forEach(function(c){ c.setAttribute("aria-pressed", String(c === f)); });
+      renderResources(); return;
+    }
+    if (el.closest("[data-soon]")){ toast(t("res.toast")); return; }
+    var mb = el.closest(".mode button");
+    if (mb){
+      state.mode = mb.getAttribute("data-mode");
+      $("#ask").setAttribute("data-mode", state.mode);
+      $$(".mode button").forEach(function(b){ b.setAttribute("aria-pressed", String(b === mb)); });
+      setErr($("#f-msg"), $("#f-msg-err"), null);
+      renderForm(); return;
+    }
+    if (el.closest("#f-again")){
+      $("#ask").reset(); state.touched = {}; renderForm();
+      $("#f-success").hidden = true; $("#form-body").hidden = false; $("#f-msg").focus();
+    }
+  });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && menuBtn.getAttribute("aria-expanded") === "true"){ setMenu(false); menuBtn.focus(); } });
+  $("#f-country").addEventListener("change", function(){ state.touched.country = true; });
+  $("#f-reply").addEventListener("change", function(){ state.touched.reply = true; });
+  ["#f-msg","#f-contact","#f-consent"].forEach(function(s){
+    $(s).addEventListener("input", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
+    $(s).addEventListener("change", function(){ var err = $(s + "-err"); if (!err.hidden) validate(); });
+  });
+  $("#ask").addEventListener("submit", function(e){
+    e.preventDefault();
+    var bad = validate();
+    if (bad){ bad.focus(); return; }
+    $("#form-body").hidden = true; $("#f-success").hidden = false; $("#f-ok-title").focus();
+  });
+  $("#res-grid").addEventListener("pointermove", function(e){
+    var card = e.target.closest(".res"); if (!card) return;
+    var r = card.getBoundingClientRect();
+    card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    card.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", function(){ placeThumbs(); onScroll(); if (innerWidth > 1100) setMenu(false); });
+  window.addEventListener("hashchange", function(){
+    var h = location.hash.slice(1).toLowerCase();
+    if (LANGS.indexOf(h) > -1 && h !== state.lang) setLang(h, {persist:true});
+  });
+
+  /* ---------- Hero illustration: pointer parallax, reduced motion ---------- */
+  (function(){
+    var scene = $("#scene"), svg = scene && $("svg.scene", scene);
+    if (!svg) return;
+    if (reduce){
+      try { svg.pauseAnimations(); svg.setCurrentTime(4.5); } catch(e){}
+      return;
+    }
+    if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var layers = $$(".layer", svg), tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+    function tick(){
+      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+      layers.forEach(function(l){ var d = Number(l.getAttribute("data-depth")) || 0; l.style.transform = "translate(" + (cx * d).toFixed(2) + "px," + (cy * d).toFixed(2) + "px)"; });
+      raf = (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) ? requestAnimationFrame(tick) : 0;
+    }
+    var hero = scene.closest(".hero") || scene;
+    hero.addEventListener("pointermove", function(e){
+      var r = scene.getBoundingClientRect();
+      tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width / 2)));
+      ty = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height / 2)));
+      if (!raf) raf = requestAnimationFrame(tick);
+    });
+    hero.addEventListener("pointerleave", function(){ tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(tick); });
+  })();
+
+  var headIll = $("#res-head-ill");
+  if (headIll && window.PF_ART) headIll.innerHTML = window.PF_ART.head;
+
+  /* ---------- Init ---------- */
+  var savedStage = Number(load("pf-stage"));
+  if (savedStage >= 1 && savedStage <= 3){
+    state.stage = savedStage; state.open = {};
+    for (var i = 0; i < STEPS.length; i++) if (STEPS[i].stages.indexOf(savedStage) > -1){ state.open[i] = true; break; }
+    $$(".chip[data-stage]").forEach(function(c){ c.setAttribute("aria-pressed", String(Number(c.getAttribute("data-stage")) === savedStage)); });
+  }
+  setLang(detect());
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ placeThumbs(); fitSeal(); });
+  window.PF = {setLang: function(l){ setLang(l, {persist:true}); }, switchTo: switchTo, t: t, state: state};
+})();
+</script>
+<script type="module">
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js";
+// ---------- 3D study scene (three.js): setup, materials, objects ----------
+(function(){
+const stage = document.getElementById("stage3d");
+if (!stage) return;
+const canvas = stage.querySelector("canvas");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const small = matchMedia("(max-width: 680px)").matches;
+
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true, powerPreference:"high-performance"}); }
+catch (e) { return; }
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.NeutralToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;          // very soft, blurred contact shadows
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
+const TARGET = new THREE.Vector3(0, 1.05, 0);
+const CAM_DIR = new THREE.Vector3(0.56, 0.44, 0.70).normalize();
+
+// --- palette from CSS tokens (re-read when the theme changes)
+const css = () => getComputedStyle(document.documentElement);
+const tok = (n, f) => (css().getPropertyValue(n).trim() || f);
+const painted = [];
+function mat(token, fallback, opts = {}){
+  const m = new THREE.MeshPhysicalMaterial(Object.assign({roughness:0.36, metalness:0, clearcoat:0.85, clearcoatRoughness:0.2}, opts));
+  painted.push([m, token, fallback]); return m;
+}
+function fixed(hex, opts = {}){ return new THREE.MeshPhysicalMaterial(Object.assign({color:hex, roughness:0.6, metalness:0}, opts)); }
+// In 3D, pastel tokens read washed out under the soft lighting, so deepen them a touch (more saturation, a little darker).
+function repaint(){ painted.forEach(([m, t, f]) => { m.color.set(t ? tok(t, f) : f); if (!m.userData.keep) m.color.offsetHSL(0, 0.16, -0.07); }); }
+
+// --- soft pastel studio environment for gentle reflections on clear-coated surfaces
+const pmrem = new THREE.PMREMGenerator(renderer);
+(function(){
+  const env = new THREE.Scene();
+  const g = new THREE.SphereGeometry(10, 32, 16), cols = [];
+  const top = new THREE.Color("#FFFFFF"), mid = new THREE.Color("#FBEAF3"), bot = new THREE.Color("#E6F4F7");
+  for (let i = 0; i < g.attributes.position.count; i++){ const y = g.attributes.position.getY(i) / 10; const c = y > 0 ? mid.clone().lerp(top, y) : mid.clone().lerp(bot, -y); cols.push(c.r, c.g, c.b); }
+  g.setAttribute("color", new THREE.Float32BufferAttribute(cols, 3));
+  env.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({vertexColors:true, side:THREE.BackSide})));
+  const panel = (c, x, y, z, w, h) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({color:c})); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m); };
+  panel("#FFFFFF", 4, 6, 4, 6, 4); panel("#F9B2D7", -6, 2, 2, 4, 3); panel("#CFECF3", 2, 1, -6, 5, 3);
+  scene.environment = pmrem.fromScene(env, 0.04).texture;
+  scene.environmentIntensity = 0.65;
+})();
+
+// --- lights
+scene.add(new THREE.HemisphereLight("#FFFFFF", "#EAD9E4", 0.55));
+const sun = new THREE.DirectionalLight("#FFFBF6", 2.6);
+sun.position.set(3, 8, 5); sun.castShadow = true;
+sun.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
+Object.assign(sun.shadow.camera, {left:-4, right:4, top:4, bottom:-4, near:1, far:20});
+sun.shadow.radius = 10; sun.shadow.blurSamples = 16; sun.shadow.bias = -0.0005;
+scene.add(sun);
+const rim = new THREE.DirectionalLight("#CFECF3", 0.9); rim.position.set(-5, 3, -4); scene.add(rim);
+
+// --- helpers
+function rbox(w, h, d, r = 0.06, seg = 5){
+  const b = Math.min(r, w / 2 - 0.001, h / 2 - 0.001, d / 2 - 0.001);
+  const sw = w - 2 * b, sh = h - 2 * b, c = Math.min(b, sw / 2, sh / 2) * 0.9;
+  const s = new THREE.Shape(), x = -sw / 2, y = -sh / 2;
+  s.moveTo(x + c, y); s.lineTo(x + sw - c, y); s.quadraticCurveTo(x + sw, y, x + sw, y + c);
+  s.lineTo(x + sw, y + sh - c); s.quadraticCurveTo(x + sw, y + sh, x + sw - c, y + sh);
+  s.lineTo(x + c, y + sh); s.quadraticCurveTo(x, y + sh, x, y + sh - c);
+  s.lineTo(x, y + c); s.quadraticCurveTo(x, y, x + c, y);
+  const g = new THREE.ExtrudeGeometry(s, {depth:Math.max(0.001, d - 2 * b), bevelEnabled:true, bevelSize:b, bevelThickness:b, bevelSegments:seg, curveSegments:8});
+  g.center(); g.computeVertexNormals(); return g;
+}
+function mesh(geo, material, parent, pos, rot){
+  const m = new THREE.Mesh(geo, material); m.castShadow = true; m.receiveShadow = true;
+  if (pos) m.position.set(pos[0], pos[1], pos[2]);
+  if (rot) m.rotation.set(rot[0], rot[1], rot[2]);
+  parent.add(m); return m;
+}
+function canvasTex(w, h, draw){
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  t.userData.redraw = () => { const x = c.getContext("2d"); x.clearRect(0, 0, w, h); draw(x, w, h); t.needsUpdate = true; };
+  t.userData.redraw(); return t;
+}
+const INK = "#1D1A26";
+function drawPage(x, w, h, word, side, pageNo){
+  x.fillStyle = "#FFFEFB"; x.fillRect(0, 0, w, h);
+  const g = x.createLinearGradient(0, 0, 44, 0); g.addColorStop(0, "rgba(29,26,38,.09)"); g.addColorStop(1, "rgba(29,26,38,0)");
+  if (side === 2){ x.fillStyle = g; x.fillRect(0, 0, 44, h); }
+  if (side === 1){ x.save(); x.translate(w, 0); x.scale(-1, 1); x.fillStyle = g; x.fillRect(0, 0, 44, h); x.restore(); }
+  x.strokeStyle = "rgba(29,26,38,.08)"; x.lineWidth = 3;
+  for (let y = 440; y < h - 80; y += 46){ x.beginPath(); x.moveTo(64, y); x.lineTo(w - 64, y); x.stroke(); }
+  if (word){
+    const band = x.createLinearGradient(110, 0, w - 60, 0);
+    band.addColorStop(0, "rgba(249,178,215,.85)"); band.addColorStop(.55, "rgba(207,236,243,.95)"); band.addColorStop(1, "rgba(218,249,222,.95)");
+    x.fillStyle = band; x.beginPath(); x.roundRect ? x.roundRect(104, 322, w - 168, 34, 17) : x.rect(104, 322, w - 168, 34); x.fill();
+    x.fillStyle = INK; x.textAlign = "center"; x.textBaseline = "alphabetic"; x.font = word[1]; x.fillText(word[0], w / 2 + 20, 336);
+    x.font = "500 28px 'Be Vietnam Pro', 'PingFang SC', sans-serif"; x.fillStyle = "rgba(29,26,38,.5)"; x.fillText(word[2], w / 2 + 20, 176);
+    x.fillStyle = "rgba(29,26,38,.14)"; for (let i = 0; i < 3; i++){ x.fillRect(120, 440 + i * 46 - 14, (w - 220) * (0.9 - i * 0.2), 9); }
+  }
+  if (pageNo){ x.font = "500 24px 'Be Vietnam Pro', sans-serif"; x.fillStyle = "rgba(29,26,38,.4)"; x.textAlign = side === 1 ? "left" : "right"; x.fillText(String(pageNo), side === 1 ? 64 : w - 64, h - 44); }
+}
+function pageCanvas(){ return canvasTex(512, 720, () => {}); }
+function paint(tex, word, side, pageNo, mirror){
+  const c = tex.image, x = c.getContext("2d");
+  x.save(); x.clearRect(0, 0, c.width, c.height);
+  if (mirror){ x.translate(c.width, 0); x.scale(-1, 1); }
+  drawPage(x, c.width, c.height, word, side, pageNo); x.restore(); tex.needsUpdate = true;
+}
+function stripeTex(){
+  const t = canvasTex(64, 64, (x, w, h) => { x.fillStyle = "#FFFEFB"; x.fillRect(0, 0, w, h); x.fillStyle = "rgba(29,26,38,.08)"; for (let y = 0; y < h; y += 6) x.fillRect(0, y, w, 1.5); });
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
+}
+function letterTex(ch, font){
+  return canvasTex(256, 256, (x, w, h) => { x.fillStyle = INK; x.textAlign = "center"; x.textBaseline = "middle"; x.font = font; x.fillText(ch, w / 2, h / 2 + 8); });
+}
+
+// --- scene graph
+const world = new THREE.Group(); scene.add(world);
+const island = new THREE.Group(); world.add(island);
+
+// soft floor shadow (a blurred radial gradient, cheaper and softer than a second shadow pass)
+const floorTex = canvasTex(256, 256, (x, w, h) => { const g = x.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); g.addColorStop(0, "rgba(70,30,70,.34)"); g.addColorStop(.55, "rgba(70,30,70,.12)"); g.addColorStop(1, "rgba(90,40,80,0)"); x.fillStyle = g; x.fillRect(0, 0, w, h); });
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 5.4), new THREE.MeshBasicMaterial({map:floorTex, transparent:true, depthWrite:false}));
+floor.rotation.x = -Math.PI / 2; floor.position.y = -0.7; world.add(floor);
+
+// island: a two-tier "gummy" tray. Mist-blue base, mint body with a raised rounded lip, cream top.
+const bodyProf = [[0,-0.2],[2.18,-0.2],[2.33,-0.15],[2.41,-0.04],[2.42,0.08],[2.38,0.2],[2.28,0.27],[2.17,0.26],[2.1,0.21],[2.04,0.185],[0,0.185]].map(p => new THREE.Vector2(p[0], p[1]));
+mesh(new THREE.LatheGeometry(bodyProf, 112), mat("--mint", "#C6F1CD", {roughness:0.3, clearcoat:1, clearcoatRoughness:0.15}), island);
+const baseProf = [[0,-0.52],[1.95,-0.52],[2.12,-0.47],[2.2,-0.37],[2.22,-0.25],[2.18,-0.17],[0,-0.17]].map(p => new THREE.Vector2(p[0], p[1]));
+mesh(new THREE.LatheGeometry(baseProf, 112), mat("--sky", "#C2E6F0", {roughness:0.32, clearcoat:1, clearcoatRoughness:0.18}), island);
+const topMat = fixed("#FFFDF4", {roughness:0.55, clearcoat:0.3, clearcoatRoughness:0.4});
+mesh(new THREE.CylinderGeometry(2.05, 2.05, 0.02, 112), topMat, island, [0, 0.188, 0]);
+// a few pastel dots pressed into the lip, like sprinkles on a macaron
+[["--lav", "#F9B2D7"], ["--butter", "#EEF8C2"], ["--sky", "#C2E6F0"]].forEach(([t, f], k) => {
+  const dm = mat(t, f, {roughness:0.3, clearcoat:1});
+  for (let i = 0; i < 6; i++){ const a = (i / 6) * Math.PI * 2 + k * 0.35 + 0.2; mesh(new THREE.SphereGeometry(0.045, 16, 12), dm, island, [Math.cos(a) * 2.36, 0.12 + (k % 2) * 0.04, Math.sin(a) * 2.36]); }
+});
+
+// pencil lying in front
+const pencil = new THREE.Group(); pencil.position.set(-0.55, 0.28, 1.5); pencil.rotation.set(0, 0.38, 0); island.add(pencil);
+mesh(new THREE.CylinderGeometry(0.085, 0.085, 1.3, 6), fixed("#FFE07C", {roughness:0.35, clearcoat:0.9, clearcoatRoughness:0.2}), pencil, [0, 0, 0], [0, 0, Math.PI / 2]);
+mesh(new THREE.ConeGeometry(0.085, 0.24, 6), fixed("#F6D9B8", {roughness:0.7}), pencil, [0.77, 0, 0], [0, 0, -Math.PI / 2]);
+mesh(new THREE.ConeGeometry(0.03, 0.08, 12), fixed("#2E2A40"), pencil, [0.87, 0, 0], [0, 0, -Math.PI / 2]);
+mesh(new THREE.CylinderGeometry(0.089, 0.089, 0.12, 20), fixed("#E6E2EE", {metalness:0.6, roughness:0.28}), pencil, [-0.71, 0, 0], [0, 0, Math.PI / 2]);
+mesh(new THREE.CylinderGeometry(0.084, 0.084, 0.14, 20), mat("--lav", "#F9B2D7"), pencil, [-0.84, 0, 0], [0, 0, Math.PI / 2]);
+
+// sticky notes
+mesh(rbox(0.5, 0.025, 0.5, 0.01), mat("--butter", "#EEF8C2", {roughness:0.6, clearcoat:0.3}), island, [1.82, 0.205, -0.32], [0, 0.5, 0]);
+mesh(rbox(0.45, 0.025, 0.45, 0.01), mat("--lav", "#F9B2D7", {roughness:0.6, clearcoat:0.3}), island, [1.92, 0.23, -0.17], [0, -0.2, 0]);
+
+// potted plant
+const plant = new THREE.Group(); plant.position.set(1.32, 0.19, -1.32); island.add(plant);
+const potProf = [[0,0],[0.26,0],[0.33,0.4],[0.38,0.44],[0.38,0.5],[0.32,0.5],[0.3,0.46],[0,0.46]].map(p => new THREE.Vector2(p[0], p[1]));
+mesh(new THREE.LatheGeometry(potProf, 48), mat("--lav", "#F9B2D7", {roughness:0.3, clearcoat:1}), plant);
+const leafA = fixed("#86D3A2", {roughness:0.35, clearcoat:0.8}), leafB = mat("--mint", "#C6F1CD", {roughness:0.35});
+const leaves = new THREE.Group(); leaves.position.y = 0.46; plant.add(leaves);
+for (let i = 0; i < 6; i++){
+  const a = i / 6 * Math.PI * 2, l = new THREE.Group(); l.rotation.set(0, a, 0.35 + (i % 2) * 0.2); leaves.add(l);
+  mesh(new THREE.SphereGeometry(0.16, 24, 14).scale(0.55, 1.6, 0.25), i % 2 ? leafA : leafB, l, [0, 0.24, 0]);
+}
+
+// book stack + apple
+const stripes = stripeTex();
+function book(w, h, d, token, fb){
+  const g = new THREE.Group(), cover = mat(token, fb, {roughness:0.55, clearcoat:0.15, sheen:0.6, sheenRoughness:0.5, sheenColor:new THREE.Color("#FFFFFF")});
+  const pagesMat = new THREE.MeshPhysicalMaterial({color:"#FFFEFB", map:stripes, roughness:0.9});
+  mesh(rbox(w, 0.05, d, 0.022), cover, g, [0, h / 2 - 0.025, 0]);
+  mesh(rbox(w, 0.05, d, 0.022), cover, g, [0, -h / 2 + 0.025, 0]);
+  mesh(rbox(0.09, h, d, 0.04), cover, g, [-w / 2 + 0.04, 0, 0]);
+  mesh(new THREE.BoxGeometry(w - 0.1, h - 0.09, d - 0.07), pagesMat, g, [0.02, 0, 0]);
+  return g;
+}
+const stack = new THREE.Group(); stack.position.set(-0.6, 0.19, -0.5); island.add(stack);
+const b1 = book(1.8, 0.3, 1.28, "--sky", "#C2E6F0"); b1.position.y = 0.15; b1.rotation.y = 0.08; stack.add(b1);
+const b2 = book(1.58, 0.27, 1.16, "--lav", "#F9B2D7"); b2.position.y = 0.435; b2.rotation.y = -0.15; stack.add(b2);
+const b3 = book(1.66, 0.25, 1.2, "--mint", "#C6F1CD"); b3.position.y = 0.695; b3.rotation.y = 0.11; stack.add(b3);
+const apple = new THREE.Group(); apple.position.set(0.12, 1.0, 0.06); stack.add(apple);
+mesh(new THREE.SphereGeometry(0.2, 48, 32).scale(1, 0.9, 1), mat("--rose", "#F49CC9", {roughness:0.18, clearcoat:1, clearcoatRoughness:0.08}), apple);
+mesh(new THREE.CylinderGeometry(0.016, 0.02, 0.13, 8), fixed("#8A6B5E"), apple, [0, 0.2, 0], [0, 0, 0.2]);
+mesh(new THREE.SphereGeometry(0.075, 16, 8).scale(1, 0.25, 0.5), mat("--mint", "#C6F1CD", {roughness:0.4}), apple, [0.08, 0.23, 0], [0, 0, -0.5]);
+
+// graduation cap, floating above the stack
+const cap = new THREE.Group(); cap.position.set(-0.6, 2.0, -0.5); island.add(cap);
+const capMat = fixed("#2E2A40", {roughness:0.35, clearcoat:1, clearcoatRoughness:0.15});
+mesh(rbox(1.04, 0.055, 1.04, 0.025), capMat, cap, [0, 0.15, 0], [0, Math.PI / 4, 0]);
+mesh(new THREE.CylinderGeometry(0.35, 0.39, 0.28, 48), capMat, cap, [0, 0, 0]);
+mesh(new THREE.SphereGeometry(0.05, 16, 8), mat("--lav", "#F9B2D7", {roughness:0.3, clearcoat:1}), cap, [0, 0.19, 0]);
+mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.7, 6), mat("--lav", "#F9B2D7"), cap, [0.35, 0.19, 0], [0, 0, Math.PI / 2]);
+mesh(new THREE.CylinderGeometry(0.04, 0.055, 0.26, 16), mat("--lav", "#F9B2D7", {roughness:0.6, sheen:1, sheenColor:new THREE.Color("#FFFFFF")}), cap, [0.7, 0.05, 0]);
+// ---------- open book with a seamless page turn ----------
+const open = new THREE.Group(); open.position.set(0.95, 0.19, 0.8); open.rotation.y = 0.92; open.scale.setScalar(0.78); island.add(open);
+const PW = 0.96, PD = 1.3;                                   // half-spread width, page depth
+const topY = u => 0.035 + 0.13 * Math.sin(Math.min(u / 0.32, 1) * Math.PI / 2) - 0.02 * (u / PW);
+const coverMat = mat("--lav", "#F9B2D7", {roughness:0.5, sheen:0.5, sheenColor:new THREE.Color("#FFFFFF")});
+mesh(rbox(PW + 0.08, 0.05, PD + 0.12, 0.022), coverMat, open, [-(PW + 0.08) / 2 + 0.01, 0.025, 0], [0, 0, -0.035]);
+mesh(rbox(PW + 0.08, 0.05, PD + 0.12, 0.022), coverMat, open, [(PW + 0.08) / 2 - 0.01, 0.025, 0], [0, 0, 0.035]);
+mesh(new THREE.CylinderGeometry(0.06, 0.06, PD + 0.12, 24, 1, false, -Math.PI / 2, Math.PI), coverMat, open, [0, 0.03, 0], [Math.PI / 2, 0, 0]);
+function pageBlock(side){
+  const s = new THREE.Shape(); s.moveTo(0, 0); s.lineTo(PW, 0);
+  for (let i = 24; i >= 0; i--){ const u = PW * i / 24; s.lineTo(u, topY(u)); }
+  const g = new THREE.ExtrudeGeometry(s, {depth:PD, bevelEnabled:true, bevelSize:0.01, bevelThickness:0.01, bevelSegments:2, curveSegments:4});
+  g.translate(0, 0, -PD / 2);
+  if (side < 0){ g.scale(-1, 1, 1); const p = g.attributes.position; for (let i = 0; i < p.count; i += 3){ for (const a of [p, g.attributes.normal, g.attributes.uv]){ if (!a) continue; const n = a.itemSize; for (let k = 0; k < n; k++){ const t = a.array[(i + 1) * n + k]; a.array[(i + 1) * n + k] = a.array[(i + 2) * n + k]; a.array[(i + 2) * n + k] = t; } } } }
+  g.computeVertexNormals(); return g;
+}
+const paperMat = fixed("#FFFEFB", {roughness:0.92});
+const edgeTex = stripes.clone(); edgeTex.repeat.set(3, 10); edgeTex.needsUpdate = true;
+const edgeMat = new THREE.MeshPhysicalMaterial({color:"#F6F1EA", map:edgeTex, roughness:0.95});
+const blockMats = [edgeMat, paperMat];   // ExtrudeGeometry groups: 0 = end caps (page edges), 1 = sides
+mesh(pageBlock(1), blockMats, open, [0.012, 0.052, 0]);
+mesh(pageBlock(-1), blockMats, open, [-0.012, 0.052, 0]);
+function pageSurface(side){
+  const w = PW - 0.06, g = new THREE.PlaneGeometry(w, PD - 0.08, 32, 1); g.rotateX(-Math.PI / 2);
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++){ let x = p.getX(i) + w / 2 + 0.03; if (side < 0) x = x - PW; p.setX(i, x); p.setY(i, topY(Math.abs(x)) + 0.0125); }
+  g.computeVertexNormals(); return g;
+}
+const WORDS = [["Hello", "italic 600 132px Fraunces, Georgia, serif", "English"], ["你好", "500 140px 'Noto Sans SC', 'PingFang SC', sans-serif", "中文"], ["Xin chào", "italic 600 104px Fraunces, Georgia, serif", "Tiếng Việt"]];
+let wordIdx = 0;
+// Six page textures: two on the open spread, four painted + uploaded ahead (one per idle frame) for the next turn,
+// so starting or ending a turn only swaps which texture a page shows.
+const pool = Array.from({length:6}, pageCanvas);
+let leftTex = pool[0], rightTex = pool[1], prep = null, spread = 0;
+const jobs = [];
+function upload(t){ try { renderer.initTexture(t); } catch (e) {} }
+function paintSpread(){ paint(leftTex, WORDS[(wordIdx + 2) % 3], 1, 2 * spread + 1); paint(rightTex, WORDS[wordIdx], 2, 2 * spread + 2); upload(leftTex); upload(rightTex); }
+function prepareNext(){
+  prep = null; jobs.length = 0;
+  const spare = pool.filter(t => t !== leftTex && t !== rightTex);
+  const cur = WORDS[wordIdx], next = WORDS[(wordIdx + 1) % 3], n = spread;
+  const p = {front:spare[0], back:spare[1], right:spare[2], left:spare[3]};
+  jobs.push(() => { paint(p.front, cur, 2, 2 * n + 2, false); upload(p.front); });   // turning page, front = current right page
+  jobs.push(() => { paint(p.back, cur, 1, 2 * n + 3, true); upload(p.back); });      // turning page, back (pre-mirrored)
+  jobs.push(() => { paint(p.right, next, 2, 2 * n + 4, false); upload(p.right); });  // revealed underneath on the right
+  jobs.push(() => { paint(p.left, cur, 1, 2 * n + 3, false); upload(p.left); });     // replaces the left page when the turn lands
+  jobs.push(() => { prep = p; });
+}
+paintSpread(); prepareNext();
+const leftPage = mesh(pageSurface(-1), new THREE.MeshPhysicalMaterial({map:leftTex, roughness:0.88}), open, [0, 0.052, 0]);
+const rightPage = mesh(pageSurface(1), new THREE.MeshPhysicalMaterial({map:rightTex, roughness:0.88}), open, [0, 0.052, 0]);
+leftPage.castShadow = rightPage.castShadow = false;
+const ribbonCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(0.0, 0.08, -0.1), new THREE.Vector3(0.03, 0.07, PD / 2 - 0.08), new THREE.Vector3(0.06, 0.02, PD / 2 + 0.07), new THREE.Vector3(0.08, -0.12, PD / 2 + 0.11)]);
+mesh(new THREE.TubeGeometry(ribbonCurve, 24, 0.016, 6, false).scale(1.6, 1, 1), mat("--rose", "#F49CC9", {roughness:0.4, sheen:1, sheenColor:new THREE.Color("#FFFFFF")}), open);
+const flipPivot = new THREE.Group(); flipPivot.position.set(0, 0.052 + 0.0175 + topY(0), 0); open.add(flipPivot);
+const FW = PW - 0.06;
+const flipGeo = new THREE.PlaneGeometry(FW, PD - 0.08, 32, 1); flipGeo.translate(FW / 2 + 0.03, 0, 0); flipGeo.rotateX(-Math.PI / 2);
+(function(){ const p = flipGeo.attributes.position; for (let i = 0; i < p.count; i++){ const x = p.getX(i); p.setY(i, topY(x) - topY(0) + 0.002); } })();
+const flipBase = flipGeo.attributes.position.array.slice();
+const flipPage = mesh(flipGeo, new THREE.MeshPhysicalMaterial({map:pool[2], roughness:0.88, side:THREE.FrontSide}), flipPivot);
+const flipBack = mesh(flipGeo, new THREE.MeshPhysicalMaterial({map:pool[3], roughness:0.88, side:THREE.BackSide}), flipPivot);
+flipPage.visible = flipBack.visible = false;
+// The turning page casts and receives no shadows, so nothing pops when it appears or lands.
+flipPage.castShadow = flipBack.castShadow = flipPage.receiveShadow = flipBack.receiveShadow = false;
+let flipT = -1;
+function startFlip(){
+  if (flipT >= 0 || !prep) return;
+  flipPage.material.map = prep.front; flipBack.material.map = prep.back; rightPage.material.map = prep.right;
+  flipT = 0; flipPage.visible = flipBack.visible = true;
+}
+
+// ---------- language tiles: glossy, floating at fixed spots around the island; tap one to switch the site language ----------
+const tiles = [], tileTextures = [];
+const TILE_DEF = [
+  {lang:"en", ch:"A", font:"italic 600 176px Fraunces, Georgia, serif", token:"--lav", fb:"#F9B2D7", pos:[-2.35, 1.55, 1.05]},
+  {lang:"zh", ch:"文", font:"600 136px 'Noto Sans SC', 'PingFang SC', sans-serif", token:"--sky", fb:"#C2E6F0", pos:[2.4, 2.0, -0.5]},
+  {lang:"vi", ch:"Ơ", font:"italic 600 176px Fraunces, Georgia, serif", token:"--mint", fb:"#C6F1CD", pos:[0.6, 3.05, -1.55]}
+];
+TILE_DEF.forEach((d, i) => {
+  const g = new THREE.Group(); island.add(g);
+  const body = mesh(rbox(0.62, 0.62, 0.18, 0.13, 6), mat(d.token, d.fb, {roughness:0.2, clearcoat:1, clearcoatRoughness:0.1, iridescence:0.3, iridescenceIOR:1.3}), g);
+  body.castShadow = false;   // floating tiles would leave grey smudges on the stage
+  const tex = letterTex(d.ch, d.font); tileTextures.push(tex);
+  const face = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.52), new THREE.MeshBasicMaterial({map:tex, transparent:true, toneMapped:false}));
+  face.position.z = 0.091; g.add(face);
+  g.position.set(d.pos[0], d.pos[1], d.pos[2]);
+  g.userData = {lang:d.lang, base:new THREE.Vector3(d.pos[0], d.pos[1], d.pos[2]), phase:i * 2.1, hover:0, active:0, activeTarget:0};
+  tiles.push(g);
+});
+
+// ---------- paper plane on a smooth figure-eight, banking into its turns, with a fading trail ----------
+const planeGeo = new THREE.BufferGeometry();
+planeGeo.setAttribute("position", new THREE.Float32BufferAttribute([0.32,0,0, -0.22,0.02,0.2, -0.14,0,0,  0.32,0,0, -0.14,0,0, -0.22,0.02,-0.2,  0.32,0,0, -0.14,0,0, -0.18,-0.09,0], 3));
+planeGeo.computeVertexNormals();
+const planeMat = mat("--rose", "#F49CC9", {side:THREE.DoubleSide, flatShading:true, roughness:0.32, clearcoat:1, clearcoatRoughness:0.15});
+const plane = new THREE.Mesh(planeGeo, planeMat);
+plane.castShadow = false; plane.scale.setScalar(1.25); world.add(plane);
+const planeEdges = new THREE.LineSegments(new THREE.EdgesGeometry(planeGeo, 1), new THREE.LineBasicMaterial({color:INK, transparent:true, opacity:0.55}));
+plane.add(planeEdges);   // a hairline outline keeps the plane readable on a white background
+function planeAt(t){   // lemniscate of Bernoulli, lifted above the scene
+  const a = t * 0.34, s = Math.sin(a), c = Math.cos(a), d = 1 + s * s;
+  return new THREE.Vector3(2.55 * c / d, 2.75 + 0.22 * Math.sin(a * 2), 2.1 * s * c / d - 0.25);
+}
+// Trail: evenly spaced dots sampled from the flight path behind the plane (frame-rate independent),
+// shrinking and fading from pink to mist blue: a little dotted "path" behind it.
+const TRAIL = 26, trailPos = new Float32Array(TRAIL * 3), trailT = new Float32Array(TRAIL);
+for (let i = 0; i < TRAIL; i++){ const p = planeAt(-0.06 - i * 0.05); trailPos.set([p.x, p.y, p.z], i * 3); trailT[i] = i / (TRAIL - 1); }
+const trailGeo = new THREE.BufferGeometry();
+trailGeo.setAttribute("position", new THREE.BufferAttribute(trailPos, 3));
+trailGeo.setAttribute("aT", new THREE.BufferAttribute(trailT, 1));
+const deep = c => new THREE.Color(c).offsetHSL(0, 0.18, -0.1);
+const trailMat = new THREE.ShaderMaterial({
+  uniforms:{uA:{value:deep(tok("--rose", "#F49CC9"))}, uB:{value:deep(tok("--sky", "#C2E6F0"))}, uPR:{value:1}},
+  vertexShader:"attribute float aT; uniform float uPR; varying float vT; void main(){ vT = aT; vec4 mv = modelViewMatrix * vec4(position, 1.0); gl_PointSize = (7.5 * (1.0 - aT) + 2.5) * uPR * (8.0 / -mv.z); gl_Position = projectionMatrix * mv; }",
+  fragmentShader:"uniform vec3 uA; uniform vec3 uB; varying float vT; void main(){ float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard; float a = (1.0 - smoothstep(0.32, 0.5, r)) * pow(1.0 - vT, 1.2) * 0.95; gl_FragColor = vec4(mix(uA, uB, vT), a); }",
+  transparent:true, depthWrite:false
+});
+const trail = new THREE.Points(trailGeo, trailMat); world.add(trail);
+
+// ---------- soft floating light motes (pastel bokeh) ----------
+const MOTES = small ? 36 : 64, mPos = new Float32Array(MOTES * 3), mCol = new Float32Array(MOTES * 3), mSeed = new Float32Array(MOTES);
+const moteCols = ["#F9B2D7", "#CFECF3", "#DAF9DE", "#F6FFDC"].map(c => new THREE.Color(c));
+for (let i = 0; i < MOTES; i++){
+  const r = 1.6 + Math.random() * 2.2, a = Math.random() * Math.PI * 2;
+  mPos.set([Math.cos(a) * r, Math.random() * 3.6 - 0.4, Math.sin(a) * r], i * 3);
+  const c = moteCols[i % 4]; mCol.set([c.r, c.g, c.b], i * 3); mSeed[i] = Math.random();
+}
+const moteGeo = new THREE.BufferGeometry();
+moteGeo.setAttribute("position", new THREE.BufferAttribute(mPos, 3));
+moteGeo.setAttribute("aColor", new THREE.BufferAttribute(mCol, 3));
+moteGeo.setAttribute("aSeed", new THREE.BufferAttribute(mSeed, 1));
+const moteMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0}, uPR:{value:1}},
+  vertexShader:"attribute vec3 aColor; attribute float aSeed; uniform float uTime; uniform float uPR; varying vec3 vC; varying float vA;" +
+    "void main(){ vec3 p = position; p.y = mod(p.y + uTime * (0.06 + aSeed * 0.08) + 0.4, 3.6) - 0.4; p.x += sin(uTime * 0.3 + aSeed * 20.0) * 0.12;" +
+    " vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = (6.0 + aSeed * 12.0) * uPR * (6.0 / -mv.z); gl_Position = projectionMatrix * mv;" +
+    " vC = aColor; vA = (0.35 + 0.35 * sin(uTime * 0.9 + aSeed * 30.0)) * smoothstep(-0.4, 0.4, p.y) * (1.0 - smoothstep(2.6, 3.2, p.y)); }",
+  fragmentShader:"varying vec3 vC; varying float vA; void main(){ float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard; gl_FragColor = vec4(vC, (1.0 - smoothstep(0.0, 0.5, r)) * vA); }",
+  transparent:true, depthWrite:false, blending:THREE.NormalBlending
+});
+const motes = new THREE.Points(moteGeo, moteMat); world.add(motes);
+// ---------- fonts, sizing, interaction, animation loop ----------
+repaint();
+if (document.fonts && document.fonts.load) Promise.all(["italic 600 132px Fraunces", "500 140px 'Noto Sans SC'", "500 28px 'Be Vietnam Pro'"]
+  .map(f => document.fonts.load(f, "Hello Xin chào 你好 文 A Ơ English 中文 Tiếng Việt 0123456789").catch(() => null)))
+  .then(() => { if (flipT < 0){ paintSpread(); prepareNext(); } tileTextures.forEach(t => t.userData.redraw()); requestRender(); });
+
+let W = 1, H = 1;
+function resize(){
+  W = stage.clientWidth || 1; H = stage.clientHeight || 1;
+  const pr = Math.min(window.devicePixelRatio || 1, small ? 1.75 : 2);
+  renderer.setPixelRatio(pr); renderer.setSize(W, H, false);
+  moteMat.uniforms.uPR.value = pr; trailMat.uniforms.uPR.value = pr;
+  camera.aspect = W / H;
+  const R = 3.0, vf = camera.fov * Math.PI / 180, hf = 2 * Math.atan(Math.tan(vf / 2) * camera.aspect);
+  camera.position.copy(TARGET).addScaledVector(CAM_DIR, R / Math.sin(Math.min(vf, hf) / 2));
+  camera.lookAt(TARGET); camera.updateProjectionMatrix();
+  requestRender();
+}
+
+// Frame-rate independent smoothing: moves `cur` toward `target` at rate `k` per second.
+const damp = (cur, target, k, dt) => cur + (target - cur) * (1 - Math.exp(-k * dt));
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let px = 0, py = 0, tx = 0, ty = 0, yawUser = 0, dragging = false, downX = 0, downY = 0, lastX = 0, hoverTile = null, bank = 0;
+function pick(e){
+  const r = canvas.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  for (const h of ray.intersectObjects(tiles.concat([open]), true)){ let o = h.object; while (o && !o.userData.lang && o !== open) o = o.parent; if (o) return o; }
+  return null;
+}
+canvas.addEventListener("pointerdown", e => { dragging = true; downX = lastX = e.clientX; downY = e.clientY; });
+canvas.addEventListener("pointermove", e => {
+  const r = canvas.getBoundingClientRect();
+  tx = ((e.clientX - r.left) / r.width) * 2 - 1; ty = ((e.clientY - r.top) / r.height) * 2 - 1;
+  if (dragging){ yawUser += (e.clientX - lastX) * 0.007; lastX = e.clientX; }
+  if (e.pointerType === "mouse"){ const hit = pick(e); hoverTile = hit && hit.userData.lang ? hit : null; stage.classList.toggle("hovering", !!hit); }
+  requestRender();
+});
+canvas.addEventListener("pointerleave", () => { tx = ty = 0; hoverTile = null; stage.classList.remove("hovering"); requestRender(); });
+window.addEventListener("pointerup", e => {
+  if (!dragging) return; dragging = false;
+  if (Math.abs(e.clientX - downX) + Math.abs(e.clientY - downY) > 8) return;
+  const hit = pick(e); if (!hit) return;
+  if (hit === open) startFlip();
+  else if (window.PF && window.PF.switchTo) window.PF.switchTo(hit.userData.lang);
+  requestRender();
+});
+function markActive(){ const l = window.PF && window.PF.state ? window.PF.state.lang : "en"; tiles.forEach(t => { t.userData.activeTarget = t.userData.lang === l ? 1 : 0; }); requestRender(); }
+window.addEventListener("pf:lang", markActive);
+
+const onTheme = () => { repaint(); trailMat.uniforms.uA.value.copy(deep(tok("--rose", "#F49CC9"))); trailMat.uniforms.uB.value.copy(deep(tok("--sky", "#C2E6F0"))); requestRender(); };
+const mq = matchMedia("(prefers-color-scheme: dark)");
+mq.addEventListener ? mq.addEventListener("change", onTheme) : mq.addListener(onTheme);
+new MutationObserver(onTheme).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
+
+let visible = true, running = false, clock = 0, last = performance.now(), nextFlip = 2.8;
+function requestRender(){ if (!running){ running = true; requestAnimationFrame(frame); } }
+function frame(now){
+  running = false;
+  const dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now;
+  const animate = !reduce && visible && !document.hidden;
+  if (animate) clock += dt;
+
+  // camera-feel: gentle sway, damped pointer parallax, drag that eases back
+  px = damp(px, tx, 3.2, dt); py = damp(py, ty, 3.2, dt);
+  if (!dragging) yawUser = damp(yawUser, 0, 0.9, dt);
+  world.rotation.y = -0.12 + (reduce ? 0 : Math.sin(clock * 0.17) * 0.16) + px * 0.18 + yawUser;
+  world.rotation.x = py * 0.035;
+  island.position.y = reduce ? 0 : Math.sin(clock * 0.7) * 0.045;
+
+  cap.position.y = 2.0 + (reduce ? 0 : Math.sin(clock * 0.9 + 1) * 0.07);
+  leaves.rotation.z = reduce ? 0 : Math.sin(clock * 1.2) * 0.04;
+  cap.rotation.set(Math.cos(clock * 0.7) * 0.03, clock * 0.22, Math.sin(clock * 0.8) * 0.04);
+  apple.rotation.y = clock * 0.3;
+
+  // tiles: float at their spots with a gentle bob and sway, always facing the camera
+  tiles.forEach(t => {
+    const u = t.userData;
+    u.hover = damp(u.hover, t === hoverTile ? 1 : 0, 10, dt);
+    u.active = damp(u.active, u.activeTarget || 0, 6, dt);
+    t.position.copy(u.base); t.position.y += Math.sin(clock * 1.0 + u.phase) * 0.12;
+    t.updateMatrixWorld(); t.lookAt(camera.position);
+    t.rotateZ(Math.sin(clock * 0.7 + u.phase) * 0.1); t.rotateY(Math.sin(clock * 0.55 + u.phase) * 0.22);
+    t.scale.setScalar(1 + u.hover * 0.12 + u.active * 0.08);
+  });
+
+  // paper plane: nose along the path (converted to world space), banking smoothly into turns
+  const p = planeAt(clock), q = planeAt(clock + 0.04), b0 = planeAt(clock - 0.04);
+  world.updateMatrixWorld();
+  plane.position.copy(p); plane.lookAt(world.localToWorld(q.clone())); plane.rotateY(-Math.PI / 2);
+  const f0x = p.x - b0.x, f0z = p.z - b0.z, f1x = q.x - p.x, f1z = q.z - p.z;
+  bank = damp(bank, THREE.MathUtils.clamp(Math.atan2(f0x * f1z - f0z * f1x, f0x * f1x + f0z * f1z) * 11, -0.65, 0.65), 4, dt);
+  plane.rotateX(bank);
+  for (let i = 0; i < TRAIL; i++){ const tp = planeAt(clock - 0.06 - i * 0.05); trailPos[i * 3] = tp.x; trailPos[i * 3 + 1] = tp.y; trailPos[i * 3 + 2] = tp.z; }
+  trailGeo.attributes.position.needsUpdate = true;
+  moteMat.uniforms.uTime.value = clock;
+
+  // page turn (prepared textures are painted one per frame, never during the turn itself)
+  if (jobs.length && flipT < 0) jobs.shift()();
+  if (!reduce && clock > nextFlip) startFlip();
+  if (flipT >= 0){
+    flipT += dt / 1.5;
+    const k = Math.min(1, flipT), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   // ease-in-out cubic
+    flipPivot.rotation.z = e * Math.PI;
+    // Curl and resting curve are scaled by cos(angle): in the page's own frame "away from the book" flips sign
+    // once it passes 90°, so the paper always bows upward and never dips into the page it is landing on.
+    const pos = flipGeo.attributes.position, curl = Math.sin(k * Math.PI) * 0.22, cs = Math.cos(flipPivot.rotation.z);
+    for (let i = 0; i < pos.count; i++){ const u = flipBase[i * 3] / PW; pos.setY(i, (flipBase[i * 3 + 1] + curl * Math.sin(u * Math.PI * 0.9) * u) * cs); }
+    pos.needsUpdate = true; flipGeo.computeVertexNormals();
+    if (k >= 1){
+      leftPage.material.map = prep.left; leftTex = prep.left; rightTex = prep.right;
+      wordIdx = (wordIdx + 1) % WORDS.length; spread = (spread + 1) % 50;
+      flipT = -1; flipPage.visible = flipBack.visible = false; flipPivot.rotation.z = 0; nextFlip = clock + 3.6;
+      prepareNext();
+    }
+  }
+
+  renderer.render(scene, camera);
+  if (animate || dragging || flipT >= 0 || jobs.length || Math.abs(yawUser) > 1e-3 || Math.abs(tx - px) > 1e-3 || Math.abs(ty - py) > 1e-3 ||
+      tiles.some(t => Math.abs((t.userData.activeTarget || 0) - t.userData.active) > 1e-3 || Math.abs((t === hoverTile ? 1 : 0) - t.userData.hover) > 1e-3)) requestRender();
+}
+
+new ResizeObserver(resize).observe(stage);
+// Use the most recent entry: one callback can carry several changes (scrolling out and back in).
+new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; if (visible){ last = performance.now(); requestRender(); } }, {rootMargin:"120px"}).observe(stage);
+// Watchdog: if the scene should be animating but no frame is queued, start the loop again.
+setInterval(() => { if (!reduce && visible && !document.hidden && !running){ last = performance.now(); requestRender(); } }, 1000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden){ last = performance.now(); requestRender(); } });
+canvas.addEventListener("webglcontextlost", e => { e.preventDefault(); stage.classList.remove("ready"); });
+resize(); markActive();
+requestAnimationFrame(() => stage.classList.add("ready"));
+})();
+</script>
+</body></html>
