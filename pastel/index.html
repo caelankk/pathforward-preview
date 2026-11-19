@@ -544,7 +544,7 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width:1100px){
+@media (max-width:1240px){
   .nav-links{display:none}
   .menu-btn{display:grid}
   .nav-end{margin-left:auto}
@@ -608,6 +608,146 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 </style>
+<style>
+/* ---------- Starting quiz → college match → survey, privacy, disclaimer ---------- */
+.band-mint{background:var(--mint-soft)}
+.band-cream{background:var(--cream-soft)}
+.foot::before{background:var(--cream-soft)}
+.link-btn{appearance:none;border:0;background:none;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px;cursor:pointer}
+.link-btn:hover{color:var(--fg)}
+
+/* College match */
+.m-head{max-width:46em}
+.match-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:24px;margin-top:36px;align-items:start}
+.m-qs{display:grid;gap:22px;padding:clamp(22px,3vw,32px);border-radius:28px;background:var(--surface);box-shadow:var(--clay);min-width:0;position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px)}
+.m-q{margin:0;padding:0;border:0;min-width:0}
+.m-q legend{padding:0;margin-bottom:10px;font-weight:700}
+.m-q .chip{min-height:40px;padding:0 15px;font-size:.88rem;box-shadow:inset 0 0 0 1px var(--line)}
+.m-q .chip[aria-pressed="true"]{box-shadow:inset 0 -3px 0 var(--primary-press)}
+.m-reset{justify-self:start;appearance:none;border:0;background:none;padding:6px 0;font:inherit;font-size:.9rem;font-weight:600;color:var(--muted);text-decoration:underline;text-underline-offset:.22em;cursor:pointer}
+.m-reset:hover{color:var(--fg)}
+.m-res{min-width:0}
+.m-res-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-bottom:14px}
+.m-res-head h3{margin:0;font-size:1.2rem}
+.m-count{margin:0;font-size:.86rem;color:var(--muted)}
+.m-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.m-card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start;padding:20px 22px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--clay);min-width:0}
+.m-card>*{grid-column:1/-1}
+.m-card>h4{grid-column:1}
+.m-card>.m-link{grid-column:2;grid-row:1}
+.m-card h4{margin:0;font-size:1.1rem;line-height:1.3;letter-spacing:-.01em}
+.m-card .alt{display:block;margin-top:2px;font-size:.88rem;font-weight:500;color:var(--muted)}
+.m-meta{margin:6px 0 0;font-size:.86rem;color:var(--muted)}
+.m-why{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 0;padding:0;list-style:none}
+.m-why li{display:inline-flex;align-items:center;gap:5px;padding:3px 11px 3px 8px;border-radius:999px;background:var(--blue-soft);font-size:.8rem;font-weight:600;line-height:1.5}
+.m-why li svg{width:13px;height:13px;flex-shrink:0}
+.m-why li.aid{background:var(--pink-soft)}
+.m-aidcheck{margin:10px 0 0;font-size:.8rem;color:var(--muted)}
+.m-link{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;font-size:.86rem;font-weight:650;color:var(--fg);text-decoration:none;padding:2px 0;white-space:nowrap}
+.m-link svg{width:15px;height:15px}
+.m-link:hover{text-decoration:underline}
+.m-empty{margin:0;padding:32px 24px;border-radius:var(--radius);border:1.5px dashed color-mix(in srgb,var(--fg) 18%,transparent);color:var(--muted);text-align:center}
+.m-more{margin-top:12px}
+.m-note{display:flex;gap:8px;align-items:flex-start;margin:18px 0 0;font-size:.86rem;color:var(--muted);max-width:44em}
+.m-note svg{width:17px;height:17px;flex-shrink:0;margin-top:3px;color:var(--fg)}
+
+/* Quiz (shared by the starting dialog and the survey) */
+.q-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.q-prog{margin:0;font-size:.84rem;font-weight:600;color:var(--muted)}
+.q-bar{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-bottom:18px}
+.q-bar i{display:block;height:100%;width:var(--p,0%);border-radius:inherit;background:linear-gradient(90deg,#A9DCEA,#BFF2C6);transition:width .35s var(--ease)}
+.q-text{margin:0;font-size:clamp(1.12rem,2.2vw,1.3rem);line-height:1.4;font-weight:650;text-wrap:pretty}
+.q-text:focus{outline:none}
+.q-opts{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:8px}
+.q-opt{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:10px 16px 10px 10px;border-radius:16px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:.98rem;text-align:left;cursor:pointer;transition:border-color .15s,background-color .15s,box-shadow .15s}
+.q-opt .k{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--blue-soft);font-weight:700;font-size:.84rem;flex-shrink:0}
+.q-opt.unsure{color:var(--muted)}
+.q-opt.unsure .k{background:var(--surface-2)}
+@media (hover:hover){.q-opt:hover{border-color:var(--fg)}}
+.q-opt[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg);background:var(--blue-soft)}
+.q-opt[aria-pressed="true"] .k{background:var(--fg);color:var(--surface)}
+.q-back{appearance:none;border:0;background:none;padding:6px 0;font:inherit;font-size:.88rem;font-weight:600;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.q-back:hover{color:var(--fg)}
+.q-back svg{width:16px;height:16px}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.scale button{min-height:48px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-weight:700;font-size:1.02rem;cursor:pointer;transition:border-color .15s,background-color .15s}
+@media (hover:hover){.scale button:hover{border-color:var(--fg)}}
+.scale button[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--surface)}
+.scale-ends{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:.8rem;color:var(--muted)}
+.q-scale{margin-top:18px}
+
+/* Dialogs */
+.dlg{width:min(560px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;border-radius:28px;background:var(--surface);color:var(--fg);box-shadow:var(--shadow);overflow:auto;overscroll-behavior:contain}
+.dlg::backdrop{background:rgba(27,30,41,.38);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.dlg[open]{animation:dlg-in .32s var(--spring)}
+@keyframes dlg-in{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.dlg-in{padding:clamp(20px,4vw,32px)}
+.dlg-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.dlg-kicker{margin:0;font-family:var(--font-hand);font-size:1rem;font-weight:600;color:var(--muted)}
+.dlg h2{font-size:clamp(1.45rem,3.4vw,1.85rem);line-height:1.2;margin:0 0 10px}
+.dlg-top h2{margin:0}
+.dlg-body{margin:0;color:var(--muted)}
+.dlg .privacy{margin-top:16px}
+.dlg-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.dlg .ok{width:60px;height:60px;margin:4px 0 16px;border-radius:50%;display:grid;place-items:center;background:var(--mint);color:#1D1A26;box-shadow:var(--clay)}
+.dlg .ok svg{width:28px;height:28px}
+.lang-mini{--l-bg:var(--surface-2);--l-border:transparent}
+.lang-mini button{min-height:34px;padding:0 10px;font-size:.8rem}
+.dlg-x{display:grid;place-items:center;width:40px;height:40px;flex-shrink:0;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.dlg-x svg{width:20px;height:20px}
+.pv-list{margin:0;padding:0 0 0 1.1em;display:grid;gap:10px;color:var(--fg)}
+.pv-list li::marker{color:var(--muted)}
+.pv-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:20px}
+.pv-cleared{margin:0;font-size:.86rem;color:var(--muted)}
+
+/* Survey */
+.sv-wrap{max-width:860px}
+.sv-card{margin-top:32px;padding:clamp(22px,3.4vw,36px);border-radius:28px;background:var(--surface);box-shadow:var(--clay)}
+.sv-skipped{margin:0 0 18px;padding:12px 16px;border-radius:14px;background:var(--cream-soft);font-size:.92rem;color:var(--fg)}
+.sv-intro-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+.sv-score{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px;margin:0}
+.sv-score>div{flex:1 1 160px;padding:16px 18px;border-radius:18px;background:var(--surface-2)}
+.sv-score>div.now{background:var(--mint)}
+.sv-score dt{font-size:.82rem;font-weight:600;color:var(--muted)}
+.sv-score>div.now dt{color:var(--fg)}
+.sv-score dd{margin:2px 0 0;font-size:1.5rem;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.sv-score dd small{display:block;font-size:.84rem;font-weight:500;letter-spacing:0;color:var(--muted)}
+.sv-score>div.now dd small{color:var(--fg)}
+.sv-res-h{margin:0 0 14px;font-size:1.2rem}
+.sv-review{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.sv-review li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:4px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.sv-review .mk{grid-row:span 2;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;margin-top:1px}
+.sv-review .mk svg{width:15px;height:15px}
+.sv-review .mk.y{background:var(--mint)}
+.sv-review .mk.n{background:var(--pink-soft)}
+.sv-review p{margin:0;font-size:.94rem}
+.sv-review .a{font-size:.86rem;color:var(--muted)}
+.sv-fields{display:grid;gap:20px;margin-top:28px;padding-top:28px;border-top:1px dashed color-mix(in srgb,var(--fg) 16%,transparent)}
+.sv-fields legend{margin-bottom:10px}
+#sv-ok .ok{margin-inline:auto}
+
+/* Footer disclaimer */
+.foot-disc{display:flex;gap:10px;align-items:flex-start;margin:20px 0 0;max-width:none;font-size:.82rem;line-height:1.65;color:var(--muted)}
+.foot .foot-disc{max-width:none}
+.foot-disc svg{width:16px;height:16px;flex-shrink:0;margin-top:3px;color:var(--fg)}
+.foot-disc b{color:var(--fg);font-weight:700;margin-right:.4em}
+html:lang(zh) .foot-disc b{margin-right:.2em}
+.foot-bottom .link-btn{color:var(--muted)}
+.foot-bottom .link-btn:hover{color:var(--fg)}
+
+@media (max-width:960px){
+  .match-grid{grid-template-columns:minmax(0,1fr)}
+  .m-qs{position:static}
+}
+@media (max-width:520px){
+  .m-card{padding:18px}
+  .m-card>.m-link{grid-column:1/-1;grid-row:auto;order:9;margin-top:10px}
+  .q-opt{padding-right:12px;font-size:.95rem}
+  .scale{gap:6px}
+  .sv-intro-row .btn{width:100%}
+  .dlg-actions .btn{flex:1 1 auto}
+}
+</style>
 <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 <div class="sr" id="live" aria-live="polite"></div>
 
@@ -620,6 +760,7 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
     <nav class="nav-links" data-i18n-attr="aria-label:nav.primary">
       <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
       <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#match" data-scroll="match" data-i18n="nav.match"></a>
       <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
       <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
       <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
@@ -642,6 +783,7 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
     <div class="wrap">
       <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
       <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
+      <a href="#match" data-scroll="match" data-i18n="nav.match"></a>
       <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
       <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
       <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
@@ -871,6 +1013,50 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
     </div>
   </section>
 
+  <!-- College match -->
+  <section class="band band-mint" id="match" aria-labelledby="match-title">
+    <div class="wrap">
+      <div class="m-head">
+        <h2 id="match-title" data-i18n-html="match.title"></h2>
+        <p class="lead" data-i18n="match.lead"></p>
+      </div>
+      <div class="match-grid">
+        <div class="m-qs" id="m-form">
+        <fieldset class="m-q" data-q="field">
+          <legend data-i18n="m.q1"></legend>
+          <div class="chips"><button class="chip" type="button" data-v="eng" aria-pressed="false" data-i18n="m.eng"></button><button class="chip" type="button" data-v="sci" aria-pressed="false" data-i18n="m.sci"></button><button class="chip" type="button" data-v="bus" aria-pressed="false" data-i18n="m.bus"></button><button class="chip" type="button" data-v="soc" aria-pressed="false" data-i18n="m.soc"></button><button class="chip" type="button" data-v="art" aria-pressed="false" data-i18n="m.art"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.undecided"></button></div>
+        </fieldset>
+        <fieldset class="m-q" data-q="region">
+          <legend data-i18n="m.q2"></legend>
+          <div class="chips"><button class="chip" type="button" data-v="ne" aria-pressed="false" data-i18n="m.ne"></button><button class="chip" type="button" data-v="mw" aria-pressed="false" data-i18n="m.mw"></button><button class="chip" type="button" data-v="s" aria-pressed="false" data-i18n="m.s"></button><button class="chip" type="button" data-v="w" aria-pressed="false" data-i18n="m.w"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.anywhere"></button></div>
+        </fieldset>
+        <fieldset class="m-q" data-q="size">
+          <legend data-i18n="m.q3"></legend>
+          <div class="chips"><button class="chip" type="button" data-v="small" aria-pressed="false" data-i18n="m.small"></button><button class="chip" type="button" data-v="mid" aria-pressed="false" data-i18n="m.mid"></button><button class="chip" type="button" data-v="large" aria-pressed="false" data-i18n="m.large"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref"></button></div>
+        </fieldset>
+        <fieldset class="m-q" data-q="setting">
+          <legend data-i18n="m.q4"></legend>
+          <div class="chips"><button class="chip" type="button" data-v="city" aria-pressed="false" data-i18n="m.city"></button><button class="chip" type="button" data-v="suburb" aria-pressed="false" data-i18n="m.suburb"></button><button class="chip" type="button" data-v="town" aria-pressed="false" data-i18n="m.town"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref"></button></div>
+        </fieldset>
+        <fieldset class="m-q" data-q="aid">
+          <legend data-i18n="m.q5"></legend>
+          <div class="chips"><button class="chip" type="button" data-v="yes" aria-pressed="false" data-i18n="m.yes"></button><button class="chip" type="button" data-v="no" aria-pressed="false" data-i18n="m.no"></button><button class="chip" type="button" data-v="unsure" aria-pressed="false" data-i18n="m.unsure"></button></div>
+        </fieldset>
+          <button class="m-reset" type="button" id="m-reset" data-i18n="m.reset" hidden></button>
+        </div>
+        <div class="m-res">
+          <div class="m-res-head">
+            <h3 data-i18n="m.results"></h3>
+            <p class="m-count" id="m-count" aria-live="polite"></p>
+          </div>
+          <div id="m-list"></div>
+          <p class="m-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span data-i18n="m.note"></span></p>
+          <p class="preview-note" data-i18n="m.preview"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Resources -->
   <section class="band tint" id="resources" aria-labelledby="res-title">
     <div class="wrap">
@@ -1073,6 +1259,53 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
       </div>
     </div>
   </section>
+
+  <!-- Survey -->
+  <section class="band band-cream" id="survey" aria-labelledby="sv-title">
+    <div class="wrap sv-wrap">
+      <div class="sv-head">
+        <h2 id="sv-title" data-i18n-html="sv.title"></h2>
+        <p class="lead" data-i18n="sv.lead"></p>
+      </div>
+      <div class="sv-card" id="sv-card">
+        <div class="sv-step" id="sv-intro">
+          <p class="sv-skipped" id="sv-skipped" data-i18n="sv.skipped" hidden></p>
+          <div class="sv-intro-row">
+            <button class="btn btn-primary" type="button" id="sv-start"><span data-i18n="sv.start"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
+          </div>
+        </div>
+        <div class="sv-step" id="sv-quiz" hidden></div>
+        <form class="sv-step" id="sv-form" novalidate hidden>
+          <div id="sv-results"></div>
+          <div class="sv-fields">
+            <div class="field full">
+              <label for="sv-learn" data-i18n="sv.learn"></label>
+              <textarea id="sv-learn" name="learn" data-i18n-attr="placeholder:sv.phLearn"></textarea>
+            </div>
+            <fieldset class="field full">
+              <legend data-i18n="sv.useful"></legend>
+              <div class="scale" id="sv-useful" data-lo="sv.usefulLo" data-hi="sv.usefulHi"></div>
+            </fieldset>
+            <div class="field full">
+              <label for="sv-suggest" data-i18n="sv.suggest"></label>
+              <textarea id="sv-suggest" name="suggest" data-i18n-attr="placeholder:sv.phSuggest"></textarea>
+            </div>
+          </div>
+          <div class="form-foot">
+            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
+            <button class="btn btn-primary" type="submit"><span data-i18n="sv.send"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          </div>
+          <p class="preview-note" data-i18n="sv.preview"></p>
+        </form>
+        <div class="sv-step success" id="sv-ok" hidden>
+          <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <h3 id="sv-ok-title" tabindex="-1" data-i18n="sv.okTitle"></h3>
+          <p data-i18n="sv.okBody"></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="foot">
@@ -1095,9 +1328,11 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
         <ul>
           <li><a href="#about" data-scroll="about" data-i18n="nav.about"></a></li>
           <li><a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a></li>
+          <li><a href="#match" data-scroll="match" data-i18n="nav.match"></a></li>
           <li><a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a></li>
           <li><a href="#team" data-scroll="team" data-i18n="nav.team"></a></li>
           <li><a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a></li>
+          <li><a href="#survey" data-scroll="survey" data-i18n="nav.survey"></a></li>
         </ul>
       </div>
       <div>
@@ -1112,11 +1347,58 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
     </div>
     <div class="foot-bottom">
       <span data-i18n="foot.copy"></span>
-      <span><span data-i18n="foot.preview"></span> · <a href="#top" data-scroll="top" data-i18n="foot.top"></a></span>
+      <span><span data-i18n="foot.preview"></span> · <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button> · <a href="#top" data-scroll="top" data-i18n="foot.top"></a></span>
     </div>
+    <p class="foot-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span><b data-i18n="disc.label"></b><span data-i18n="disc.body"></span></span></p>
   </div>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<dialog class="dlg" id="pre-dlg" aria-labelledby="pre-title">
+  <div class="dlg-in">
+    <div class="dlg-top">
+      <p class="dlg-kicker" data-i18n="pre.kicker"></p>
+      <div class="lang lang-mini" role="group" data-i18n-attr="aria-label:nav.lang">
+        <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
+        <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
+        <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false">VI</button>
+      </div>
+    </div>
+    <div id="pre-intro">
+      <h2 id="pre-title" data-i18n="pre.title"></h2>
+      <p class="dlg-body" data-i18n="pre.body"></p>
+      <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
+      <div class="dlg-actions">
+        <button class="btn btn-primary" type="button" id="pre-start" autofocus><span data-i18n="pre.start"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        <button class="btn btn-ghost" type="button" id="pre-skip" data-i18n="pre.skip"></button>
+      </div>
+    </div>
+    <div id="pre-quiz" hidden></div>
+    <div id="pre-done" hidden>
+      <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <h2 id="pre-done-title" tabindex="-1" data-i18n="pre.doneTitle"></h2>
+      <p class="dlg-body" data-i18n="pre.doneBody"></p>
+      <div class="dlg-actions"><button class="btn btn-primary" type="button" id="pre-go"><span data-i18n="pre.go"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+    </div>
+  </div>
+</dialog>
+<dialog class="dlg" id="pv-dlg" aria-labelledby="pv-title">
+  <div class="dlg-in">
+    <div class="dlg-top">
+      <h2 id="pv-title" data-i18n="pv.title"></h2>
+      <button class="dlg-x" type="button" data-close data-i18n-attr="aria-label:quiz.close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <ul class="pv-list">
+      <li data-i18n="pv.1"></li><li data-i18n="pv.2"></li><li data-i18n="pv.3"></li>
+      <li data-i18n="pv.4"></li><li data-i18n="pv.5"></li><li data-i18n="pv.6"></li>
+    </ul>
+    <div class="pv-actions">
+      <button class="btn btn-ghost btn-sm" type="button" id="pv-clear" data-i18n="pv.clear"></button>
+      <p class="pv-cleared" id="pv-cleared" role="status"></p>
+    </div>
+    <p class="preview-note" data-i18n="pv.preview"></p>
+  </div>
+</dialog>
 <script>
 var T = window.PF_T = {};
 T.en = {
@@ -1183,7 +1465,7 @@ T.en = {
 "f.phQ":"For example: Which English test should I take?","f.phV":"For example: I can translate guides into Vietnamese.",
 "f.contact":"Email, WeChat or Zalo","f.phContact":"name@example.com or your WeChat ID",
 "f.roles":"Roles you’re interested in",
-"f.consent":"I’m 13 or older, or a parent or guardian has agreed to this.",
+"f.consent":"I’m 16 or older, or a parent or guardian has agreed to this.",
 "f.privacy":"We only use your details to reply. We never sell or share them.",
 "f.sendQ":"Send question","f.sendV":"Send application",
 "f.errMsg":"Please write your question.","f.errMsgV":"Please tell us how you’d like to help.","f.errContact":"Add an email, WeChat or Zalo so we can reply.","f.errConsent":"Please check this box to continue.",
@@ -1205,7 +1487,7 @@ T.zh = {
 "nav.home":"PathForward 首页","nav.primary":"主导航","nav.about":"关于我们","nav.roadmap":"申请路线","nav.resources":"资源库","nav.team":"团队","nav.involved":"加入我们",
 "nav.cta":"免费咨询","nav.menu":"打开菜单","nav.lang":"语言",
 "hero.eyebrow":"学生运营 · 非营利 · 完全免费",
-"hero.title":"<span class='nw'>出国留学这条路，</span><span class='nw'>不该取决于你</span><span class='nw'><span class='em'>付得起多少</span>。</span>",
+"hero.title":"<span class='nw'>出国留学这条路，</span><span class='nw'>不该取决于你</span><span class='nw'><span class='em'>付得起多少</span></span>",
 "hero.sub":"PathForward 是一个由学生运营的非营利教育组织。我们为中国和越南的学生提供免费、可靠的留学指导，从第一次英语考试，一直到走进大学校园的第一天。",
 "hero.cta1":"查看申请路线","hero.cta2":"向我们提问",
 "hero.f1":"对每位学生免费","hero.f2":"中文 · English · Tiếng Việt","hero.f3":"由在美留学生运营",
@@ -1216,12 +1498,12 @@ T.zh = {
 "scene.aria":"3D 学习小岛：一摞书、苹果、学士帽、翻开的书、铅笔、盆栽、纸飞机，以及 A、文、Ơ 三块字母方块",
 "scene.hint":"点一下字母方块，切换语言",
 "stats.aria":"PathForward 概览","stats.c":"¥0","stats.cl":"学生需支付的费用","stats.l":"种语言","stats.s":"步申请路线","stats.f":"个重点国家",
-"gap.eyebrow":"问题所在","gap.title":"真正的门槛，是<span class='nw'><span class='hl'>信息差</span>。</span>",
+"gap.eyebrow":"问题所在","gap.title":"真正的门槛，是<span class='nw'><span class='hl'>信息差</span></span>",
 "gap.lead":"每年都有许多有能力的中国和越南学生放弃留学，只因为没有人告诉他们申请流程是怎样的。",
 "gap.1t":"基础信息也要花钱买","gap.1b":"很多家庭花高价请中介，只为弄清申请步骤。付不起的学生，往往就此止步。",
 "gap.2t":"网上信息真假难辨","gap.2b":"社交媒体上的帖子可能过时、出错，或者只是广告。很难判断该相信什么。",
 "gap.3t":"身边没人走过这条路","gap.3b":"如果你的学校里没人申请过国外大学，你甚至不知道该问什么问题。",
-"ans.eyebrow":"我们的做法","ans.title":"免费、经过核实、用你的语言。",
+"ans.eyebrow":"我们的做法","ans.title":"免费、经过核实、用你的语言",
 "ans.body":"我们收集学生真正关心的问题，对照 EducationUSA 等官方来源逐一核实，再用中文、英文和越南语免费分享。",
 "sdg":"支持联合国可持续发展目标 4：优质教育",
 "mv.eyebrow":"我们为何存在","mv.title":"我们努力的方向",
@@ -1232,12 +1514,12 @@ T.zh = {
 "offer.2t":"在美学生的真实建议","offer.2b":"我们的团队正在美国读书。课程、校园生活、我们希望早点知道的事，都可以问我们。",
 "offer.3t":"与 Co&Learn 一起学英语","offer.3b":"我们在中国的合作伙伴提供英语学习资源，看完指南后你可以继续提升。",
 "offer.4t":"核实过的机会","offer.4b":"奖学金、夏校和竞赛信息集中在一处，每一条都在分享前核实过。",
-"rm.eyebrow":"申请路线图","rm.title":"从萌生想法到<span class='nw'><span class='hl'>走进校园</span>，</span>一共八步。",
+"rm.eyebrow":"申请路线图","rm.title":"从萌生想法到<span class='nw'><span class='hl'>走进校园</span>，</span>一共八步",
 "rm.lead":"选择你的年级，看看自己处在哪一步。点开任意步骤，查看清单和官方来源。",
 "rm.pick":"你现在读几年级？","rm.g1":"初三–高一","rm.g2":"高二","rm.g3":"高三",
 "rm.hint":"我们会标出你这个年级该做的步骤。再点一次可取消。",
 "rm.here":"你在这里","rm.checklist":"清单","rm.source":"官方来源",
-"res.eyebrow":"资源库","res.title":"经过<span class='hl'>核实</span>的免费资源。",
+"res.eyebrow":"资源库","res.title":"经过<span class='hl'>核实</span>的免费资源",
 "res.how":"我们如何核实每一项资源","res.h1t":"收集","res.h1b":"从学生真实提出的问题出发。","res.h2t":"核实","res.h2b":"每条信息都对照官方来源确认。","res.h3t":"翻译","res.h3b":"用中文、英文和越南语写清楚。","res.h4t":"更新","res.h4b":"每年重新检查一遍。",
 "res.lead":"我们自己写的指南、值得信赖的官方来源，以及我们核实过的机会。可以按你所在的国家筛选。",
 "res.filter":"筛选资源","f.all":"全部","f.china":"中国","f.vietnam":"越南","f.english":"英语学习",
@@ -1249,11 +1531,11 @@ T.zh = {
 "pt.mentorBody":"Sophia 帮助我们梳理信息，把每个主题讲清楚，让每一份指南都容易看懂。",
 "pt.coDesc":"非营利组织 · 英语学习 · 中国",
 "pt.sources":"我们对照核实的官方来源","pt.sourcesNote":"我们引用这些来源，但与它们没有隶属关系。",
-"team.eyebrow":"团队","team.title":"由<span class='hl'>走过这条路</span>的学生运营。",
+"team.eyebrow":"团队","team.title":"由<span class='hl'>走过这条路</span>的学生运营",
 "team.lead":"我们是美国爱荷华州 Maharishi School 的三名高三学生，来自中国和越南。我们还记得申请过程有多让人迷茫，所以想写一份自己当初最需要的指南。",
 "team.role":"联合创始人","team.schoolL":"学校","team.school":"Maharishi School · 2027 届","team.fromL":"来自","team.cn":"中国","team.vn":"越南","team.ask":"可以用这些语言问我","team.orgL":"机构",
 "team.mentor":"导师","team.legacy":"我们终将毕业，但 PathForward 会继续走下去。我们正在培训新一批学生志愿者，持续更新每一份指南。",
-"inv.eyebrow":"参与进来","inv.title":"提个问题，或者加入我们。",
+"inv.eyebrow":"参与进来","inv.title":"提个问题，或者加入我们",
 "inv.lead":"每个问题都会帮助我们改进指南。团队成员会用你选择的语言回复。",
 "inv.modeLabel":"你想做什么？","inv.modeQ":"我有问题","inv.modeV":"我想做志愿者",
 "f.name":"名字","f.opt":"（选填）","f.grade":"年级","f.choose":"请选择",
@@ -1263,7 +1545,7 @@ T.zh = {
 "f.phQ":"例如：我应该考托福还是雅思？","f.phV":"例如：我可以把指南翻译成中文。",
 "f.contact":"邮箱或微信号","f.phContact":"例如 name@example.com 或你的微信号",
 "f.roles":"感兴趣的岗位",
-"f.consent":"我已年满 13 岁，或已获得父母/监护人同意。",
+"f.consent":"我已年满 16 岁，或已获得父母/监护人同意。",
 "f.privacy":"你的信息只用于回复你，我们绝不出售或分享。",
 "f.sendQ":"发送问题","f.sendV":"提交申请",
 "f.errMsg":"请填写你的问题。","f.errMsgV":"请告诉我们你想怎样帮忙。","f.errContact":"请留下邮箱或微信号，方便我们回复。","f.errConsent":"请勾选此项后继续。",
@@ -1343,7 +1625,7 @@ T.vi = {
 "f.phQ":"Ví dụ: Mình nên thi IELTS hay TOEFL?","f.phV":"Ví dụ: Mình có thể dịch hướng dẫn sang tiếng Việt.",
 "f.contact":"Email hoặc số Zalo","f.phContact":"VD: ten@example.com hoặc số Zalo",
 "f.roles":"Vị trí bạn quan tâm",
-"f.consent":"Mình từ 13 tuổi trở lên, hoặc đã được cha mẹ/người giám hộ đồng ý.",
+"f.consent":"Mình từ 16 tuổi trở lên, hoặc đã được cha mẹ/người giám hộ đồng ý.",
 "f.privacy":"Thông tin của bạn chỉ dùng để trả lời. Chúng tôi không bao giờ bán hay chia sẻ.",
 "f.sendQ":"Gửi câu hỏi","f.sendV":"Gửi đăng ký",
 "f.errMsg":"Vui lòng nhập câu hỏi của bạn.","f.errMsgV":"Vui lòng cho chúng tôi biết bạn muốn giúp như thế nào.","f.errContact":"Vui lòng để lại email hoặc số Zalo để chúng tôi trả lời.","f.errConsent":"Vui lòng đánh dấu ô này để tiếp tục.",
@@ -1441,6 +1723,280 @@ var RES = window.PF_RES = [
   var order = [0, 2, 5, 1, 3, 4, 7, 6, 8].map(function(i){ return RES[i]; });
   RES.length = 0; Array.prototype.push.apply(RES, order);
 })();
+/* Strings for the starting quiz, college match, final survey, privacy note and disclaimer.
+   Chinese headings carry no final full stop; Chinese paragraphs keep theirs. */
+Object.assign(T.en, {
+"nav.match":"College match","nav.survey":"Survey",
+"pre.kicker":"Before you start","pre.title":"5 quick questions, about 1 minute",
+"pre.body":"Answer with what you know right now. If you don’t know, choose “I’m not sure”. At the end of the page you can answer again and see what you learned.",
+"pre.start":"Start","pre.skip":"Skip for now",
+"pre.doneTitle":"Thanks! Now take a look around",
+"pre.doneBody":"At the end of the page, answer the same questions again to see what you learned.",
+"pre.go":"Start exploring",
+"quiz.anon":"Anonymous: we don’t ask for your name or contact details.",
+"quiz.progress":"Question {n} of {total}","quiz.unsure":"I’m not sure","quiz.back":"Back","quiz.close":"Close",
+"quiz.conf":"How well do you understand the U.S. college application process?","quiz.confLo":"Not at all","quiz.confHi":"Very well",
+"match.title":"Find colleges that <span class='hl'>fit you</span>",
+"match.lead":"Answer five quick questions and we’ll suggest colleges to start researching, with the reasons each one might fit. Your choices stay on your device.",
+"m.q1":"What do you want to study?","m.q2":"Where in the U.S.?","m.q3":"What size of school?","m.q4":"City, suburb or small town?","m.q5":"Will you need financial aid?",
+"m.eng":"Engineering & computer science","m.sci":"Science & math","m.bus":"Business & economics","m.soc":"Humanities & social sciences","m.art":"Arts & design","m.undecided":"Not sure yet",
+"m.ne":"Northeast","m.mw":"Midwest","m.s":"South","m.w":"West","m.anywhere":"Anywhere",
+"m.small":"Small college","m.mid":"Mid-size university","m.large":"Large university","m.nopref":"No preference",
+"m.city":"Big city","m.suburb":"Suburb","m.town":"Small town or college town",
+"m.yes":"Yes","m.no":"No","m.unsure":"Not sure",
+"m.results":"Colleges to look into","m.count":"Sorted by fit · {total} colleges in our list",
+"m.empty":"Choose your answers and suggestions will appear here.",
+"m.none":"No college in our list matches all of these. Try “No preference” for one question.",
+"m.more":"Show more","m.reset":"Start over","m.why":"Why it might fit",
+"m.knownFor":"Known for {x}","m.aid":"Need-based aid for international students",
+"m.aidCheck":"Check its website for aid to international students",
+"m.visit":"Official website",
+"m.k.lac":"Liberal arts college","m.k.uni":"University","m.k.art":"Art & design school",
+"m.pub":"Public","m.pri":"Private",
+"m.note":"This is a starting point, not a ranking. We don’t list admission rates or tuition because they change every year. Build a list of 8–12 colleges across reach, match and safety, and check each one on its official website.",
+"m.preview":"Preview list: our team will check every college before the site goes live.",
+"sv.title":"What did you <span class='hl'>learn</span>?",
+"sv.lead":"Answer the 5 questions from the start again, then tell us what helped and what we can do better. It takes about 2 minutes and it’s anonymous.",
+"sv.start":"Start the survey",
+"sv.skipped":"You skipped the quiz at the start, so we can’t show a before-and-after score. You can still take part.",
+"sv.results":"Your results","sv.before":"Before","sv.now":"Now","sv.score":"{n} of {total} correct",
+"sv.conf":"How well you understand the process","sv.answers":"Answers","sv.answer":"Answer: {a}",
+"sv.right":"Correct","sv.wrong":"Not quite",
+"sv.learn":"What did you learn from this site?","sv.phLearn":"For example: I didn’t know many colleges are test-optional.",
+"sv.useful":"How useful was this site?","sv.usefulLo":"Not useful","sv.usefulHi":"Very useful",
+"sv.suggest":"Any suggestions for us?","sv.phSuggest":"For example: Add a guide to writing the personal essay.",
+"sv.send":"Send feedback",
+"sv.okTitle":"Thank you for your feedback!",
+"sv.okBody":"This is a preview of the site, so nothing was sent. On the live site, your answers help us improve the guides.",
+"sv.preview":"Preview version: this survey doesn’t send anything yet.",
+"pv.title":"Privacy","pv.link":"Privacy",
+"pv.1":"The quiz and the survey are anonymous. We don’t ask for your name, email or school.",
+"pv.2":"Your quiz answers are saved only in this browser, so the site can show what you learned at the end. You can delete them at any time.",
+"pv.3":"College match works inside your browser. Your choices are never sent to us.",
+"pv.4":"If you send a question through the form, we use your email, WeChat or Zalo only to reply. We never sell or share it.",
+"pv.5":"If you are under 16, please ask a parent or guardian before sending us your contact details.",
+"pv.6":"To ask us to delete anything you sent, email us. Our contact email is coming soon.",
+"pv.clear":"Delete my quiz answers","pv.cleared":"Deleted. The quiz will appear again next time you visit.",
+"pv.preview":"Preview version: nothing on this site is sent anywhere yet.",
+"disc.label":"Disclaimer",
+"disc.body":"This website provides general educational information to help students explore U.S. higher education. We are not affiliated with any university or government agency. Admission requirements, tuition, scholarships, and institutional policies may change. Please verify important information through each institution’s official website before making decisions."
+});
+
+Object.assign(T.zh, {
+"nav.match":"选校匹配","nav.survey":"问卷",
+"pre.kicker":"开始之前","pre.title":"5 道小题，大约 1 分钟",
+"pre.body":"按你现在知道的回答，不知道就选「不确定」。看完网站后，你可以在页面最下面再答一次，看看自己学到了多少。",
+"pre.start":"开始","pre.skip":"先跳过",
+"pre.doneTitle":"谢谢！现在开始看看吧",
+"pre.doneBody":"看完后，在页面最下面再答一次同样的题，看看自己学到了什么。",
+"pre.go":"开始浏览",
+"quiz.anon":"匿名作答，不需要填写姓名或联系方式。",
+"quiz.progress":"第 {n} 题，共 {total} 题","quiz.unsure":"不确定","quiz.back":"上一题","quiz.close":"关闭",
+"quiz.conf":"你对美国大学的申请流程有多了解？","quiz.confLo":"完全不了解","quiz.confHi":"非常了解",
+"match.title":"找到<span class='hl'>适合你</span>的大学",
+"match.lead":"回答 5 个小问题，我们会推荐几所值得了解的大学，并告诉你为什么可能适合你。你的选择只保存在你自己的设备上。",
+"m.q1":"你想学什么方向？","m.q2":"想去美国哪个地区？","m.q3":"想读多大规模的学校？","m.q4":"大城市、郊区还是小镇？","m.q5":"你需要经济资助吗？",
+"m.eng":"工程与计算机","m.sci":"理科与数学","m.bus":"商科与经济","m.soc":"人文社科","m.art":"艺术与设计","m.undecided":"还没想好",
+"m.ne":"东北部","m.mw":"中西部","m.s":"南部","m.w":"西部","m.anywhere":"都可以",
+"m.small":"小型学院","m.mid":"中等规模大学","m.large":"大型大学","m.nopref":"都可以",
+"m.city":"大城市","m.suburb":"郊区","m.town":"小镇或大学城",
+"m.yes":"需要","m.no":"不需要","m.unsure":"不确定",
+"m.results":"可以先了解这些大学","m.count":"按匹配程度排序 · 名单共 {total} 所",
+"m.empty":"选好你的答案，这里会显示推荐的学校。",
+"m.none":"名单里没有同时符合这些条件的学校。试试把其中一题改成「都可以」。",
+"m.more":"显示更多","m.reset":"重新选择","m.why":"为什么可能适合你",
+"m.knownFor":"强项：{x}","m.aid":"为国际学生提供需求型资助",
+"m.aidCheck":"国际学生资助情况请查看学校官网",
+"m.visit":"学校官网",
+"m.k.lac":"文理学院","m.k.uni":"大学","m.k.art":"艺术设计学院",
+"m.pub":"公立","m.pri":"私立",
+"m.note":"这只是一个起点，不是排名。我们没有列出录取率和学费，因为每年都会变。建议选 8 到 12 所学校，涵盖冲刺、匹配和保底三档，并到每所学校的官网核实。",
+"m.preview":"预览版名单：正式上线前，团队会逐一核对每所学校的信息。",
+"sv.title":"看完网站，你<span class='hl'>学到了什么</span>",
+"sv.lead":"再答一次开头的 5 道题，然后告诉我们哪些内容有帮助、哪里还可以改进。大约 2 分钟，匿名填写。",
+"sv.start":"开始填写",
+"sv.skipped":"你开始时跳过了小测验，所以无法对比前后成绩，但仍然可以参与。",
+"sv.results":"你的结果","sv.before":"看网站前","sv.now":"现在","sv.score":"答对 {n} / {total}",
+"sv.conf":"你对申请流程的了解程度","sv.answers":"答案","sv.answer":"正确答案：{a}",
+"sv.right":"答对了","sv.wrong":"答错了",
+"sv.learn":"通过这个网站，你学到了什么？","sv.phLearn":"例如：我以前不知道很多学校可以不交 SAT 成绩。",
+"sv.useful":"这个网站对你有多大帮助？","sv.usefulLo":"没有帮助","sv.usefulHi":"非常有帮助",
+"sv.suggest":"你对我们有什么建议？","sv.phSuggest":"例如：希望增加一篇怎么写个人文书的指南。",
+"sv.send":"提交反馈",
+"sv.okTitle":"谢谢你的反馈！",
+"sv.okBody":"这是网站预览版，所以内容没有真正发送。正式上线后，你的回答会帮助我们改进指南。",
+"sv.preview":"预览版：此问卷暂不会发送任何内容。",
+"pv.title":"隐私说明","pv.link":"隐私说明",
+"pv.1":"小测验和问卷都是匿名的，不会问你的姓名、邮箱或学校。",
+"pv.2":"你的小测验答案只保存在这个浏览器里，用来在最后对比你学到了什么。你可以随时删除。",
+"pv.3":"选校匹配在你的浏览器里完成，你的选择不会发送给我们。",
+"pv.4":"如果你通过表单提问，我们只会用你留下的邮箱、微信或 Zalo 回复你，绝不出售或分享。",
+"pv.5":"如果你未满 16 岁，请先征得父母或监护人同意，再留下联系方式。",
+"pv.6":"如需删除你提交过的信息，请发邮件联系我们。联系邮箱即将公布。",
+"pv.clear":"删除我的测验答案","pv.cleared":"已删除。下次打开网站时，小测验会重新出现。",
+"pv.preview":"预览版：目前网站上的任何内容都不会发送出去。",
+"disc.label":"免责声明",
+"disc.body":"本网站提供一般性的教育信息，帮助学生了解美国高等教育。我们与任何大学或政府机构均无隶属关系。录取要求、学费、奖学金和学校政策可能会变化，做决定前请通过各校官网核实重要信息。"
+});
+
+Object.assign(T.vi, {
+"nav.match":"Chọn trường","nav.survey":"Khảo sát",
+"pre.kicker":"Trước khi bắt đầu","pre.title":"5 câu hỏi nhanh, khoảng 1 phút",
+"pre.body":"Hãy trả lời theo những gì bạn biết lúc này. Nếu không biết, hãy chọn “Mình không chắc”. Ở cuối trang, bạn có thể trả lời lại để xem mình đã học được gì.",
+"pre.start":"Bắt đầu","pre.skip":"Để sau",
+"pre.doneTitle":"Cảm ơn bạn! Giờ hãy khám phá trang web nhé",
+"pre.doneBody":"Ở cuối trang, hãy trả lời lại các câu hỏi này để xem bạn đã học được gì.",
+"pre.go":"Bắt đầu khám phá",
+"quiz.anon":"Ẩn danh: chúng tôi không hỏi tên hay thông tin liên lạc của bạn.",
+"quiz.progress":"Câu {n}/{total}","quiz.unsure":"Mình không chắc","quiz.back":"Quay lại","quiz.close":"Đóng",
+"quiz.conf":"Bạn hiểu quy trình nộp hồ sơ đại học Mỹ đến mức nào?","quiz.confLo":"Hoàn toàn không","quiz.confHi":"Rất rõ",
+"match.title":"Tìm trường <span class='hl'>phù hợp với bạn</span>",
+"match.lead":"Trả lời 5 câu hỏi nhanh, chúng tôi sẽ gợi ý một số trường để bạn tìm hiểu, kèm lý do vì sao trường đó có thể phù hợp. Lựa chọn của bạn chỉ nằm trên thiết bị của bạn.",
+"m.q1":"Bạn muốn học ngành gì?","m.q2":"Bạn muốn học ở vùng nào của Mỹ?","m.q3":"Bạn thích trường quy mô thế nào?","m.q4":"Thành phố, ngoại ô hay thị trấn?","m.q5":"Bạn có cần hỗ trợ tài chính không?",
+"m.eng":"Kỹ thuật & khoa học máy tính","m.sci":"Khoa học & toán","m.bus":"Kinh doanh & kinh tế","m.soc":"Khoa học xã hội & nhân văn","m.art":"Nghệ thuật & thiết kế","m.undecided":"Chưa chắc",
+"m.ne":"Đông Bắc","m.mw":"Trung Tây","m.s":"Miền Nam","m.w":"Miền Tây","m.anywhere":"Đâu cũng được",
+"m.small":"Trường nhỏ","m.mid":"Đại học quy mô vừa","m.large":"Đại học lớn","m.nopref":"Sao cũng được",
+"m.city":"Thành phố lớn","m.suburb":"Ngoại ô","m.town":"Thị trấn hoặc thị trấn đại học",
+"m.yes":"Có","m.no":"Không","m.unsure":"Chưa chắc",
+"m.results":"Những trường bạn nên tìm hiểu","m.count":"Sắp xếp theo mức độ phù hợp · {total} trường trong danh sách",
+"m.empty":"Hãy chọn câu trả lời, gợi ý sẽ hiện ở đây.",
+"m.none":"Không có trường nào trong danh sách khớp với tất cả lựa chọn này. Hãy thử chọn “Sao cũng được” cho một câu.",
+"m.more":"Xem thêm","m.reset":"Chọn lại","m.why":"Vì sao có thể phù hợp",
+"m.knownFor":"Nổi bật về {x}","m.aid":"Có hỗ trợ tài chính theo nhu cầu cho học sinh quốc tế",
+"m.aidCheck":"Xem chính sách hỗ trợ cho học sinh quốc tế trên trang web của trường",
+"m.visit":"Trang web chính thức",
+"m.k.lac":"Trường khai phóng","m.k.uni":"Đại học","m.k.art":"Trường nghệ thuật & thiết kế",
+"m.pub":"Công lập","m.pri":"Tư thục",
+"m.note":"Đây chỉ là điểm khởi đầu, không phải bảng xếp hạng. Chúng tôi không ghi tỉ lệ đỗ hay học phí vì chúng thay đổi mỗi năm. Hãy chọn 8–12 trường gồm trường mơ ước, trường vừa sức và trường an toàn, rồi kiểm tra từng trường trên trang web chính thức.",
+"m.preview":"Danh sách bản xem trước: nhóm sẽ kiểm tra từng trường trước khi trang web chính thức ra mắt.",
+"sv.title":"Bạn đã <span class='hl'>học được gì</span>?",
+"sv.lead":"Trả lời lại 5 câu hỏi lúc đầu, rồi cho chúng tôi biết điều gì hữu ích và chúng tôi có thể làm tốt hơn ở đâu. Mất khoảng 2 phút và hoàn toàn ẩn danh.",
+"sv.start":"Bắt đầu khảo sát",
+"sv.skipped":"Bạn đã bỏ qua bài trắc nghiệm lúc đầu nên không thể so sánh điểm trước và sau, nhưng bạn vẫn có thể tham gia.",
+"sv.results":"Kết quả của bạn","sv.before":"Trước","sv.now":"Bây giờ","sv.score":"Đúng {n}/{total}",
+"sv.conf":"Mức độ hiểu quy trình của bạn","sv.answers":"Đáp án","sv.answer":"Đáp án: {a}",
+"sv.right":"Đúng","sv.wrong":"Chưa đúng",
+"sv.learn":"Bạn đã học được gì từ trang web này?","sv.phLearn":"Ví dụ: Mình không biết nhiều trường không bắt buộc nộp SAT.",
+"sv.useful":"Trang web này hữu ích với bạn đến mức nào?","sv.usefulLo":"Không hữu ích","sv.usefulHi":"Rất hữu ích",
+"sv.suggest":"Bạn có góp ý gì cho chúng tôi không?","sv.phSuggest":"Ví dụ: Nên có thêm hướng dẫn viết bài luận cá nhân.",
+"sv.send":"Gửi góp ý",
+"sv.okTitle":"Cảm ơn góp ý của bạn!",
+"sv.okBody":"Đây là bản xem trước nên chưa có gì được gửi đi. Trên trang chính thức, câu trả lời của bạn sẽ giúp chúng tôi cải thiện các hướng dẫn.",
+"sv.preview":"Bản xem trước: khảo sát này chưa gửi đi bất kỳ nội dung nào.",
+"pv.title":"Quyền riêng tư","pv.link":"Quyền riêng tư",
+"pv.1":"Bài trắc nghiệm và khảo sát đều ẩn danh. Chúng tôi không hỏi tên, email hay trường của bạn.",
+"pv.2":"Câu trả lời trắc nghiệm chỉ được lưu trong trình duyệt này để so sánh ở cuối trang. Bạn có thể xóa bất cứ lúc nào.",
+"pv.3":"Công cụ chọn trường chạy ngay trong trình duyệt. Lựa chọn của bạn không bao giờ được gửi cho chúng tôi.",
+"pv.4":"Nếu bạn gửi câu hỏi qua biểu mẫu, chúng tôi chỉ dùng email, WeChat hoặc Zalo của bạn để trả lời. Chúng tôi không bao giờ bán hay chia sẻ thông tin này.",
+"pv.5":"Nếu bạn dưới 16 tuổi, hãy hỏi ý kiến cha mẹ hoặc người giám hộ trước khi gửi thông tin liên lạc.",
+"pv.6":"Nếu muốn chúng tôi xóa thông tin bạn đã gửi, hãy gửi email cho chúng tôi. Địa chỉ email sẽ sớm được công bố.",
+"pv.clear":"Xóa câu trả lời trắc nghiệm của tôi","pv.cleared":"Đã xóa. Bài trắc nghiệm sẽ hiện lại vào lần truy cập sau.",
+"pv.preview":"Bản xem trước: hiện chưa có nội dung nào trên trang web được gửi đi.",
+"disc.label":"Miễn trừ trách nhiệm",
+"disc.body":"Trang web này cung cấp thông tin giáo dục chung để giúp học sinh tìm hiểu về giáo dục đại học tại Hoa Kỳ. Chúng tôi không liên kết với bất kỳ trường đại học hay cơ quan chính phủ nào. Yêu cầu tuyển sinh, học phí, học bổng và chính sách của các trường có thể thay đổi. Vui lòng kiểm tra thông tin quan trọng trên trang web chính thức của từng trường trước khi đưa ra quyết định."
+});
+
+/* Knowledge questions: asked before the visit and again at the end. Every answer is on this site.
+   a = index of the correct option; "I'm not sure" is added after the options and never counts as correct. */
+var QUIZ = window.PF_QUIZ = [
+{id:"app", a:1,
+ en:{q:"Most U.S. colleges let you apply through one shared online application. What is it called?", o:["CSS Profile","Common App","SEVIS","UCAS"]},
+ zh:{q:"大多数美国大学可以通过同一个网申系统申请，它叫什么？", o:["CSS Profile","Common App","SEVIS","UCAS"]},
+ vi:{q:"Hầu hết các trường đại học Mỹ cho phép nộp hồ sơ qua cùng một hệ thống trực tuyến. Hệ thống đó tên là gì?", o:["CSS Profile","Common App","SEVIS","UCAS"]}},
+{id:"english", a:1,
+ en:{q:"Which English tests do many U.S. colleges accept from international students?", o:["Only TOEFL","TOEFL, IELTS or the Duolingo English Test","Your own school’s English exam","No English test is ever needed"]},
+ zh:{q:"很多美国大学接受国际学生提交哪些英语考试成绩？", o:["只接受托福","托福、雅思或多邻国","你所在学校的英语考试","从来不需要英语考试"]},
+ vi:{q:"Nhiều trường đại học Mỹ chấp nhận chứng chỉ tiếng Anh nào từ học sinh quốc tế?", o:["Chỉ TOEFL","TOEFL, IELTS hoặc Duolingo English Test","Bài thi tiếng Anh ở trường của bạn","Không bao giờ cần chứng chỉ tiếng Anh"]}},
+{id:"tests", a:1,
+ en:{q:"Do all U.S. colleges require the SAT or ACT?", o:["Yes, every college requires one","No, many are test-optional, and policies change","Only students from the U.S. take them","Only community colleges require them"]},
+ zh:{q:"所有美国大学都要求 SAT 或 ACT 成绩吗？", o:["是的，每所大学都要求","不是，很多学校可以不交成绩，而且政策常有变化","只有美国本地学生需要考","只有社区学院要求"]},
+ vi:{q:"Tất cả các trường đại học Mỹ đều yêu cầu SAT hoặc ACT phải không?", o:["Đúng, trường nào cũng yêu cầu","Không, nhiều trường không bắt buộc nộp điểm và chính sách có thể thay đổi","Chỉ học sinh Mỹ mới phải thi","Chỉ cao đẳng cộng đồng mới yêu cầu"]}},
+{id:"aid", a:2,
+ en:{q:"Can international students get financial aid at U.S. colleges?", o:["No, never","Yes, every college pays the full cost","Yes, some colleges offer it, but it is limited","Only after the first year"]},
+ zh:{q:"国际学生能在美国大学拿到经济资助吗？", o:["不能，从来没有","能，每所大学都会全额资助","能，有些学校提供，但名额有限","要读完第一年才能申请"]},
+ vi:{q:"Học sinh quốc tế có thể nhận hỗ trợ tài chính ở các trường đại học Mỹ không?", o:["Không, không bao giờ","Có, trường nào cũng chi trả toàn bộ chi phí","Có, một số trường có hỗ trợ nhưng số suất có hạn","Chỉ sau khi học xong năm nhất"]}},
+{id:"visa", a:2,
+ en:{q:"After you accept an offer, which form does your college send you so you can apply for an F-1 student visa?", o:["W-2","CSS Profile","I-20","Your transcript"]},
+ zh:{q:"接受录取后，学校会寄给你哪份表格，让你去申请 F-1 学生签证？", o:["W-2","CSS Profile","I-20","成绩单"]},
+ vi:{q:"Sau khi nhận lời nhập học, trường sẽ gửi cho bạn mẫu đơn nào để xin visa du học F-1?", o:["W-2","CSS Profile","I-20","Học bạ"]}}
+];
+/* College match: a starter list for the team to check before launch.
+   Only facts that rarely change: location, region, size, setting, kind, public/private, well-known strengths.
+   No admission rates or tuition (they change every year).
+   aid = 1 only where the college itself says it gives need-based aid to international students; 0 means "check its website", not "no aid".
+   size: small (about 3,000 undergraduates or fewer), mid, large (about 15,000 or more).
+   setting: city (big city), suburb, town (small town or college town).
+   fields: eng = engineering & CS, sci = science & math, bus = business & economics, soc = humanities & social sciences, art = arts & design.
+   [name, Chinese name, place, region, size, setting, kind, control, fields, aid, url] */
+var SCHOOLS = window.PF_SCHOOLS = [
+["Harvard University","哈佛大学","Cambridge, MA","ne","mid","city","uni","pri","sci soc bus",1,"https://www.harvard.edu/"],
+["Yale University","耶鲁大学","New Haven, CT","ne","mid","city","uni","pri","soc art sci",1,"https://www.yale.edu/"],
+["Princeton University","普林斯顿大学","Princeton, NJ","ne","mid","town","uni","pri","eng sci soc",1,"https://www.princeton.edu/"],
+["MIT","麻省理工学院","Cambridge, MA","ne","mid","city","uni","pri","eng sci",1,"https://www.mit.edu/"],
+["Columbia University","哥伦比亚大学","New York, NY","ne","mid","city","uni","pri","soc eng sci",1,"https://www.columbia.edu/"],
+["University of Pennsylvania","宾夕法尼亚大学","Philadelphia, PA","ne","mid","city","uni","pri","bus soc sci",1,"https://www.upenn.edu/"],
+["Brown University","布朗大学","Providence, RI","ne","mid","city","uni","pri","soc sci",1,"https://www.brown.edu/"],
+["Cornell University","康奈尔大学","Ithaca, NY","ne","large","town","uni","pri","eng sci bus",1,"https://www.cornell.edu/"],
+["Dartmouth College","达特茅斯学院","Hanover, NH","ne","mid","town","uni","pri","soc sci",1,"https://home.dartmouth.edu/"],
+["Johns Hopkins University","约翰斯·霍普金斯大学","Baltimore, MD","ne","mid","city","uni","pri","sci eng",1,"https://www.jhu.edu/"],
+["Tufts University","塔夫茨大学","Medford, MA","ne","mid","suburb","uni","pri","soc sci eng",1,"https://www.tufts.edu/"],
+["Boston University","波士顿大学","Boston, MA","ne","large","city","uni","pri","bus sci soc",0,"https://www.bu.edu/"],
+["Northeastern University","东北大学","Boston, MA","ne","large","city","uni","pri","bus eng",0,"https://www.northeastern.edu/"],
+["New York University","纽约大学","New York, NY","ne","large","city","uni","pri","bus art soc",0,"https://www.nyu.edu/"],
+["University of Rochester","罗切斯特大学","Rochester, NY","ne","mid","suburb","uni","pri","sci art",0,"https://www.rochester.edu/"],
+["Carnegie Mellon University","卡内基梅隆大学","Pittsburgh, PA","ne","mid","city","uni","pri","eng art",0,"https://www.cmu.edu/"],
+["Penn State","宾州州立大学","University Park, PA","ne","large","town","uni","pub","eng bus",0,"https://www.psu.edu/"],
+["UMass Amherst","马萨诸塞大学阿默斯特分校","Amherst, MA","ne","large","town","uni","pub","sci eng",0,"https://www.umass.edu/"],
+["Amherst College","阿默斯特学院","Amherst, MA","ne","small","town","lac","pri","soc sci",1,"https://www.amherst.edu/"],
+["Williams College","威廉姆斯学院","Williamstown, MA","ne","small","town","lac","pri","soc sci",1,"https://www.williams.edu/"],
+["Swarthmore College","斯沃斯莫尔学院","Swarthmore, PA","ne","small","suburb","lac","pri","soc sci eng",1,"https://www.swarthmore.edu/"],
+["Bowdoin College","鲍登学院","Brunswick, ME","ne","small","town","lac","pri","soc sci",1,"https://www.bowdoin.edu/"],
+["Middlebury College","明德学院","Middlebury, VT","ne","small","town","lac","pri","soc",1,"https://www.middlebury.edu/"],
+["Colby College","科尔比学院","Waterville, ME","ne","small","town","lac","pri","soc sci",1,"https://www.colby.edu/"],
+["Vassar College","瓦萨学院","Poughkeepsie, NY","ne","small","suburb","lac","pri","soc art",1,"https://www.vassar.edu/"],
+["Hamilton College","汉密尔顿学院","Clinton, NY","ne","small","town","lac","pri","soc",1,"https://www.hamilton.edu/"],
+["Colgate University","科尔盖特大学","Hamilton, NY","ne","small","town","lac","pri","soc sci",1,"https://www.colgate.edu/"],
+["Rhode Island School of Design","罗德岛设计学院","Providence, RI","ne","small","city","art","pri","art",0,"https://www.risd.edu/"],
+["University of Chicago","芝加哥大学","Chicago, IL","mw","mid","city","uni","pri","soc sci bus",1,"https://www.uchicago.edu/"],
+["Northwestern University","西北大学","Evanston, IL","mw","mid","suburb","uni","pri","soc eng art",1,"https://www.northwestern.edu/"],
+["Washington University in St. Louis","圣路易斯华盛顿大学","St. Louis, MO","mw","mid","suburb","uni","pri","sci bus",1,"https://wustl.edu/"],
+["University of Michigan","密歇根大学安娜堡分校","Ann Arbor, MI","mw","large","town","uni","pub","eng bus sci",0,"https://umich.edu/"],
+["University of Illinois Urbana-Champaign","伊利诺伊大学厄巴纳-香槟分校","Urbana-Champaign, IL","mw","large","town","uni","pub","eng bus sci",0,"https://illinois.edu/"],
+["University of Wisconsin–Madison","威斯康星大学麦迪逊分校","Madison, WI","mw","large","city","uni","pub","sci eng soc",0,"https://www.wisc.edu/"],
+["Purdue University","普渡大学","West Lafayette, IN","mw","large","town","uni","pub","eng sci",0,"https://www.purdue.edu/"],
+["Ohio State University","俄亥俄州立大学","Columbus, OH","mw","large","city","uni","pub","bus eng",0,"https://www.osu.edu/"],
+["University of Minnesota Twin Cities","明尼苏达大学双城分校","Minneapolis, MN","mw","large","city","uni","pub","eng sci bus",0,"https://twin-cities.umn.edu/"],
+["University of Iowa","爱荷华大学","Iowa City, IA","mw","large","town","uni","pub","soc art",0,"https://uiowa.edu/"],
+["Iowa State University","爱荷华州立大学","Ames, IA","mw","large","town","uni","pub","eng sci",0,"https://www.iastate.edu/"],
+["Case Western Reserve University","凯斯西储大学","Cleveland, OH","mw","mid","city","uni","pri","eng sci",0,"https://case.edu/"],
+["Grinnell College","格林内尔学院","Grinnell, IA","mw","small","town","lac","pri","soc sci",1,"https://www.grinnell.edu/"],
+["Carleton College","卡尔顿学院","Northfield, MN","mw","small","town","lac","pri","sci soc",1,"https://www.carleton.edu/"],
+["Macalester College","麦卡莱斯特学院","Saint Paul, MN","mw","small","city","lac","pri","soc sci",1,"https://www.macalester.edu/"],
+["Oberlin College","欧柏林学院","Oberlin, OH","mw","small","town","lac","pri","art soc",1,"https://www.oberlin.edu/"],
+["Duke University","杜克大学","Durham, NC","s","mid","suburb","uni","pri","sci soc eng",1,"https://duke.edu/"],
+["Rice University","莱斯大学","Houston, TX","s","mid","city","uni","pri","eng sci",1,"https://www.rice.edu/"],
+["Vanderbilt University","范德堡大学","Nashville, TN","s","mid","city","uni","pri","soc sci",1,"https://www.vanderbilt.edu/"],
+["Emory University","埃默里大学","Atlanta, GA","s","mid","suburb","uni","pri","sci bus",0,"https://www.emory.edu/"],
+["Georgia Tech","佐治亚理工学院","Atlanta, GA","s","large","city","uni","pub","eng sci",0,"https://www.gatech.edu/"],
+["University of Texas at Austin","德克萨斯大学奥斯汀分校","Austin, TX","s","large","city","uni","pub","eng bus",0,"https://www.utexas.edu/"],
+["University of Florida","佛罗里达大学","Gainesville, FL","s","large","town","uni","pub","sci eng bus",0,"https://www.ufl.edu/"],
+["Davidson College","戴维森学院","Davidson, NC","s","small","town","lac","pri","soc sci",1,"https://www.davidson.edu/"],
+["Berea College","伯里亚学院","Berea, KY","s","small","town","lac","pri","soc sci",1,"https://www.berea.edu/"],
+["Savannah College of Art and Design","萨凡纳艺术与设计学院","Savannah, GA","s","mid","city","art","pri","art",0,"https://www.scad.edu/"],
+["Stanford University","斯坦福大学","Stanford, CA","w","mid","suburb","uni","pri","eng sci",1,"https://www.stanford.edu/"],
+["Caltech","加州理工学院","Pasadena, CA","w","small","suburb","uni","pri","eng sci",1,"https://www.caltech.edu/"],
+["Pomona College","波莫纳学院","Claremont, CA","w","small","suburb","lac","pri","sci soc",1,"https://www.pomona.edu/"],
+["Harvey Mudd College","哈维穆德学院","Claremont, CA","w","small","suburb","lac","pri","eng sci",0,"https://www.hmc.edu/"],
+["UC Berkeley","加州大学伯克利分校","Berkeley, CA","w","large","city","uni","pub","eng sci bus",0,"https://www.berkeley.edu/"],
+["UCLA","加州大学洛杉矶分校","Los Angeles, CA","w","large","city","uni","pub","art soc sci",0,"https://www.ucla.edu/"],
+["UC San Diego","加州大学圣地亚哥分校","La Jolla, CA","w","large","suburb","uni","pub","sci eng",0,"https://ucsd.edu/"],
+["UC Davis","加州大学戴维斯分校","Davis, CA","w","large","town","uni","pub","sci",0,"https://www.ucdavis.edu/"],
+["University of Washington","华盛顿大学（西雅图）","Seattle, WA","w","large","city","uni","pub","eng sci",0,"https://www.washington.edu/"],
+["Arizona State University","亚利桑那州立大学","Tempe, AZ","w","large","suburb","uni","pub","eng bus",0,"https://www.asu.edu/"],
+["University of Southern California","南加州大学","Los Angeles, CA","w","large","city","uni","pri","art bus eng",0,"https://www.usc.edu/"],
+["Reed College","里德学院","Portland, OR","w","small","city","lac","pri","soc sci",0,"https://www.reed.edu/"],
+["Whitman College","惠特曼学院","Walla Walla, WA","w","small","town","lac","pri","soc sci",0,"https://www.whitman.edu/"]
+];
 /* Resource cover illustrations: one hand-drawn pastel scene per resource (viewBox 240x150). */
 (function(){
   function star(x, y, s, c, d){ return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path class="twinkle ' + c + ' s-ink" stroke-width="1.3" style="--d:' + (d || 0) + 's" d="M0 -9 C1 -2 2 -1 9 0 C2 1 1 2 0 9 C-1 2 -2 1 -9 0 C-2 -1 -1 -2 0 -9Z"/></g>'; }
@@ -1850,7 +2406,7 @@ var RES = window.PF_RES = [
   }
   if (motionBtn) motionBtn.addEventListener("click", function(){ setStill(!still); store("pf-still", still ? "1" : "0"); });
   window.addEventListener("scroll", onScroll, {passive:true});
-  window.addEventListener("resize", function(){ placeThumbs(); onScroll(); if (innerWidth > 1100) setMenu(false); });
+  window.addEventListener("resize", function(){ placeThumbs(); onScroll(); if (innerWidth > 1240) setMenu(false); });
   window.addEventListener("hashchange", function(){
     var h = location.hash.slice(1).toLowerCase();
     if (LANGS.indexOf(h) > -1 && h !== state.lang) setLang(h, {persist:true});
@@ -1896,6 +2452,229 @@ var RES = window.PF_RES = [
   if (still) setStill(true);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ placeThumbs(); fitSeal(); });
   window.PF = {setLang: function(l){ setLang(l, {persist:true}); }, switchTo: switchTo, t: t, state: state};
+})();
+/* Starting quiz (first visit) → college match (middle) → survey (end), plus the privacy note.
+   Nothing here is sent anywhere: the starting answers stay in this browser so the survey can compare. */
+(function(){
+  var PF = window.PF; if (!PF) return;
+  var t = PF.t, state = PF.state;
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function(s, r){ return (r||document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  var PRE_KEY = "pf-quiz-pre";
+  function loadPre(){ try { return JSON.parse(localStorage.getItem(PRE_KEY) || "null"); } catch(e){ return null; } }
+  function savePre(v){ try { localStorage.setItem(PRE_KEY, JSON.stringify(v)); } catch(e){} }
+  function clearPre(){ try { localStorage.removeItem(PRE_KEY); } catch(e){} }
+  function show(el, on){ el.hidden = !on; }
+  var I = {
+    tick:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
+    cross:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M17 7 7 17M7 7l10 10"/></svg>',
+    back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>',
+    ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg>'
+  };
+  function score(ans){ var n = 0; QUIZ.forEach(function(q, i){ if (ans && ans[i] === q.a) n++; }); return n; }
+  function scaleHTML(id, lo, hi, value, attr){
+    return [1,2,3,4,5].map(function(n){
+      var label = n === 1 ? n + " – " + t(lo) : n === 5 ? n + " – " + t(hi) : String(n);
+      return '<button type="button" ' + attr + '="' + n + '" aria-pressed="' + (value === n) + '" aria-label="' + esc(label) + '">' + n + '</button>';
+    }).join("") + '<div class="scale-ends" aria-hidden="true"><span>' + esc(t(lo)) + '</span><span>' + esc(t(hi)) + '</span></div>';
+  }
+
+  /* ---------- Quiz: five knowledge questions, then a 1–5 self-rating ---------- */
+  function Quiz(root, prefix, onDone){
+    var q = {i:0, ans:[], conf:null}, busy = false, active = false;
+    var total = QUIZ.length + 1;
+    function render(focus){
+      var n = q.i + 1, html = '<div class="q-top"><p class="q-prog">' + esc(t("quiz.progress", {n:n, total:total})) + '</p>' +
+        (q.i > 0 ? '<button type="button" class="q-back" data-back>' + I.back + esc(t("quiz.back")) + '</button>' : '') + '</div>' +
+        '<div class="q-bar" aria-hidden="true"><i style="--p:' + (q.i / total * 100).toFixed(1) + '%"></i></div>';
+      if (q.i < QUIZ.length){
+        var Q = QUIZ[q.i], L = Q[state.lang] || Q.en;
+        var opts = L.o.map(function(o, k){ return [k, o]; }).concat([[-1, t("quiz.unsure")]]);
+        html += '<p class="q-text" id="' + prefix + '-q" tabindex="-1">' + esc(L.q) + '</p>' +
+          '<ul class="q-opts" aria-labelledby="' + prefix + '-q">' + opts.map(function(o){
+            var unsure = o[0] < 0;
+            return '<li><button type="button" class="q-opt' + (unsure ? ' unsure' : '') + '" data-a="' + o[0] + '" aria-pressed="' + (q.ans[q.i] === o[0]) + '">' +
+              '<span class="k" aria-hidden="true">' + (unsure ? "?" : String.fromCharCode(65 + o[0])) + '</span><span>' + esc(o[1]) + '</span></button></li>';
+          }).join("") + '</ul>';
+      } else {
+        html += '<p class="q-text" id="' + prefix + '-q" tabindex="-1">' + esc(t("quiz.conf")) + '</p>' +
+          '<div class="scale q-scale" role="group" aria-labelledby="' + prefix + '-q">' + scaleHTML(prefix, "quiz.confLo", "quiz.confHi", q.conf, "data-c") + '</div>';
+      }
+      root.innerHTML = html;
+      if (focus){ var h = $(".q-text", root); if (h) h.focus({preventScroll:true}); }
+    }
+    function next(){ busy = false; q.i++; render(true); }
+    root.addEventListener("click", function(e){
+      var el = e.target.closest ? e.target : e.target.parentElement;
+      if (busy) return;
+      var b = el.closest("[data-back]");
+      if (b){ if (q.i > 0){ q.i--; render(true); } return; }
+      var o = el.closest(".q-opt");
+      if (o){
+        q.ans[q.i] = Number(o.getAttribute("data-a"));
+        $$(".q-opt", root).forEach(function(x){ x.setAttribute("aria-pressed", String(x === o)); });
+        busy = true; setTimeout(next, reduce ? 0 : 220); return;
+      }
+      var c = el.closest("[data-c]");
+      if (c){
+        q.conf = Number(c.getAttribute("data-c"));
+        $$("[data-c]", root).forEach(function(x){ x.setAttribute("aria-pressed", String(x === c)); });
+        busy = true;
+        setTimeout(function(){ busy = false; active = false; onDone({ans:q.ans.slice(0, QUIZ.length), conf:q.conf}); }, reduce ? 0 : 220);
+      }
+    });
+    window.addEventListener("pf:lang", function(){ if (active) render(false); });
+    return {
+      start: function(){ q = {i:0, ans:[], conf:null}; busy = false; active = true; render(true); }
+    };
+  }
+
+  /* ---------- Privacy note ---------- */
+  var pv = $("#pv-dlg");
+  function openDlg(d){ if (d.showModal){ if (!d.open) d.showModal(); } else d.setAttribute("open", ""); }
+  function closeDlg(d){ if (d.close) d.close(); else d.removeAttribute("open"); }
+  document.addEventListener("click", function(e){
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    if (el.closest("[data-privacy]")){ $("#pv-cleared").textContent = ""; openDlg(pv); return; }
+    if (el.closest("[data-close]")){ closeDlg(el.closest("dialog")); }
+  });
+  pv.addEventListener("click", function(e){ if (e.target === pv) closeDlg(pv); });
+  $("#pv-clear").addEventListener("click", function(){ clearPre(); $("#pv-cleared").textContent = t("pv.cleared"); refreshSurveyIntro(); });
+
+  /* ---------- Starting quiz (first visit only, always skippable) ---------- */
+  var pre = $("#pre-dlg"), preDone = false;
+  var preQuiz = Quiz($("#pre-quiz"), "pq", function(res){
+    preDone = true;
+    savePre({s:"done", a:res.ans, c:res.conf});
+    show($("#pre-quiz"), false); show($("#pre-done"), true);
+    $("#pre-done-title").focus();
+    refreshSurveyIntro();
+  });
+  function openPre(){
+    preDone = false;
+    show($("#pre-intro"), true); show($("#pre-quiz"), false); show($("#pre-done"), false);
+    openDlg(pre);
+  }
+  function skipPre(){ if (!preDone && !loadPre()) savePre({s:"skip"}); refreshSurveyIntro(); }
+  $("#pre-start").addEventListener("click", function(){ show($("#pre-intro"), false); show($("#pre-quiz"), true); preQuiz.start(); });
+  $("#pre-skip").addEventListener("click", function(){ skipPre(); closeDlg(pre); });
+  $("#pre-go").addEventListener("click", function(){ closeDlg(pre); });
+  pre.addEventListener("cancel", skipPre);
+
+  /* ---------- College match ---------- */
+  var KEYS = ["field","region","size","setting","aid"];
+  var M = {field:null, region:null, size:null, setting:null, aid:null}, shown = 6;
+  var S = SCHOOLS.map(function(r, i){ return {i:i, name:r[0], zh:r[1], place:r[2], region:r[3], size:r[4], setting:r[5], kind:r[6], control:r[7], fields:r[8].split(" "), aid:!!r[9], url:r[10]}; });
+  function renderMatch(){
+    var list = $("#m-list"), answered = KEYS.some(function(k){ return M[k] !== null; });
+    $("#m-reset").hidden = !answered;
+    if (!answered){
+      list.innerHTML = '<p class="m-empty">' + esc(t("m.empty")) + '</p>';
+      $("#m-count").textContent = ""; return;
+    }
+    var real = function(k){ return M[k] && M[k] !== "any"; };
+    var crit = ["field","region","size","setting"].filter(real).length + (M.aid === "yes" ? 1 : 0);
+    var rows = S.map(function(s){
+      var sc = 0, why = [];
+      if (real("field") && s.fields.indexOf(M.field) > -1){ sc += 3; var fx = t("m." + M.field); if (state.lang !== "zh") fx = fx.charAt(0).toLowerCase() + fx.slice(1); why.push(["", t("m.knownFor", {x:fx})]); }
+      if (real("region") && s.region === M.region){ sc += 4; why.push(["", t("m." + M.region)]); }
+      if (real("size") && s.size === M.size){ sc += 2; why.push(["", t("m." + M.size)]); }
+      if (real("setting") && s.setting === M.setting){ sc += 2; why.push(["", t("m." + M.setting)]); }
+      if (M.aid === "yes" && s.aid) sc += 3;
+      if (s.aid && M.aid !== "no") why.push(["aid", t("m.aid")]);
+      return {s:s, sc:sc, why:why};
+    }).filter(function(r){ return crit === 0 || r.sc > 0; })
+      .sort(function(a, b){ return b.sc - a.sc || a.s.i - b.s.i; });
+    $("#m-count").textContent = t("m.count", {n:rows.length, total:S.length});
+    if (!rows.length){ list.innerHTML = '<p class="m-empty">' + esc(t("m.none")) + '</p>'; return; }
+    var zh = state.lang === "zh";
+    list.innerHTML = '<ul class="m-list">' + rows.slice(0, shown).map(function(r){
+      var s = r.s;
+      var title = zh ? esc(s.zh) + '<span class="alt" lang="en">' + esc(s.name) + '</span>' : '<span lang="en">' + esc(s.name) + '</span>';
+      var meta = '<span translate="no">' + esc(s.place) + '</span> · ' + esc(t("m." + s.region)) + ' · ' + esc(t("m." + s.control)) + ' · ' + esc(t("m.k." + s.kind));
+      var why = r.why.length ? '<ul class="m-why" aria-label="' + esc(t("m.why")) + '">' + r.why.map(function(w){ return '<li' + (w[0] ? ' class="' + w[0] + '"' : '') + '>' + I.tick + esc(w[1]) + '</li>'; }).join("") + '</ul>' : '';
+      var aidCheck = !s.aid && (M.aid === "yes" || M.aid === "unsure") ? '<p class="m-aidcheck">' + esc(t("m.aidCheck")) + '</p>' : '';
+      return '<li class="m-card"><h4>' + title + '</h4>' +
+        '<a class="m-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("m.visit")) + '<span class="sr"> · ' + esc(zh ? s.zh : s.name) + '</span>' + I.ext + '</a>' +
+        '<p class="m-meta">' + meta + '</p>' + why + aidCheck + '</li>';
+    }).join("") + '</ul>' + (rows.length > shown ? '<button class="btn btn-ghost btn-sm m-more" type="button" id="m-more">' + esc(t("m.more")) + '</button>' : '');
+  }
+  $("#m-form").addEventListener("click", function(e){
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    var chip = el.closest(".m-q .chip");
+    if (chip){
+      var fs = chip.closest(".m-q"), k = fs.getAttribute("data-q"), v = chip.getAttribute("data-v");
+      M[k] = M[k] === v ? null : v;
+      $$(".chip", fs).forEach(function(c){ c.setAttribute("aria-pressed", String(c.getAttribute("data-v") === M[k])); });
+      shown = 6; renderMatch(); return;
+    }
+    if (el.closest("#m-reset")){
+      KEYS.forEach(function(k){ M[k] = null; });
+      $$(".m-q .chip").forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
+      shown = 6; renderMatch();
+      var first = $(".m-q .chip"); if (first) first.focus();
+    }
+  });
+  $("#m-list").addEventListener("click", function(e){
+    var el = e.target.closest ? e.target : e.target.parentElement;
+    if (el.closest("#m-more")){
+      var before = $$(".m-card").length;
+      shown += 6; renderMatch();
+      var card = $$(".m-card")[before]; if (card){ var a = $(".m-link", card); if (a) a.focus({preventScroll:true}); }
+    }
+  });
+
+  /* ---------- Survey ---------- */
+  var post = null, useful = null;
+  function refreshSurveyIntro(){ var p = loadPre(); $("#sv-skipped").hidden = !!(p && p.s === "done"); }
+  var svQuiz = Quiz($("#sv-quiz"), "sq", function(res){
+    post = res;
+    show($("#sv-quiz"), false); show($("#sv-form"), true);
+    renderResults();
+    var h = $("#sv-res-h"); if (h) h.focus({preventScroll:true});
+    var card = $("#sv-card"), r = card.getBoundingClientRect();
+    if (r.top < 0) card.scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"});
+  });
+  function renderResults(){
+    if (!post) return;
+    var p = loadPre(), has = p && p.s === "done" && p.a, n = QUIZ.length;
+    function card(cls, label, ans, conf){
+      return '<div class="' + cls + '"><dt>' + esc(label) + '</dt><dd>' + score(ans) + '/' + n +
+        '<small>' + esc(t("sv.conf")) + t("sep") + (conf || "–") + '/5</small></dd></div>';
+    }
+    var html = '<h3 class="sv-res-h" id="sv-res-h" tabindex="-1">' + esc(t("sv.results")) + '</h3>' +
+      '<dl class="sv-score">' + (has ? card("", t("sv.before"), p.a, p.c) : '') + card("now", t("sv.now"), post.ans, post.conf) + '</dl>' +
+      '<p class="sr">' + esc(t("sv.score", {n:score(post.ans), total:n})) + '</p>' +
+      '<ol class="sv-review" aria-label="' + esc(t("sv.answers")) + '">' + QUIZ.map(function(Q, i){
+        var L = Q[state.lang] || Q.en, ok = post.ans[i] === Q.a;
+        return '<li><span class="mk ' + (ok ? 'y' : 'n') + '">' + (ok ? I.tick : I.cross) + '<span class="sr">' + esc(t(ok ? "sv.right" : "sv.wrong")) + '</span></span>' +
+          '<p>' + esc(L.q) + '</p><p class="a">' + esc(t("sv.answer", {a:L.o[Q.a]})) + '</p></li>';
+      }).join("") + '</ol>';
+    $("#sv-results").innerHTML = html;
+  }
+  function renderUseful(){ var g = $("#sv-useful"); g.innerHTML = scaleHTML("sv", "sv.usefulLo", "sv.usefulHi", useful, "data-u"); }
+  $("#sv-useful").addEventListener("click", function(e){
+    var b = (e.target.closest ? e.target : e.target.parentElement).closest("[data-u]"); if (!b) return;
+    useful = useful === Number(b.getAttribute("data-u")) ? null : Number(b.getAttribute("data-u"));
+    $$("[data-u]").forEach(function(x){ x.setAttribute("aria-pressed", String(Number(x.getAttribute("data-u")) === useful)); });
+  });
+  $("#sv-start").addEventListener("click", function(){ show($("#sv-intro"), false); show($("#sv-quiz"), true); svQuiz.start(); });
+  $("#sv-form").addEventListener("submit", function(e){
+    e.preventDefault();
+    show($("#sv-form"), false); show($("#sv-ok"), true);
+    $("#sv-ok-title").focus({preventScroll:true});
+    var card = $("#sv-card"), r = card.getBoundingClientRect();
+    if (r.top < 0 || r.top > innerHeight * 0.6) card.scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"});
+  });
+
+  window.addEventListener("pf:lang", function(){ renderMatch(); renderUseful(); if (!$("#sv-form").hidden) renderResults(); });
+
+  /* ---------- Init ---------- */
+  renderMatch(); renderUseful(); refreshSurveyIntro();
+  if (!loadPre()) setTimeout(openPre, 700);
+  PF.openQuiz = openPre;
 })();
 </script>
 <script type="module">
