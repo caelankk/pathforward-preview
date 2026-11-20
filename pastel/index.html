@@ -271,6 +271,18 @@ html:lang(vi) .answer h3{line-height:1.32}
 .offer h4{font-family:var(--font-round);font-size:1.06rem;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin:2px 0 4px;color:var(--fg)}
 html:lang(zh) .offer h4{font-family:var(--font-sans)}
 .offer p{font-size:.93rem;color:var(--muted);margin:0}
+.mv{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,2fr);gap:18px 56px;align-items:start;margin-top:clamp(52px,6vw,76px)}
+.mv h3{font-size:clamp(1.35rem,2.2vw,1.7rem);line-height:1.25;margin:0;text-wrap:balance}
+.mv-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px clamp(28px,4vw,56px);margin:0}
+.mv-list>div{min-width:0;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--fg) 14%,transparent)}
+.mv-list dt{display:flex;align-items:center;gap:9px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)}
+html:lang(zh) .mv-list dt{letter-spacing:.2em}
+.mv-list dt::before{content:"";width:9px;height:9px;border-radius:50%;background:#98E3AA;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--fg) 25%,transparent);flex-shrink:0}
+.mv-v dt::before{background:#98D3E4}
+.mv-list dd{margin:10px 0 0;color:var(--fg);font-size:clamp(1.05rem,1.4vw,1.2rem);line-height:1.6;max-width:34em}
+html:lang(zh) .mv-list dd{line-height:1.85}
+@media (max-width:960px){.mv{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:680px){.mv-list{grid-template-columns:minmax(0,1fr);gap:22px}}
 
 /* ---------- Roadmap ---------- */
 .rm-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:44px 64px;align-items:start}
@@ -525,11 +537,6 @@ input:not([type=checkbox]):focus,select:focus,textarea:focus{outline:none;border
 .foot{position:relative;background:var(--lav-soft);color:var(--muted);padding-block:72px 28px}
 .foot::before{content:"";position:absolute;left:0;right:0;top:-1px;height:28px;background:var(--bg);
   -webkit-mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x;mask:radial-gradient(28px 20px at 50% 0,#000 98%,transparent) 0 0/56px 28px repeat-x}
-.foot-mv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 48px;margin:0 0 44px;padding-bottom:36px;border-bottom:1px dashed color-mix(in srgb,var(--fg) 16%,transparent)}
-.foot-mv dt{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)}
-html:lang(zh) .foot-mv dt{letter-spacing:.2em}
-.foot-mv dd{margin:8px 0 0;color:var(--fg);font-size:clamp(1rem,1.3vw,1.1rem);line-height:1.6;max-width:34em}
-html:lang(zh) .foot-mv dd{line-height:1.85}
 .foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr) minmax(0,1fr);gap:32px}
 .foot p{margin:14px 0 0;max-width:30em;font-size:.94rem}
 .foot h2{font-family:var(--font-sans);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin:6px 0 14px;font-weight:700}
@@ -597,7 +604,6 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
   .offer .ico svg{width:18px;height:18px}
   .hero-ctas .btn{width:100%;white-space:normal;text-align:center}
   .foot-grid{grid-template-columns:minmax(0,1fr)}
-  .foot-mv{grid-template-columns:minmax(0,1fr)}
   .seal{width:84px;left:0;top:0}
   .stage-hint{font-size:.9rem}
 }
@@ -956,6 +962,13 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
             <h4 data-i18n="offer.4t">Checked opportunities</h4><p data-i18n="offer.4b">Scholarships, summer programs and competitions in one place, each one checked before we share it.</p>
           </div>
         </div>
+      </div>
+      <div class="mv reveal">
+        <h3 data-i18n="mv.title">What we’re working toward</h3>
+        <dl class="mv-list">
+          <div class="mv-m"><dt data-i18n="mv.mLabel">Mission</dt><dd data-i18n="mv.m">Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.</dd></div>
+          <div class="mv-v"><dt data-i18n="mv.vLabel">Vision</dt><dd data-i18n="mv.v">We envision a future where a student’s access to educational opportunities is not limited by location, financial resources, or lack of information.</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -1340,10 +1353,6 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
 
 <footer class="foot">
   <div class="wrap">
-    <dl class="foot-mv">
-      <div><dt data-i18n="mv.mLabel">Mission</dt><dd data-i18n="mv.m">Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.</dd></div>
-      <div><dt data-i18n="mv.vLabel">Vision</dt><dd data-i18n="mv.v">We envision a future where a student’s access to educational opportunities is not limited by location, financial resources, or lack of information.</dd></div>
-    </dl>
     <div class="foot-grid">
       <div>
         <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home" aria-label="PathForward home">
