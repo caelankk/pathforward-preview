@@ -1,9 +1,14 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#FCFDFD"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%221%22 y=%221%22 width=%2230%22 height=%2230%22 rx=%2210%22 fill=%22%23F9B2D7%22/%3E%3Cpath d=%22M7 23C12 22 14 12 23 9%22 fill=%22none%22 stroke=%22%231D1A26%22 stroke-width=%222.6%22 stroke-linecap=%22round%22 stroke-dasharray=%221 4.4%22/%3E%3Ccircle cx=%2223.5%22 cy=%228.8%22 r=%223.4%22 fill=%22%23EEF8C2%22 stroke=%22%231D1A26%22 stroke-width=%221.5%22/%3E%3C/svg%3E"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style></head><body>
-<title>PathForward</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PathForward · Free study-abroad guidance</title>
+<script>(function(){try{var L=["en","zh","vi"],h=(location.hash||"").slice(1).toLowerCase(),s=null,l=null;try{s=localStorage.getItem("pf-lang")}catch(e){}if(L.indexOf(h)>-1)l=h;else if(L.indexOf(s)>-1)l=s;else{var n=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||"en"];for(var i=0;i<n.length&&!l;i++){var x=String(n[i]||"").toLowerCase();if(x.indexOf("zh")===0)l="zh";else if(x.indexOf("vi")===0)l="vi";else if(x.indexOf("en")===0)l="en"}}if(l&&l!=="en"){var d=document.documentElement;d.classList.add("i18n-wait");setTimeout(function(){d.classList.remove("i18n-wait")},3000)}}catch(e){}})();</script>
+<style>html.i18n-wait body{visibility:hidden}</style>
 <meta name="theme-color" content="#FCFDFD">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%221%22 y=%221%22 width=%2230%22 height=%2230%22 rx=%2210%22 fill=%22%23F9B2D7%22/%3E%3Cpath d=%22M7 23C12 22 14 12 23 9%22 fill=%22none%22 stroke=%22%231D1A26%22 stroke-width=%222.6%22 stroke-linecap=%22round%22 stroke-dasharray=%221 4.4%22/%3E%3Ccircle cx=%2223.5%22 cy=%228.8%22 r=%223.4%22 fill=%22%23EEF8C2%22 stroke=%22%231D1A26%22 stroke-width=%221.5%22/%3E%3C/svg%3E">
-<meta name="description" content="PathForward: free, reliable study-abroad guidance for students in China and Vietnam, run by students.">
+<meta name="description" content="Free, reliable study-abroad guidance for students in China and Vietnam, run by students. 为中国和越南学生提供免费、可靠的留学指导。Hướng dẫn du học miễn phí, đáng tin cậy cho học sinh Việt Nam và Trung Quốc.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400..600&family=Mali:wght@500;600&family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" media="print" onload="this.media='all'">
@@ -420,10 +425,13 @@ html:lang(zh) .res-how strong{font-family:var(--font-sans)}
 /* ---------- Partner ---------- */
 .partner{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px 64px;align-items:center}
 .src-h{margin:28px 0 10px;font-weight:700;font-size:.95rem}
-.src-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.src-chips a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 15px;border-radius:999px;color:var(--fg);text-decoration:none;font-size:.88rem;font-weight:600;background:var(--surface);box-shadow:var(--clay);transition:transform .25s var(--spring)}
-@media (hover:hover){.src-chips a:hover{transform:translateY(-2px)}}
-.src-chips svg{width:13px;height:13px;color:var(--muted)}
+.src-list{display:grid;margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.src-list li{display:grid;grid-template-columns:minmax(0,10.5em) minmax(0,1fr);gap:2px 18px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line)}
+.src-list a{display:inline-flex;align-items:center;gap:6px;justify-self:start;padding:2px 0;color:var(--fg);text-decoration:none;font-size:.92rem;font-weight:650}
+.src-list a:hover{text-decoration:underline}
+.src-list svg{width:13px;height:13px;color:var(--muted);flex-shrink:0}
+.src-list span{font-size:.88rem;color:var(--muted)}
+@media (max-width:520px){.src-list li{grid-template-columns:minmax(0,1fr)}}
 .src-note{margin:10px 0 0;font-size:.84rem;color:var(--muted)}
 .mentor-card{position:relative;overflow:hidden;border-radius:28px;padding:clamp(24px,3.4vw,38px);background:var(--peach-soft);box-shadow:var(--clay)}
 .mentor-card .tag{margin:0;font-family:var(--font-hand);font-size:1.08rem;font-weight:600;color:var(--primary);transform:rotate(-2deg);display:inline-block}
@@ -651,6 +659,10 @@ html:lang(zh) .foot-mv dd{line-height:1.85}
 .m-note{display:flex;gap:8px;align-items:flex-start;margin:18px 0 0;font-size:.86rem;color:var(--muted);max-width:44em}
 .m-note svg{width:17px;height:17px;flex-shrink:0;margin-top:3px;color:var(--fg)}
 
+.m-ask{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 18px;margin:14px 0 0;padding:16px 18px 16px 20px;border-radius:var(--radius);background:color-mix(in srgb,var(--surface) 55%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--fg) 12%,transparent);font-weight:600;font-size:.95rem}
+.step-cta{display:flex;margin-top:14px;width:fit-content}
+#sv-ok .btn{margin-top:4px}
+
 /* Quiz (shared by the starting dialog and the survey) */
 .q-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .q-prog{margin:0;font-size:.84rem;font-weight:600;color:var(--muted)}
@@ -748,32 +760,48 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   .dlg-actions .btn{flex:1 1 auto}
 }
 </style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="PathForward">
+<meta property="og:title" content="PathForward · Free study-abroad guidance">
+<meta property="og:description" content="Free, reliable study-abroad guidance for students in China and Vietnam, run by students. 为中国和越南学生提供免费、可靠的留学指导。Hướng dẫn du học miễn phí, đáng tin cậy cho học sinh Việt Nam và Trung Quốc.">
+<meta property="og:url" content="https://caelankk.github.io/pathforward-preview/pastel/">
+<meta property="og:image" content="https://caelankk.github.io/pathforward-preview/pastel/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta property="og:locale:alternate" content="vi_VN">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://caelankk.github.io/pathforward-preview/pastel/">
+<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}</style>
+</head>
+<body>
 <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 <div class="sr" id="live" aria-live="polite"></div>
 
 <header class="nav" id="top">
   <div class="wrap nav-row">
-    <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+    <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home" aria-label="PathForward home">
       <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
       <span translate="no">Path<b>Forward</b></span>
     </a>
-    <nav class="nav-links" data-i18n-attr="aria-label:nav.primary">
-      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
-      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
-      <a href="#match" data-scroll="match" data-i18n="nav.match"></a>
-      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
-      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
-      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
+    <nav class="nav-links" data-i18n-attr="aria-label:nav.primary" aria-label="Main">
+      <a href="#about" data-scroll="about" data-i18n="nav.about">About</a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap">Roadmap</a>
+      <a href="#match" data-scroll="match" data-i18n="nav.match">College match</a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources">Resources</a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team">Team</a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved">Get involved</a>
     </nav>
     <div class="nav-end">
-      <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+      <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang" aria-label="Language">
         <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
         <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
         <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
         <span class="lang-thumb" aria-hidden="true"></span>
       </div>
-      <a class="btn btn-primary btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
-      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu">
+      <a class="btn btn-primary btn-sm nav-cta" href="#involved" data-scroll="involved" data-i18n="hero.cta2">Ask us a question</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menu" aria-label="Open menu">
         <svg class="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         <svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
@@ -781,13 +809,13 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   </div>
   <div class="menu-panel" id="menu" hidden>
     <div class="wrap">
-      <a href="#about" data-scroll="about" data-i18n="nav.about"></a>
-      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a>
-      <a href="#match" data-scroll="match" data-i18n="nav.match"></a>
-      <a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a>
-      <a href="#team" data-scroll="team" data-i18n="nav.team"></a>
-      <a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a>
-      <a class="btn btn-primary" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
+      <a href="#about" data-scroll="about" data-i18n="nav.about">About</a>
+      <a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap">Roadmap</a>
+      <a href="#match" data-scroll="match" data-i18n="nav.match">College match</a>
+      <a href="#resources" data-scroll="resources" data-i18n="nav.resources">Resources</a>
+      <a href="#team" data-scroll="team" data-i18n="nav.team">Team</a>
+      <a href="#involved" data-scroll="involved" data-i18n="nav.involved">Get involved</a>
+      <a class="btn btn-primary" href="#involved" data-scroll="involved" data-i18n="hero.cta2">Ask us a question</a>
     </div>
   </div>
 </header>
@@ -797,34 +825,34 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <section class="hero" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <h1 id="hero-title" data-i18n-html="hero.title"></h1>
-        <p class="sub" data-i18n="hero.sub"></p>
+        <h1 id="hero-title" data-i18n-html="hero.title">Your path abroad shouldn’t depend on what you can <span class='em'>afford</span>.</h1>
+        <p class="sub" data-i18n="hero.sub">PathForward is a nonprofit run by students. We give students in China and Vietnam free, reliable guidance on studying abroad, from the first English test to the first day on campus.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="#roadmap" data-scroll="roadmap"><span data-i18n="hero.cta1"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-          <a class="btn btn-ghost" href="#involved" data-scroll="involved" data-i18n="hero.cta2"></a>
+          <a class="btn btn-primary" href="#roadmap" data-scroll="roadmap"><span data-i18n="hero.cta1">Start your roadmap</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a class="btn btn-ghost" href="#involved" data-scroll="involved" data-i18n="hero.cta2">Ask us a question</a>
         </div>
         <ul class="hero-facts">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f1"></span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f2"></span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f3"></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f1">Free for every student</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f2">English · 中文 · Tiếng Việt</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="hero.f3">Run by students studying in the U.S.</span></li>
         </ul>
       </div>
       <div class="stage-wrap">
-        <div class="stage" id="stage3d" role="img" data-i18n-attr="aria-label:scene.aria">
+        <div class="stage" id="stage3d" role="img" data-i18n-attr="aria-label:scene.aria" aria-label="3D study island with stacked books, an apple, a graduation cap, an open book, a pencil, a plant, a paper plane and three letter tiles: A, 文 and Ơ">
           <div class="stage-fallback" aria-hidden="true"><span></span><span></span><span></span></div>
           <canvas aria-hidden="true"></canvas>
         </div>
-        <p class="stage-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5V4.5a1.5 1.5 0 0 1 3 0V10m0-1a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 15a1.6 1.6 0 0 1 2.6-1.8L9 16"/></svg><span data-i18n="scene.hint"></span></p>
+        <p class="stage-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5V4.5a1.5 1.5 0 0 1 3 0V10m0-1a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 15a1.6 1.6 0 0 1 2.6-1.8L9 16"/></svg><span data-i18n="scene.hint">Tap a letter tile to switch language</span></p>
         <div class="seal" aria-hidden="true">
           <svg viewBox="0 0 120 120">
             <defs><path id="sealCircle" d="M60 60 m-43 0 a43 43 0 1 1 86 0 a43 43 0 1 1 -86 0"/></defs>
             <circle class="seal-bg" cx="60" cy="60" r="57"/>
             <circle class="seal-ring" cx="60" cy="60" r="31"/>
-            <g class="seal-spin"><text class="seal-text"><textPath href="#sealCircle" textLength="266" lengthAdjust="spacing" data-i18n="ill.seal"></textPath></text></g>
-            <text class="seal-mid" x="60" y="69" text-anchor="middle" data-i18n="stats.c"></text>
+            <g class="seal-spin"><text class="seal-text"><textPath href="#sealCircle" textLength="266" lengthAdjust="spacing" data-i18n="ill.seal">FREE GUIDANCE • STUDENT-RUN • NONPROFIT • </textPath></text></g>
+            <text class="seal-mid" x="60" y="69" text-anchor="middle" data-i18n="stats.c">$0</text>
           </svg>
         </div>
-        <button class="motion-btn" type="button" aria-pressed="false" data-i18n-attr="aria-label:motion.pause;title:motion.pause">
+        <button class="motion-btn" type="button" aria-pressed="false" data-i18n-attr="aria-label:motion.pause;title:motion.pause" aria-label="Pause animation" title="Pause animation">
           <svg class="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg>
           <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 5.8v12.4a.8.8 0 0 0 1.2.7l9.6-6.2a.8.8 0 0 0 0-1.4L9.7 5.1a.8.8 0 0 0-1.2.7z"/></svg>
         </button>
@@ -837,9 +865,9 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
     <div class="wrap">
       <div class="gap-head">
         <div>
-          <h2 id="gap-title" data-i18n-html="gap.title"></h2>
+          <h2 id="gap-title" data-i18n-html="gap.title">The <span class='hl'>information gap</span> is the real barrier.</h2>
         </div>
-        <p class="lead" data-i18n="gap.lead"></p>
+        <p class="lead" data-i18n="gap.lead">Every year, capable students in China and Vietnam give up on studying abroad because no one showed them how the process works.</p>
       </div>
       <div class="gap-cols">
         <div class="gap-item reveal">
@@ -860,7 +888,7 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
             </g>
             <g transform="translate(18 84)"><path class="twinkle f-lav s-ink" style="--d:.6s" stroke-width="1.2" d="M0 -7 C1 -2 2 -1 7 0 C2 1 1 2 0 7 C-1 2 -2 1 -7 0 C-2 -1 -1 -2 0 -7Z"/></g>
           </svg></div>
-          <h3 data-i18n="gap.1t"></h3><p data-i18n="gap.1b"></p>
+          <h3 data-i18n="gap.1t">Agencies charge for the basics</h3><p data-i18n="gap.1b">Many families pay an agency just to learn the steps. Students who can’t pay often stop there.</p>
         </div>
         <div class="gap-item reveal">
           <div class="spot"><svg class="ill" viewBox="0 0 160 120" aria-hidden="true">
@@ -875,7 +903,7 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
             <path class="s-thin" d="M30 96 c 10 -14 22 6 12 10 s -6 -18 8 -14 s 4 14 -6 8"/>
             <g transform="translate(140 22)"><path class="twinkle f-butter s-ink" style="--d:1s" stroke-width="1.2" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
           </svg></div>
-          <h3 data-i18n="gap.2t"></h3><p data-i18n="gap.2b"></p>
+          <h3 data-i18n="gap.2t">Advice online is mixed</h3><p data-i18n="gap.2b">Social media posts can be outdated, wrong, or written to sell something. It’s hard to know what to trust.</p>
         </div>
         <div class="gap-item reveal">
           <div class="spot"><svg class="ill" viewBox="0 0 160 120" aria-hidden="true">
@@ -887,13 +915,13 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
             <g class="float" style="--d:-1s"><path class="f-white s-ink" d="M14 34 a10 10 0 0 1 14 -12 a12 12 0 0 1 22 4 a9 9 0 0 1 -2 18 h-30 a9 9 0 0 1 -4 -10z"/><text class="t" x="27" y="40" font-size="16">?</text></g>
             <g class="float" style="--d:-2.4s"><path class="f-white s-ink" d="M118 14 a7 7 0 0 1 10 -8 a8 8 0 0 1 15 3 a6 6 0 0 1 -1 12 h-21 a6 6 0 0 1 -3 -7z"/><text class="t" x="127" y="20" font-size="11">?</text></g>
           </svg></div>
-          <h3 data-i18n="gap.3t"></h3><p data-i18n="gap.3b"></p>
+          <h3 data-i18n="gap.3t">No one nearby has done it</h3><p data-i18n="gap.3b">If nobody at your school has applied abroad, it’s hard to even know which questions to ask.</p>
         </div>
       </div>
       <div class="answer reveal">
         <div>
-          <h3 data-i18n="ans.title"></h3>
-          <p data-i18n="ans.body"></p>
+          <h3 data-i18n="ans.title">Free, checked, and in your language.</h3>
+          <p data-i18n="ans.body">We collect the questions students actually ask, check every answer against official sources like EducationUSA, and share it for free in English, Chinese and Vietnamese.</p>
         </div>
         <svg class="ill answer-ill" viewBox="0 0 260 200" aria-hidden="true">
           <ellipse class="shade" cx="130" cy="186" rx="96" ry="8"/>
@@ -913,19 +941,19 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
         <div class="offers">
           <div class="offer">
             <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
-            <h4 data-i18n="offer.1t"></h4><p data-i18n="offer.1b"></p>
+            <h4 data-i18n="offer.1t">Step-by-step guides</h4><p data-i18n="offer.1b">Free guides for every stage of applying, checked each year against official sources.</p>
           </div>
           <div class="offer">
             <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
-            <h4 data-i18n="offer.2t"></h4><p data-i18n="offer.2b"></p>
+            <h4 data-i18n="offer.2t">Advice from students in the U.S.</h4><p data-i18n="offer.2b">Our team studies in the U.S. now. Ask us about classes, campus life and what we wish we’d known.</p>
           </div>
           <div class="offer">
             <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div>
-            <h4 data-i18n="offer.3t"></h4><p data-i18n="offer.3b"></p>
+            <h4 data-i18n="offer.3t">English learning with Co&amp;Learn</h4><p data-i18n="offer.3b">Our partner in China offers English learning resources, so you can keep improving after our guides.</p>
           </div>
           <div class="offer">
             <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M19 17v4M17 19h4"/></svg></div>
-            <h4 data-i18n="offer.4t"></h4><p data-i18n="offer.4b"></p>
+            <h4 data-i18n="offer.4t">Checked opportunities</h4><p data-i18n="offer.4b">Scholarships, summer programs and competitions in one place, each one checked before we share it.</p>
           </div>
         </div>
       </div>
@@ -936,19 +964,19 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <section class="band" id="roadmap" aria-labelledby="rm-title">
     <div class="wrap rm-grid">
       <div class="rm-side">
-        <h2 id="rm-title" data-i18n-html="rm.title"></h2>
-        <p class="lead" data-i18n="rm.lead"></p>
+        <h2 id="rm-title" data-i18n-html="rm.title">Eight steps from first idea to <span class='hl'>first day on campus</span>.</h2>
+        <p class="lead" data-i18n="rm.lead">Pick your grade to see where you are. Open any step for a checklist and the official source.</p>
         <div class="grade-pick">
-          <p class="pick-q" id="pick-q" data-i18n="rm.pick"></p>
+          <p class="pick-q" id="pick-q" data-i18n="rm.pick">Which grade are you in?</p>
           <div class="chips" role="group" aria-labelledby="pick-q">
-            <button class="chip" type="button" data-stage="1" aria-pressed="false" data-i18n="rm.g1"></button>
-            <button class="chip" type="button" data-stage="2" aria-pressed="false" data-i18n="rm.g2"></button>
-            <button class="chip" type="button" data-stage="3" aria-pressed="false" data-i18n="rm.g3"></button>
+            <button class="chip" type="button" data-stage="1" aria-pressed="false" data-i18n="rm.g1">Grade 9–10</button>
+            <button class="chip" type="button" data-stage="2" aria-pressed="false" data-i18n="rm.g2">Grade 11</button>
+            <button class="chip" type="button" data-stage="3" aria-pressed="false" data-i18n="rm.g3">Grade 12</button>
           </div>
-          <p class="pick-hint" data-i18n="rm.hint"></p>
+          <p class="pick-hint" data-i18n="rm.hint">We’ll highlight the steps for your grade. Tap again to clear.</p>
         </div>
         <div class="rm-ill" id="scene">
-          <svg class="ill scene" viewBox="0 0 600 540" role="img" data-i18n-attr="aria-label:ill.aria">
+          <svg class="ill scene" viewBox="0 0 600 540" role="img" data-i18n-attr="aria-label:ill.aria" aria-label="Illustration: a dotted path from home, past English tests, essays, applications and a visa, to a college campus">
             <defs>
               <path id="route" d="M84 452 C 130 470, 160 440, 190 420 S 250 360, 290 350 S 380 300, 360 260 S 400 196, 430 190 S 480 160, 496 136"/>
               <mask id="routeMask" maskUnits="userSpaceOnUse" x="0" y="0" width="600" height="540"><use href="#route" class="route-mask" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/></mask>
@@ -982,16 +1010,16 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
               </g>
               <g transform="translate(190 420)"><g class="float" style="--d:-.2s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-mint s-ink" r="26"/>
                 <path class="s-ink nf" d="M0 -8 C-4 -11 -10 -11 -13 -9 V9 C-10 7 -4 7 0 10 C4 7 10 7 13 9 V-9 C10 -11 4 -11 0 -8 Z M0 -8 V10"/>
-                <text class="stk-label" y="48" data-i18n="ill.s1"></text></g></g>
+                <text class="stk-label" y="48" data-i18n="ill.s1">English</text></g></g>
               <g transform="translate(290 350)"><g class="float" style="--d:-1.1s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-butter s-ink" r="26"/>
                 <path class="s-ink nf" d="M-11 11 L-8 2 L5 -11 L11 -5 L-2 8 Z M2 -8 L8 -2 M-8 2 L-2 8"/>
-                <text class="stk-label" y="48" data-i18n="ill.s2"></text></g></g>
+                <text class="stk-label" y="48" data-i18n="ill.s2">Essays</text></g></g>
               <g transform="translate(360 260)"><g class="float" style="--d:-2s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-lav s-ink" r="26"/>
                 <rect class="s-ink nf" x="-13" y="-9" width="26" height="18" rx="2"/><path class="s-ink nf" d="M-13 -7 L0 2 L13 -7"/>
-                <text class="stk-label" y="48" data-i18n="ill.s3"></text></g></g>
+                <text class="stk-label" y="48" data-i18n="ill.s3">Apply</text></g></g>
               <g transform="translate(430 190)"><g class="float" style="--d:-2.9s"><circle class="shade" cx="2" cy="5" r="26"/><circle class="f-peach s-ink" r="26"/>
                 <rect class="s-ink nf" x="-10" y="-13" width="20" height="26" rx="2"/><circle class="s-ink nf" cy="-2" r="5"/><path class="s-ink nf" d="M-6 8 H6"/>
-                <text class="stk-label" y="48" data-i18n="ill.s4"></text></g></g>
+                <text class="stk-label" y="48" data-i18n="ill.s4">Visa</text></g></g>
             </g>
             <g class="layer" data-depth="18">
               <g transform="translate(560 30)"><g class="float"><path class="f-primary" d="M-26 0 L0 -11 L26 0 L0 11 Z"/><path class="f-primary" d="M-14 5 V14 Q0 22 14 14 V5 L0 11 Z"/><path class="s-ink nf" d="M18 3 V17"/><circle class="f-butter s-ink" cx="18" cy="19" r="3"/></g></g>
@@ -1002,8 +1030,8 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
                 <animateMotion dur="11s" repeatCount="indefinite" rotate="auto" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".45 0 .25 1"><mpath href="#route"/></animateMotion></g>
             </g>
           </svg>
-          <span class="note note-start" aria-hidden="true" data-i18n="ill.start"></span>
-          <span class="note note-end" aria-hidden="true" data-i18n="ill.end"></span>
+          <span class="note note-start" aria-hidden="true" data-i18n="ill.start">you are here</span>
+          <span class="note note-end" aria-hidden="true" data-i18n="ill.end">first day on campus!</span>
         </div>
       </div>
       <div class="tl-wrap" id="tl">
@@ -1017,41 +1045,42 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <section class="band band-mint" id="match" aria-labelledby="match-title">
     <div class="wrap">
       <div class="m-head">
-        <h2 id="match-title" data-i18n-html="match.title"></h2>
-        <p class="lead" data-i18n="match.lead"></p>
+        <h2 id="match-title" data-i18n-html="match.title">Find colleges that <span class='hl'>fit you</span></h2>
+        <p class="lead" data-i18n="match.lead">Answer five quick questions and we’ll suggest colleges to start researching, with the reasons each one might fit. Your choices stay on your device.</p>
       </div>
       <div class="match-grid">
         <div class="m-qs" id="m-form">
         <fieldset class="m-q" data-q="field">
-          <legend data-i18n="m.q1"></legend>
-          <div class="chips"><button class="chip" type="button" data-v="eng" aria-pressed="false" data-i18n="m.eng"></button><button class="chip" type="button" data-v="sci" aria-pressed="false" data-i18n="m.sci"></button><button class="chip" type="button" data-v="bus" aria-pressed="false" data-i18n="m.bus"></button><button class="chip" type="button" data-v="soc" aria-pressed="false" data-i18n="m.soc"></button><button class="chip" type="button" data-v="art" aria-pressed="false" data-i18n="m.art"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.undecided"></button></div>
+          <legend data-i18n="m.q1">What do you want to study?</legend>
+          <div class="chips"><button class="chip" type="button" data-v="eng" aria-pressed="false" data-i18n="m.eng">Engineering &amp; computer science</button><button class="chip" type="button" data-v="sci" aria-pressed="false" data-i18n="m.sci">Science &amp; math</button><button class="chip" type="button" data-v="bus" aria-pressed="false" data-i18n="m.bus">Business &amp; economics</button><button class="chip" type="button" data-v="soc" aria-pressed="false" data-i18n="m.soc">Humanities &amp; social sciences</button><button class="chip" type="button" data-v="art" aria-pressed="false" data-i18n="m.art">Arts &amp; design</button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.undecided">Not sure yet</button></div>
         </fieldset>
         <fieldset class="m-q" data-q="region">
-          <legend data-i18n="m.q2"></legend>
-          <div class="chips"><button class="chip" type="button" data-v="ne" aria-pressed="false" data-i18n="m.ne"></button><button class="chip" type="button" data-v="mw" aria-pressed="false" data-i18n="m.mw"></button><button class="chip" type="button" data-v="s" aria-pressed="false" data-i18n="m.s"></button><button class="chip" type="button" data-v="w" aria-pressed="false" data-i18n="m.w"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.anywhere"></button></div>
+          <legend data-i18n="m.q2">Where in the U.S.?</legend>
+          <div class="chips"><button class="chip" type="button" data-v="ne" aria-pressed="false" data-i18n="m.ne">Northeast</button><button class="chip" type="button" data-v="mw" aria-pressed="false" data-i18n="m.mw">Midwest</button><button class="chip" type="button" data-v="s" aria-pressed="false" data-i18n="m.s">South</button><button class="chip" type="button" data-v="w" aria-pressed="false" data-i18n="m.w">West</button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.anywhere">Anywhere</button></div>
         </fieldset>
         <fieldset class="m-q" data-q="size">
-          <legend data-i18n="m.q3"></legend>
-          <div class="chips"><button class="chip" type="button" data-v="small" aria-pressed="false" data-i18n="m.small"></button><button class="chip" type="button" data-v="mid" aria-pressed="false" data-i18n="m.mid"></button><button class="chip" type="button" data-v="large" aria-pressed="false" data-i18n="m.large"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref"></button></div>
+          <legend data-i18n="m.q3">What size of school?</legend>
+          <div class="chips"><button class="chip" type="button" data-v="small" aria-pressed="false" data-i18n="m.small">Small college</button><button class="chip" type="button" data-v="mid" aria-pressed="false" data-i18n="m.mid">Mid-size university</button><button class="chip" type="button" data-v="large" aria-pressed="false" data-i18n="m.large">Large university</button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref">No preference</button></div>
         </fieldset>
         <fieldset class="m-q" data-q="setting">
-          <legend data-i18n="m.q4"></legend>
-          <div class="chips"><button class="chip" type="button" data-v="city" aria-pressed="false" data-i18n="m.city"></button><button class="chip" type="button" data-v="suburb" aria-pressed="false" data-i18n="m.suburb"></button><button class="chip" type="button" data-v="town" aria-pressed="false" data-i18n="m.town"></button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref"></button></div>
+          <legend data-i18n="m.q4">City, suburb or small town?</legend>
+          <div class="chips"><button class="chip" type="button" data-v="city" aria-pressed="false" data-i18n="m.city">Big city</button><button class="chip" type="button" data-v="suburb" aria-pressed="false" data-i18n="m.suburb">Suburb</button><button class="chip" type="button" data-v="town" aria-pressed="false" data-i18n="m.town">Small town or college town</button><button class="chip" type="button" data-v="any" aria-pressed="false" data-i18n="m.nopref">No preference</button></div>
         </fieldset>
         <fieldset class="m-q" data-q="aid">
-          <legend data-i18n="m.q5"></legend>
-          <div class="chips"><button class="chip" type="button" data-v="yes" aria-pressed="false" data-i18n="m.yes"></button><button class="chip" type="button" data-v="no" aria-pressed="false" data-i18n="m.no"></button><button class="chip" type="button" data-v="unsure" aria-pressed="false" data-i18n="m.unsure"></button></div>
+          <legend data-i18n="m.q5">Will you need financial aid?</legend>
+          <div class="chips"><button class="chip" type="button" data-v="yes" aria-pressed="false" data-i18n="m.yes">Yes</button><button class="chip" type="button" data-v="no" aria-pressed="false" data-i18n="m.no">No</button><button class="chip" type="button" data-v="unsure" aria-pressed="false" data-i18n="m.unsure">Not sure</button></div>
         </fieldset>
-          <button class="m-reset" type="button" id="m-reset" data-i18n="m.reset" hidden></button>
+          <button class="m-reset" type="button" id="m-reset" data-i18n="m.reset" hidden>Start over</button>
         </div>
         <div class="m-res">
           <div class="m-res-head">
-            <h3 data-i18n="m.results"></h3>
+            <h3 data-i18n="m.results">Colleges to look into</h3>
             <p class="m-count" id="m-count" aria-live="polite"></p>
           </div>
           <div id="m-list"></div>
-          <p class="m-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span data-i18n="m.note"></span></p>
-          <p class="preview-note" data-i18n="m.preview"></p>
+          <p class="m-ask" id="m-ask" hidden><span data-i18n="m.ask">Questions about these colleges? Our team studies in the U.S.</span><a class="btn btn-primary btn-sm" href="#involved" data-scroll="involved"><span data-i18n="hero.cta2">Ask us a question</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a></p>
+          <p class="m-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span data-i18n="m.note">This is a starting point, not a ranking. We don’t list admission rates or tuition because they change every year. Build a list of 8–12 colleges across reach, match and safety, and check each one on its official website.</span></p>
+          <p class="preview-note" data-i18n="m.preview">Preview list: our team will check every college before the site goes live.</p>
         </div>
       </div>
     </div>
@@ -1062,24 +1091,24 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
     <div class="wrap">
       <div class="res-head">
         <div>
-          <h2 id="res-title" data-i18n-html="res.title"></h2>
-          <p class="lead" data-i18n="res.lead"></p>
+          <h2 id="res-title" data-i18n-html="res.title">Free resources we’ve <span class='hl'>checked</span>.</h2>
+          <p class="lead" data-i18n="res.lead">Guides we write, official sources we trust, and opportunities we’ve looked into. Filter by where you study now.</p>
         </div>
         <div id="res-head-ill" aria-hidden="true"></div>
       </div>
-      <p class="res-how-title" id="res-how-title" data-i18n="res.how"></p>
+      <p class="res-how-title" id="res-how-title" data-i18n="res.how">How we check every resource</p>
       <ol class="res-how" aria-labelledby="res-how-title">
-        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><strong data-i18n="res.h1t"></strong><span data-i18n="res.h1b"></span></li>
-        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg></span><strong data-i18n="res.h2t"></strong><span data-i18n="res.h2b"></span></li>
-        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></span><strong data-i18n="res.h3t"></strong><span data-i18n="res.h3b"></span></li>
-        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg></span><strong data-i18n="res.h4t"></strong><span data-i18n="res.h4b"></span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><strong data-i18n="res.h1t">Collect</strong><span data-i18n="res.h1b">We start from real questions students send us.</span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg></span><strong data-i18n="res.h2t">Verify</strong><span data-i18n="res.h2b">We confirm each fact with official sources.</span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></span><strong data-i18n="res.h3t">Translate</strong><span data-i18n="res.h3b">We write it in English, Chinese and Vietnamese.</span></li>
+        <li><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg></span><strong data-i18n="res.h4t">Update</strong><span data-i18n="res.h4b">We re-check everything once a year.</span></li>
       </ol>
       <div class="res-bar">
-        <div class="chips" role="group" data-i18n-attr="aria-label:res.filter">
-          <button class="chip" type="button" data-filter="all" aria-pressed="true" data-i18n="f.all"></button>
-          <button class="chip" type="button" data-filter="china" aria-pressed="false" data-i18n="f.china"></button>
-          <button class="chip" type="button" data-filter="vietnam" aria-pressed="false" data-i18n="f.vietnam"></button>
-          <button class="chip" type="button" data-filter="english" aria-pressed="false" data-i18n="f.english"></button>
+        <div class="chips" role="group" data-i18n-attr="aria-label:res.filter" aria-label="Filter resources">
+          <button class="chip" type="button" data-filter="all" aria-pressed="true" data-i18n="f.all">All</button>
+          <button class="chip" type="button" data-filter="china" aria-pressed="false" data-i18n="f.china">China</button>
+          <button class="chip" type="button" data-filter="vietnam" aria-pressed="false" data-i18n="f.vietnam">Vietnam</button>
+          <button class="chip" type="button" data-filter="english" aria-pressed="false" data-i18n="f.english">English learning</button>
         </div>
         <p class="res-count" id="res-count" aria-live="polite"></p>
       </div>
@@ -1091,17 +1120,17 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <section class="band" id="partner" aria-labelledby="pt-title">
     <div class="wrap partner">
       <div>
-        <h2 id="pt-title" data-i18n="pt.title"></h2>
-        <p class="lead" data-i18n="pt.body"></p>
-        <p class="src-h" data-i18n="pt.sources"></p>
-        <ul class="src-chips">
-          <li><a href="https://educationusa.state.gov/" target="_blank" rel="noopener noreferrer">EducationUSA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
-          <li><a href="https://www.commonapp.org/" target="_blank" rel="noopener noreferrer">Common App<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
-          <li><a href="https://www.collegeboard.org/" target="_blank" rel="noopener noreferrer">College Board<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
-          <li><a href="https://studyinthestates.dhs.gov/" target="_blank" rel="noopener noreferrer">Study in the States<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
-          <li><a href="https://travel.state.gov/" target="_blank" rel="noopener noreferrer">travel.state.gov<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a></li>
+        <h2 id="pt-title" data-i18n="pt.title">We work with Co&amp;Learn</h2>
+        <p class="lead" data-i18n="pt.body">Co&amp;Learn is a nonprofit in China that offers English learning resources. We help students understand the path abroad, and Co&amp;Learn gives them a place to keep building their English.</p>
+        <p class="src-h" data-i18n="pt.sources">Official sources we check against</p>
+        <ul class="src-list">
+          <li><a href="https://educationusa.state.gov/" target="_blank" rel="noopener noreferrer">EducationUSA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a><span data-i18n="src.edusa">Free advising backed by the U.S. Department of State, with advisers in China and Vietnam</span></li>
+          <li><a href="https://www.commonapp.org/" target="_blank" rel="noopener noreferrer">Common App<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a><span data-i18n="src.commonapp">The online application most U.S. colleges accept</span></li>
+          <li><a href="https://www.collegeboard.org/" target="_blank" rel="noopener noreferrer">College Board<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a><span data-i18n="src.cb">Runs the SAT and AP exams, and the CSS Profile used to apply for financial aid</span></li>
+          <li><a href="https://studyinthestates.dhs.gov/" target="_blank" rel="noopener noreferrer">Study in the States<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a><span data-i18n="src.sits">U.S. government guide to student visas, the I-20 and the SEVIS fee</span></li>
+          <li><a href="https://travel.state.gov/" target="_blank" rel="noopener noreferrer">travel.state.gov<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg></a><span data-i18n="src.travel">Official U.S. visa requirements and how to apply</span></li>
         </ul>
-        <p class="src-note" data-i18n="pt.sourcesNote"></p>
+        <p class="src-note" data-i18n="pt.sourcesNote">We cite these sources. We are not affiliated with them.</p>
       </div>
       <div class="mentor-card reveal">
         <svg class="ill mentor-ill" viewBox="0 0 132 100" aria-hidden="true">
@@ -1111,13 +1140,13 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
           <g class="float" style="--d:-.8s"><path class="f-rose s-ink" d="M66 22 c -6 -9 -18 -3 -11 6 l11 10 l11 -10 c 7 -9 -5 -15 -11 -6z"/></g>
           <g transform="translate(116 18)"><path class="twinkle f-butter s-ink" stroke-width="1.2" d="M0 -8 C1 -2 2 -1 8 0 C2 1 1 2 0 8 C-1 2 -2 1 -8 0 C-2 -1 -1 -2 0 -8Z"/></g>
         </svg>
-        <p class="tag" data-i18n="pt.mentor"></p>
+        <p class="tag" data-i18n="pt.mentor">Our mentor</p>
         <div class="mentor-top">
           <div class="avatar" aria-hidden="true">S</div>
-          <div><h3>Sophia</h3><p class="role"><span data-i18n="pt.mentorRole"></span> · <span data-i18n="pt.mentorBase"></span></p></div>
+          <div><h3>Sophia</h3><p class="role"><span data-i18n="pt.mentorRole">Co-Founder, Co&amp;Learn</span> · <span data-i18n="pt.mentorBase">China</span></p></div>
         </div>
-        <p class="body" data-i18n="pt.mentorBody"></p>
-        <div class="co-logo"><b>Co&amp;Learn</b><span data-i18n="pt.coDesc"></span></div>
+        <p class="body" data-i18n="pt.mentorBody">Sophia helps us organize information and explain each topic clearly, so every guide is easy to follow.</p>
+        <div class="co-logo"><b>Co&amp;Learn</b><span data-i18n="pt.coDesc">Nonprofit · English learning · China</span></div>
       </div>
     </div>
   </section>
@@ -1125,34 +1154,34 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <!-- Team -->
   <section class="band tint" id="team" aria-labelledby="team-title">
     <div class="wrap">
-      <h2 id="team-title" data-i18n-html="team.title"></h2>
-      <p class="lead" data-i18n="team.lead"></p>
+      <h2 id="team-title" data-i18n-html="team.title">Run by students who <span class='hl'>made the move</span>.</h2>
+      <p class="lead" data-i18n="team.lead">We are three seniors at Maharishi School in Iowa, from China and Vietnam. We remember how confusing the process was, so we’re writing the guide we wish we’d had.</p>
       <div class="team-grid">
         <article class="member reveal">
           <div class="avatar" aria-hidden="true">CL</div>
-          <div><h3>Cici Liu</h3><p class="role" data-i18n="team.role"></p></div>
+          <div><h3>Cici Liu</h3><p class="role" data-i18n="team.role">Co-founder</p></div>
           <dl>
-            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
-            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
+            <div><dt data-i18n="team.schoolL">School</dt><dd data-i18n="team.school">Maharishi School · Class of 2027</dd></div>
+            <div><dt data-i18n="team.fromL">From</dt><dd data-i18n="team.cn">China</dd></div>
+            <div><dt data-i18n="team.ask">Ask me in</dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
         <article class="member reveal">
           <div class="avatar" aria-hidden="true">LD</div>
-          <div><h3>Lam Do</h3><p class="role" data-i18n="team.role"></p></div>
+          <div><h3>Lam Do</h3><p class="role" data-i18n="team.role">Co-founder</p></div>
           <dl>
-            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
-            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.vn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd><span lang="vi">Tiếng Việt</span> · <span lang="en">English</span></dd></div>
+            <div><dt data-i18n="team.schoolL">School</dt><dd data-i18n="team.school">Maharishi School · Class of 2027</dd></div>
+            <div><dt data-i18n="team.fromL">From</dt><dd data-i18n="team.vn">Vietnam</dd></div>
+            <div><dt data-i18n="team.ask">Ask me in</dt><dd><span lang="vi">Tiếng Việt</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
         <article class="member reveal">
           <div class="avatar" aria-hidden="true">NG</div>
-          <div><h3>Nicki Gong</h3><p class="role" data-i18n="team.role"></p></div>
+          <div><h3>Nicki Gong</h3><p class="role" data-i18n="team.role">Co-founder</p></div>
           <dl>
-            <div><dt data-i18n="team.schoolL"></dt><dd data-i18n="team.school"></dd></div>
-            <div><dt data-i18n="team.fromL"></dt><dd data-i18n="team.cn"></dd></div>
-            <div><dt data-i18n="team.ask"></dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
+            <div><dt data-i18n="team.schoolL">School</dt><dd data-i18n="team.school">Maharishi School · Class of 2027</dd></div>
+            <div><dt data-i18n="team.fromL">From</dt><dd data-i18n="team.cn">China</dd></div>
+            <div><dt data-i18n="team.ask">Ask me in</dt><dd><span lang="zh-Hans">中文</span> · <span lang="en">English</span></dd></div>
           </dl>
         </article>
       </div>
@@ -1161,7 +1190,7 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
           <path class="f-peach s-ink" d="M14 34 h28 l-3 18 h-22 z"/><path class="f-peach s-ink" d="M12 30 h32 v6 h-32 z"/>
           <g class="sway"><path class="s-ink nf" d="M28 30 V16"/><path class="f-mint s-ink" d="M28 20 C 20 20, 14 14, 14 8 C 22 8, 28 12, 28 20 Z"/><path class="f-mint s-ink" d="M28 16 C 34 16, 42 12, 42 4 C 34 4, 28 8, 28 16 Z"/></g>
         </svg>
-        <p data-i18n="team.legacy"></p>
+        <p data-i18n="team.legacy">We’ll graduate, and PathForward will keep going. We’re training new student volunteers to keep every guide up to date.</p>
       </div>
     </div>
   </section>
@@ -1171,8 +1200,8 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
     <div class="wrap">
       <div class="inv-head">
         <div>
-          <h2 id="inv-title" data-i18n-html="inv.title"></h2>
-          <p class="lead" data-i18n="inv.lead"></p>
+          <h2 id="inv-title" data-i18n-html="inv.title">Ask a question or join the team.</h2>
+          <p class="lead" data-i18n="inv.lead">Every question helps us improve the guides. A team member will reply in the language you choose.</p>
         </div>
         <svg class="ill inv-ill" viewBox="0 0 180 130" aria-hidden="true">
           <ellipse class="shade" cx="90" cy="122" rx="62" ry="6"/>
@@ -1189,23 +1218,23 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
       </div>
       <div class="inv-grid">
         <form class="form-card" id="ask" novalidate data-mode="question">
-          <div class="mode" role="group" data-i18n-attr="aria-label:inv.modeLabel">
-            <button type="button" data-mode="question" aria-pressed="true" data-i18n="inv.modeQ"></button>
-            <button type="button" data-mode="volunteer" aria-pressed="false" data-i18n="inv.modeV"></button>
+          <div class="mode" role="group" data-i18n-attr="aria-label:inv.modeLabel" aria-label="What would you like to do?">
+            <button type="button" data-mode="question" aria-pressed="true" data-i18n="inv.modeQ">I have a question</button>
+            <button type="button" data-mode="volunteer" aria-pressed="false" data-i18n="inv.modeV">I want to volunteer</button>
           </div>
           <div class="form-body" id="form-body">
             <div class="fields">
-              <div class="field"><label for="f-name"><span data-i18n="f.name"></span> <span class="opt" data-i18n="f.opt"></span></label><input id="f-name" name="name" autocomplete="given-name"></div>
-              <div class="field"><label for="f-grade"><span data-i18n="f.grade"></span> <span class="opt" data-i18n="f.opt"></span></label><select id="f-grade" name="grade"></select></div>
-              <div class="field"><label for="f-country"><span data-i18n="f.country"></span> <span class="opt" data-i18n="f.opt"></span></label><select id="f-country" name="country"></select></div>
-              <div class="field"><label for="f-reply" data-i18n="f.reply"></label><select id="f-reply" name="reply"></select></div>
+              <div class="field"><label for="f-name"><span data-i18n="f.name">First name</span> <span class="opt" data-i18n="f.opt">(optional)</span></label><input id="f-name" name="name" autocomplete="given-name"></div>
+              <div class="field"><label for="f-grade"><span data-i18n="f.grade">Grade</span> <span class="opt" data-i18n="f.opt">(optional)</span></label><select id="f-grade" name="grade"></select></div>
+              <div class="field"><label for="f-country"><span data-i18n="f.country">Where do you study now?</span> <span class="opt" data-i18n="f.opt">(optional)</span></label><select id="f-country" name="country"></select></div>
+              <div class="field"><label for="f-reply" data-i18n="f.reply">Reply in</label><select id="f-reply" name="reply"></select></div>
               <fieldset class="field full vol-only">
-                <legend data-i18n="f.roles"></legend>
+                <legend data-i18n="f.roles">Roles you’re interested in</legend>
                 <div class="roles-pick">
-                  <label class="chk"><input type="checkbox" id="r-translate" name="roles" value="translate"><span data-i18n="r.translate"></span></label>
-                  <label class="chk"><input type="checkbox" id="r-write" name="roles" value="write"><span data-i18n="r.write"></span></label>
-                  <label class="chk"><input type="checkbox" id="r-mentor" name="roles" value="mentor"><span data-i18n="r.mentor"></span></label>
-                  <label class="chk"><input type="checkbox" id="r-outreach" name="roles" value="outreach"><span data-i18n="r.outreach"></span></label>
+                  <label class="chk"><input type="checkbox" id="r-translate" name="roles" value="translate"><span data-i18n="r.translate">Translator</span></label>
+                  <label class="chk"><input type="checkbox" id="r-write" name="roles" value="write"><span data-i18n="r.write">Guide writer</span></label>
+                  <label class="chk"><input type="checkbox" id="r-mentor" name="roles" value="mentor"><span data-i18n="r.mentor">Peer mentor</span></label>
+                  <label class="chk"><input type="checkbox" id="r-outreach" name="roles" value="outreach"><span data-i18n="r.outreach">Outreach</span></label>
                 </div>
               </fieldset>
               <div class="field full">
@@ -1214,45 +1243,45 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
                 <p class="err" id="f-msg-err" hidden></p>
               </div>
               <div class="field full">
-                <label for="f-contact" data-i18n="f.contact"></label>
-                <input id="f-contact" name="contact" autocomplete="email" spellcheck="false" autocapitalize="none" autocorrect="off" aria-required="true" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err">
+                <label for="f-contact" data-i18n="f.contact">Email, WeChat or Zalo</label>
+                <input id="f-contact" name="contact" autocomplete="email" spellcheck="false" autocapitalize="none" autocorrect="off" aria-required="true" data-i18n-attr="placeholder:f.phContact" aria-describedby="f-contact-err" placeholder="name@example.com or your WeChat ID">
                 <p class="err" id="f-contact-err" hidden></p>
               </div>
             </div>
             <div class="consent-row">
-              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-required="true" aria-describedby="f-consent-err"><span data-i18n="f.consent"></span></label>
+              <label class="consent"><input type="checkbox" id="f-consent" name="consent" aria-required="true" aria-describedby="f-consent-err"><span data-i18n="f.consent">I’m 16 or older, or a parent or guardian has agreed to this.</span></label>
               <p class="err" id="f-consent-err" hidden></p>
             </div>
             <div class="form-foot">
-              <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="f.privacy"></span></p>
+              <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span data-i18n="f.privacy">We only use your details to reply. We never sell or share them.</span></p>
               <button class="btn btn-primary" type="submit"><span id="f-submit-label"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
             </div>
-            <p class="preview-note" data-i18n="f.preview"></p>
+            <p class="preview-note" data-i18n="f.preview">Preview version: this form doesn’t send anything yet.</p>
           </div>
           <div class="success" id="f-success" hidden>
             <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-            <h3 id="f-ok-title" tabindex="-1" data-i18n="f.okTitle"></h3>
-            <p data-i18n="f.okBody"></p>
-            <button class="btn btn-primary btn-sm" type="button" id="f-again" data-i18n="f.again"></button>
+            <h3 id="f-ok-title" tabindex="-1" data-i18n="f.okTitle">Got it, thank you!</h3>
+            <p data-i18n="f.okBody">This is a preview of the site, so nothing was sent. On the live site, a team member will reply to you.</p>
+            <button class="btn btn-primary btn-sm" type="button" id="f-again" data-i18n="f.again">Write another</button>
           </div>
         </form>
         <aside class="inv-side">
           <div class="side-card">
-            <h3 data-i18n="side.roles"></h3>
+            <h3 data-i18n="side.roles">Volunteer roles</h3>
             <ul class="roles-list">
-              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div><div><strong data-i18n="r.translate"></strong><span data-i18n="r.translateD"></span></div></li>
-              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div><strong data-i18n="r.write"></strong><span data-i18n="r.writeD"></span></div></li>
-              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div><div><strong data-i18n="r.mentor"></strong><span data-i18n="r.mentorD"></span></div></li>
-              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><div><strong data-i18n="r.outreach"></strong><span data-i18n="r.outreachD"></span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></svg></div><div><strong data-i18n="r.translate">Translator</strong><span data-i18n="r.translateD">Turn guides into Chinese or Vietnamese.</span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div><strong data-i18n="r.write">Guide writer</strong><span data-i18n="r.writeD">Research a topic and explain it clearly.</span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg></div><div><strong data-i18n="r.mentor">Peer mentor</strong><span data-i18n="r.mentorD">Answer questions from younger students.</span></div></li>
+              <li><div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><div><strong data-i18n="r.outreach">Outreach</strong><span data-i18n="r.outreachD">Share PathForward with schools and communities.</span></div></li>
             </ul>
           </div>
           <div class="side-card">
-            <h3 data-i18n="side.contact"></h3>
-            <p data-i18n="side.contactBody"></p>
+            <h3 data-i18n="side.contact">Other ways to reach us</h3>
+            <p data-i18n="side.contactBody">We’re setting up these channels now.</p>
             <ul class="channels">
-              <li><span data-i18n="ch.email"></span> <em data-i18n="side.soon"></em></li>
-              <li><span translate="no">WeChat</span> <em data-i18n="side.soon"></em></li>
-              <li><span translate="no">Zalo</span> <em data-i18n="side.soon"></em></li>
+              <li><span data-i18n="ch.email">Email</span> <em data-i18n="side.soon">coming soon</em></li>
+              <li><span translate="no">WeChat</span> <em data-i18n="side.soon">coming soon</em></li>
+              <li><span translate="no">Zalo</span> <em data-i18n="side.soon">coming soon</em></li>
             </ul>
           </div>
         </aside>
@@ -1264,15 +1293,15 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
   <section class="band band-cream" id="survey" aria-labelledby="sv-title">
     <div class="wrap sv-wrap">
       <div class="sv-head">
-        <h2 id="sv-title" data-i18n-html="sv.title"></h2>
-        <p class="lead" data-i18n="sv.lead"></p>
+        <h2 id="sv-title" data-i18n-html="sv.title">What did you <span class='hl'>learn</span>?</h2>
+        <p class="lead" data-i18n="sv.lead">Answer the 5 questions from the start again, then tell us what helped and what we can do better. It takes about 2 minutes and it’s anonymous.</p>
       </div>
       <div class="sv-card" id="sv-card">
         <div class="sv-step" id="sv-intro">
-          <p class="sv-skipped" id="sv-skipped" data-i18n="sv.skipped" hidden></p>
+          <p class="sv-skipped" id="sv-skipped" data-i18n="sv.skipped" hidden>You skipped the quiz at the start, so we can’t show a before-and-after score. You can still take part.</p>
           <div class="sv-intro-row">
-            <button class="btn btn-primary" type="button" id="sv-start"><span data-i18n="sv.start"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
+            <button class="btn btn-primary" type="button" id="sv-start"><span data-i18n="sv.start">Start the survey</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon">Anonymous: we don’t ask for your name or contact details.</span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link">Privacy</button></span></p>
           </div>
         </div>
         <div class="sv-step" id="sv-quiz" hidden></div>
@@ -1280,28 +1309,29 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
           <div id="sv-results"></div>
           <div class="sv-fields">
             <div class="field full">
-              <label for="sv-learn" data-i18n="sv.learn"></label>
-              <textarea id="sv-learn" name="learn" data-i18n-attr="placeholder:sv.phLearn"></textarea>
+              <label for="sv-learn" data-i18n="sv.learn">What did you learn from this site?</label>
+              <textarea id="sv-learn" name="learn" data-i18n-attr="placeholder:sv.phLearn" placeholder="For example: I didn’t know many colleges are test-optional."></textarea>
             </div>
             <fieldset class="field full">
-              <legend data-i18n="sv.useful"></legend>
+              <legend data-i18n="sv.useful">How useful was this site?</legend>
               <div class="scale" id="sv-useful" data-lo="sv.usefulLo" data-hi="sv.usefulHi"></div>
             </fieldset>
             <div class="field full">
-              <label for="sv-suggest" data-i18n="sv.suggest"></label>
-              <textarea id="sv-suggest" name="suggest" data-i18n-attr="placeholder:sv.phSuggest"></textarea>
+              <label for="sv-suggest" data-i18n="sv.suggest">Any suggestions for us?</label>
+              <textarea id="sv-suggest" name="suggest" data-i18n-attr="placeholder:sv.phSuggest" placeholder="For example: Add a guide to writing the personal essay."></textarea>
             </div>
           </div>
           <div class="form-foot">
-            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
-            <button class="btn btn-primary" type="submit"><span data-i18n="sv.send"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+            <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon">Anonymous: we don’t ask for your name or contact details.</span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link">Privacy</button></span></p>
+            <button class="btn btn-primary" type="submit"><span data-i18n="sv.send">Send feedback</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
           </div>
-          <p class="preview-note" data-i18n="sv.preview"></p>
+          <p class="preview-note" data-i18n="sv.preview">Preview version: this survey doesn’t send anything yet.</p>
         </form>
         <div class="sv-step success" id="sv-ok" hidden>
           <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-          <h3 id="sv-ok-title" tabindex="-1" data-i18n="sv.okTitle"></h3>
-          <p data-i18n="sv.okBody"></p>
+          <h3 id="sv-ok-title" tabindex="-1" data-i18n="sv.okTitle">Thank you for your feedback!</h3>
+          <p data-i18n="sv.okBody">This is a preview of the site, so nothing was sent. On the live site, your answers help us improve the guides.</p>
+          <a class="btn btn-ghost btn-sm" href="#involved" data-scroll="involved" data-i18n="hero.cta2">Ask us a question</a>
         </div>
       </div>
     </div>
@@ -1311,33 +1341,33 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
 <footer class="foot">
   <div class="wrap">
     <dl class="foot-mv">
-      <div><dt data-i18n="mv.mLabel"></dt><dd data-i18n="mv.m"></dd></div>
-      <div><dt data-i18n="mv.vLabel"></dt><dd data-i18n="mv.v"></dd></div>
+      <div><dt data-i18n="mv.mLabel">Mission</dt><dd data-i18n="mv.m">Our mission is to reduce educational information gaps by connecting students with free, reliable guidance, international education resources, and learning opportunities across countries.</dd></div>
+      <div><dt data-i18n="mv.vLabel">Vision</dt><dd data-i18n="mv.v">We envision a future where a student’s access to educational opportunities is not limited by location, financial resources, or lack of information.</dd></div>
     </dl>
     <div class="foot-grid">
       <div>
-        <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home">
+        <a class="brand" href="#top" data-scroll="top" data-i18n-attr="aria-label:nav.home" aria-label="PathForward home">
           <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-bg" x="1" y="1" width="30" height="30" rx="10"/><path class="m-path" d="M7 23C12 22 14 12 23 9" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="1 4.4"/><circle class="m-dot" cx="23.5" cy="8.8" r="3.4" stroke-width="1.5"/></svg>
           <span>Path<b>Forward</b></span>
         </a>
-        <p data-i18n="foot.np"></p>
-        <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg"></span></span>
+        <p data-i18n="foot.np">A student-run nonprofit project. We never charge students and never sell data.</p>
+        <span class="sdg"><b aria-hidden="true">4</b><span data-i18n="sdg">Supports UN Sustainable Development Goal 4: Quality Education</span></span>
       </div>
       <div>
-        <h2 data-i18n="foot.explore"></h2>
+        <h2 data-i18n="foot.explore">Explore</h2>
         <ul>
-          <li><a href="#about" data-scroll="about" data-i18n="nav.about"></a></li>
-          <li><a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap"></a></li>
-          <li><a href="#match" data-scroll="match" data-i18n="nav.match"></a></li>
-          <li><a href="#resources" data-scroll="resources" data-i18n="nav.resources"></a></li>
-          <li><a href="#team" data-scroll="team" data-i18n="nav.team"></a></li>
-          <li><a href="#involved" data-scroll="involved" data-i18n="nav.involved"></a></li>
-          <li><a href="#survey" data-scroll="survey" data-i18n="nav.survey"></a></li>
+          <li><a href="#about" data-scroll="about" data-i18n="nav.about">About</a></li>
+          <li><a href="#roadmap" data-scroll="roadmap" data-i18n="nav.roadmap">Roadmap</a></li>
+          <li><a href="#match" data-scroll="match" data-i18n="nav.match">College match</a></li>
+          <li><a href="#resources" data-scroll="resources" data-i18n="nav.resources">Resources</a></li>
+          <li><a href="#team" data-scroll="team" data-i18n="nav.team">Team</a></li>
+          <li><a href="#involved" data-scroll="involved" data-i18n="nav.involved">Get involved</a></li>
+          <li><a href="#survey" data-scroll="survey" data-i18n="nav.survey">Survey</a></li>
         </ul>
       </div>
       <div>
-        <h2 data-i18n="foot.lang"></h2>
-        <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang">
+        <h2 data-i18n="foot.lang">Language</h2>
+        <div class="lang" role="group" data-i18n-attr="aria-label:nav.lang" aria-label="Language">
           <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true"><span class="full">English</span><span class="short">EN</span></button>
           <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
           <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false"><span class="full">Tiếng Việt</span><span class="short">VI</span></button>
@@ -1346,10 +1376,10 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
       </div>
     </div>
     <div class="foot-bottom">
-      <span data-i18n="foot.copy"></span>
-      <span><span data-i18n="foot.preview"></span> · <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button> · <a href="#top" data-scroll="top" data-i18n="foot.top"></a></span>
+      <span data-i18n="foot.copy">© 2026 PathForward. Free, always.</span>
+      <span><span data-i18n="foot.preview">Website preview</span> · <button type="button" class="link-btn" data-privacy data-i18n="pv.link">Privacy</button> · <a href="#top" data-scroll="top" data-i18n="foot.top">Back to top</a></span>
     </div>
-    <p class="foot-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span><b data-i18n="disc.label"></b><span data-i18n="disc.body"></span></span></p>
+    <p class="foot-disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg><span><b data-i18n="disc.label">Disclaimer</b><span data-i18n="disc.body">This website provides general educational information to help students explore U.S. higher education. We are not affiliated with any university or government agency. Admission requirements, tuition, scholarships, and institutional policies may change. Please verify important information through each institution’s official website before making decisions.</span></span></p>
   </div>
 </footer>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1357,46 +1387,46 @@ html:lang(zh) .foot-disc b{margin-right:.2em}
 <dialog class="dlg" id="pre-dlg" aria-labelledby="pre-title">
   <div class="dlg-in">
     <div class="dlg-top">
-      <p class="dlg-kicker" data-i18n="pre.kicker"></p>
-      <div class="lang lang-mini" role="group" data-i18n-attr="aria-label:nav.lang">
+      <p class="dlg-kicker" data-i18n="pre.kicker">Before you start</p>
+      <div class="lang lang-mini" role="group" data-i18n-attr="aria-label:nav.lang" aria-label="Language">
         <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="true">EN</button>
         <button type="button" data-lang="zh" lang="zh-Hans" aria-pressed="false">中文</button>
         <button type="button" data-lang="vi" lang="vi" aria-label="Tiếng Việt" aria-pressed="false">VI</button>
       </div>
     </div>
     <div id="pre-intro">
-      <h2 id="pre-title" data-i18n="pre.title"></h2>
-      <p class="dlg-body" data-i18n="pre.body"></p>
-      <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon"></span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link"></button></span></p>
+      <h2 id="pre-title" data-i18n="pre.title">5 quick questions, about 1 minute</h2>
+      <p class="dlg-body" data-i18n="pre.body">Answer with what you know right now. If you don’t know, choose “I’m not sure”. At the end of the page you can answer again and see what you learned.</p>
+      <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg><span><span data-i18n="quiz.anon">Anonymous: we don’t ask for your name or contact details.</span> <button type="button" class="link-btn" data-privacy data-i18n="pv.link">Privacy</button></span></p>
       <div class="dlg-actions">
-        <button class="btn btn-primary" type="button" id="pre-start" autofocus><span data-i18n="pre.start"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-        <button class="btn btn-ghost" type="button" id="pre-skip" data-i18n="pre.skip"></button>
+        <button class="btn btn-primary" type="button" id="pre-start" autofocus><span data-i18n="pre.start">Start</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        <button class="btn btn-ghost" type="button" id="pre-skip" data-i18n="pre.skip">Skip for now</button>
       </div>
     </div>
     <div id="pre-quiz" hidden></div>
     <div id="pre-done" hidden>
       <div class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
-      <h2 id="pre-done-title" tabindex="-1" data-i18n="pre.doneTitle"></h2>
-      <p class="dlg-body" data-i18n="pre.doneBody"></p>
-      <div class="dlg-actions"><button class="btn btn-primary" type="button" id="pre-go"><span data-i18n="pre.go"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
+      <h2 id="pre-done-title" tabindex="-1" data-i18n="pre.doneTitle">Thanks! Now take a look around</h2>
+      <p class="dlg-body" data-i18n="pre.doneBody">At the end of the page, answer the same questions again to see what you learned.</p>
+      <div class="dlg-actions"><button class="btn btn-primary" type="button" id="pre-go"><span data-i18n="pre.go">Start exploring</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button></div>
     </div>
   </div>
 </dialog>
 <dialog class="dlg" id="pv-dlg" aria-labelledby="pv-title">
   <div class="dlg-in">
     <div class="dlg-top">
-      <h2 id="pv-title" data-i18n="pv.title"></h2>
-      <button class="dlg-x" type="button" data-close data-i18n-attr="aria-label:quiz.close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <h2 id="pv-title" data-i18n="pv.title">Privacy</h2>
+      <button class="dlg-x" type="button" data-close data-i18n-attr="aria-label:quiz.close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
     </div>
     <ul class="pv-list">
-      <li data-i18n="pv.1"></li><li data-i18n="pv.2"></li><li data-i18n="pv.3"></li>
-      <li data-i18n="pv.4"></li><li data-i18n="pv.5"></li><li data-i18n="pv.6"></li>
+      <li data-i18n="pv.1">The quiz and the survey are anonymous. We don’t ask for your name, email or school.</li><li data-i18n="pv.2">Your quiz answers are saved only in this browser, so the site can show what you learned at the end. You can delete them at any time.</li><li data-i18n="pv.3">College match works inside your browser. Your choices are never sent to us.</li>
+      <li data-i18n="pv.4">If you send a question through the form, we use your email, WeChat or Zalo only to reply. We never sell or share it.</li><li data-i18n="pv.5">If you are under 16, please ask a parent or guardian before sending us your contact details.</li><li data-i18n="pv.6">To ask us to delete anything you sent, email us. Our contact email is coming soon.</li>
     </ul>
     <div class="pv-actions">
-      <button class="btn btn-ghost btn-sm" type="button" id="pv-clear" data-i18n="pv.clear"></button>
+      <button class="btn btn-ghost btn-sm" type="button" id="pv-clear" data-i18n="pv.clear">Delete my quiz answers</button>
       <p class="pv-cleared" id="pv-cleared" role="status"></p>
     </div>
-    <p class="preview-note" data-i18n="pv.preview"></p>
+    <p class="preview-note" data-i18n="pv.preview">Preview version: nothing on this site is sent anywhere yet.</p>
   </div>
 </dialog>
 <script>
@@ -1659,7 +1689,7 @@ var STEPS = window.PF_STEPS = [
  en:{when:"Grade 11", title:"Plan for the SAT or ACT", desc:"Some colleges require the SAT or ACT, and many are test-optional. Policies change, so check each school's website.", checks:["Check the testing policy of each school","Register early, since seats fill up","Plan for one or two attempts"]},
  zh:{when:"高二", title:"规划 SAT 或 ACT", desc:"部分大学要求 SAT 或 ACT，也有很多学校可以不提交成绩（test-optional）。政策常有变化，请以各校官网为准。", checks:["查清每所学校的考试政策","尽早报名，考位很快就满","计划考一到两次"]},
  vi:{when:"Lớp 11", title:"Lên kế hoạch thi SAT hoặc ACT", desc:"Một số trường yêu cầu SAT hoặc ACT, nhiều trường khác không bắt buộc (test-optional). Chính sách thay đổi thường xuyên, hãy kiểm tra trên website của từng trường.", checks:["Kiểm tra chính sách thi của từng trường","Đăng ký sớm vì chỗ thi nhanh hết","Dự tính thi một hoặc hai lần"]}},
-{stages:[2], src:EDUSA,
+{stages:[2], src:EDUSA, cta:"match",
  en:{when:"Grade 11", title:"Build your college list", desc:"Choose about 8 to 12 schools across reach, match and likely. As an international student, check which schools offer financial aid to you.", checks:["Research schools on their official websites","Compare the full cost of attendance","Write down every deadline"]},
  zh:{when:"高二", title:"确定选校名单", desc:"选择大约 8 到 12 所学校，涵盖冲刺、匹配和保底三档。作为国际学生，要特别确认哪些学校会给你提供经济资助。", checks:["在学校官网上做调研","比较总就读费用（cost of attendance）","记下每一个截止日期"]},
  vi:{when:"Lớp 11", title:"Lập danh sách trường", desc:"Chọn khoảng 8 đến 12 trường, chia thành nhóm mơ ước, vừa sức và an toàn. Là học sinh quốc tế, hãy kiểm tra trường nào có hỗ trợ tài chính cho bạn.", checks:["Tìm hiểu trường qua website chính thức","So sánh tổng chi phí học tập (cost of attendance)","Ghi lại tất cả các hạn nộp"]}},
@@ -1896,6 +1926,38 @@ Object.assign(T.vi, {
 "disc.body":"Trang web này cung cấp thông tin giáo dục chung để giúp học sinh tìm hiểu về giáo dục đại học tại Hoa Kỳ. Chúng tôi không liên kết với bất kỳ trường đại học hay cơ quan chính phủ nào. Yêu cầu tuyển sinh, học phí, học bổng và chính sách của các trường có thể thay đổi. Vui lòng kiểm tra thông tin quan trọng trên trang web chính thức của từng trường trước khi đưa ra quyết định."
 });
 
+/* Page title per language, next-step links, what each official source is for */
+Object.assign(T.en, {
+"meta.title":"PathForward · Free study-abroad guidance",
+"rm.cta.match":"Try the college match",
+"m.ask":"Questions about these colleges? Our team studies in the U.S.",
+"src.edusa":"Free advising backed by the U.S. Department of State, with advisers in China and Vietnam",
+"src.commonapp":"The online application most U.S. colleges accept",
+"src.cb":"Runs the SAT and AP exams, and the CSS Profile used to apply for financial aid",
+"src.sits":"U.S. government guide to student visas, the I-20 and the SEVIS fee",
+"src.travel":"Official U.S. visa requirements and how to apply"
+});
+Object.assign(T.zh, {
+"meta.title":"PathForward · 免费留学指导",
+"rm.cta.match":"试试选校匹配",
+"m.ask":"对这些学校有疑问？我们的团队正在美国读书。",
+"src.edusa":"美国国务院支持的免费留学咨询，在中国和越南都设有顾问",
+"src.commonapp":"大多数美国大学接受的网申系统",
+"src.cb":"负责 SAT 和 AP 考试，以及申请资助用的 CSS Profile",
+"src.sits":"美国政府关于学生签证、I-20 和 SEVIS 费用的官方指南",
+"src.travel":"美国签证要求和申请流程的官方说明"
+});
+Object.assign(T.vi, {
+"meta.title":"PathForward · Hướng dẫn du học miễn phí",
+"rm.cta.match":"Thử công cụ chọn trường",
+"m.ask":"Có thắc mắc về các trường này? Nhóm chúng tôi đang học tại Mỹ.",
+"src.edusa":"Tư vấn du học miễn phí do Bộ Ngoại giao Hoa Kỳ hỗ trợ, có cố vấn tại Việt Nam và Trung Quốc",
+"src.commonapp":"Hệ thống nộp hồ sơ trực tuyến mà hầu hết các trường đại học Mỹ chấp nhận",
+"src.cb":"Tổ chức kỳ thi SAT, AP và quản lý CSS Profile dùng để xin hỗ trợ tài chính",
+"src.sits":"Hướng dẫn chính thức của chính phủ Mỹ về visa du học, I-20 và phí SEVIS",
+"src.travel":"Thông tin chính thức về yêu cầu và quy trình xin visa Mỹ"
+});
+
 /* Knowledge questions: asked before the visit and again at the end. Every answer is on this site.
    a = index of the correct option; "I'm not sure" is added after the options and never counts as correct. */
 var QUIZ = window.PF_QUIZ = [
@@ -2115,6 +2177,7 @@ var SCHOOLS = window.PF_SCHOOLS = [
     chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>',
     ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10M7 17 17 7"/></svg>',
+    arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>',
     clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
   };
 
@@ -2179,6 +2242,7 @@ var SCHOOLS = window.PF_SCHOOLS = [
             '<p class="checks-h">' + esc(t("rm.checklist")) + '</p>' +
             '<ul class="checks">' + L.checks.map(function(c){ return "<li>" + I.check + "<span>" + esc(c) + "</span></li>"; }).join("") + '</ul>' +
             '<a class="source" href="' + esc(s.src.url) + '" target="_blank" rel="noopener noreferrer">' + esc(t("rm.source")) + t("sep") + '<span translate="no">' + esc(s.src.name) + '</span>' + I.ext + '</a>' +
+            (s.cta ? '<a class="btn btn-primary btn-sm step-cta" href="#' + s.cta + '" data-scroll="' + s.cta + '">' + esc(t("rm.cta." + s.cta)) + I.arrow + '</a>' : '') +
           '</div></div></div>' +
         '</div></li>';
     }).join("");
@@ -2314,6 +2378,8 @@ var SCHOOLS = window.PF_SCHOOLS = [
     state.lang = lang;
     document.documentElement.lang = HTML_LANG[lang];
     applyStatic(); renderSteps(); renderResources(); renderForm(); updateLangButtons(); fitSeal();
+    document.title = t("meta.title");
+    document.documentElement.classList.remove("i18n-wait");
     if (opts.persist){
       store("pf-lang", lang);
       try { history.replaceState(null, "", "#" + lang); } catch(e){}
@@ -2569,7 +2635,7 @@ var SCHOOLS = window.PF_SCHOOLS = [
   var S = SCHOOLS.map(function(r, i){ return {i:i, name:r[0], zh:r[1], place:r[2], region:r[3], size:r[4], setting:r[5], kind:r[6], control:r[7], fields:r[8].split(" "), aid:!!r[9], url:r[10]}; });
   function renderMatch(){
     var list = $("#m-list"), answered = KEYS.some(function(k){ return M[k] !== null; });
-    $("#m-reset").hidden = !answered;
+    $("#m-reset").hidden = !answered; $("#m-ask").hidden = true;
     if (!answered){
       list.innerHTML = '<p class="m-empty">' + esc(t("m.empty")) + '</p>';
       $("#m-count").textContent = ""; return;
@@ -2590,6 +2656,7 @@ var SCHOOLS = window.PF_SCHOOLS = [
     $("#m-count").textContent = t("m.count", {n:rows.length, total:S.length});
     if (!rows.length){ list.innerHTML = '<p class="m-empty">' + esc(t("m.none")) + '</p>'; return; }
     var zh = state.lang === "zh";
+    $("#m-ask").hidden = false;
     list.innerHTML = '<ul class="m-list">' + rows.slice(0, shown).map(function(r){
       var s = r.s;
       var title = zh ? esc(s.zh) + '<span class="alt" lang="en">' + esc(s.name) + '</span>' : '<span lang="en">' + esc(s.name) + '</span>';
@@ -3112,4 +3179,6 @@ resize(); markActive();
 requestAnimationFrame(() => stage.classList.add("ready"));
 })();
 </script>
-</body></html>
+
+</body>
+</html>
